@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://www.webex.com">
+    <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIC5jCCAc6gAwIBAgIGATtZlyKOMA0GCSqGSIb3DQEBBQUAMDQxCzAJBgNVBAYTAlVTMSUwIwYDVQQDExxXZWJFeCBDb21tdW5pY2F0aW9ucyBJbmMuIENBMB4XDTEyMTIwMjAzMDkzNVoXDTIyMTEzMDAzMDkzNVowNDELMAkGA1UEBhMCVVMxJTAjBgNVBAMTHFdlYkV4IENvbW11bmljYXRpb25zIEluYy4gQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCM925ZnQNyrYX2jyI+x+AEswI5hT8Ueyc4ignaYdFdwfOuUVBOk/fLUW9XbVKCqKxALyXmf1tdzvPM/PHJMIG8YK+EsZ7OCeVmDpO7obMHpcZk+sSF8CAUkwVmWi5bhypec+7tdtCvdnxJEOcNP2URXHMgxOFETXXo+WQ6hAqG92TpaL1V3w515OAixhDXfOlDGqxgrDgM59ChVherdCuwOilTNWFWdSoOpZi1niyuG1ukDsefl2YfAT6d3fj7UFkvr7n68EyqlFmmksDglEN0PSybw3ZFOBaSYwhF0S6orPBZAupIG6UZvJoSeOzsRSTbvNpBtwmIlCIGqA3srRnlAgMBAAEwDQYJKoZIhvcNAQEFBQADggEBABVY4TH/jajsE+dOFNL8sq3PIN/ZpRww7bskTNQKy9mpqCu4Rp5UpCbgz6VDAdBRyQo1jlyWMUltyVJugOeXyw7ebgB73iVM8F7Dl5hym6kJwB6TGa5IZnabHQQHWXH1zWdeflbcgv06yDKOszCmVLJskcnRmDisA4xs4FGBYZ+Dn4nI8DltQtDTt4yW6Clc3ZU+3VJUiKOxaM887adlBR6nUAkvEvXgr918AEmGHWIX6/yLnN+CFQoa3Gg/InKRCXJmgCAD6g/4yaDatB78M7BrXtm6cSFQ8ub+xGqvBIJ/H17dXiDC+x6TJmlwPghGNNkkP8jxz0QG5781sDbY7nY=</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:entity</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://shrm.webex.com/dispatcher/SAML2AuthService?siteurl=shrm" index="0" isDefault="true" />
+    </md:SPSSODescriptor>
+    <md:Organization>
+        <md:OrganizationName xml:lang="en">Cisco WebEx</md:OrganizationName>
+        <md:OrganizationDisplayName xml:lang="en">Cisco WebEx</md:OrganizationDisplayName>
+        <md:OrganizationURL xml:lang="en" />
+    </md:Organization>
+    <md:ContactPerson contactType="technical">
+        <md:Company>Cisco WebEx</md:Company>
+        <md:GivenName />
+        <md:SurName />
+        <md:EmailAddress />
+        <md:TelephoneNumber />
+    </md:ContactPerson>
+</md:EntityDescriptor>

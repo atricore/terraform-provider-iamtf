@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:ns2="http://www.springframework.org/schema/context" xmlns:ns3="http://www.ops4j.org/schema/wicket" xmlns:ns4="http://www.springframework.org/schema/osgi" xmlns:ns5="http://www.springframework.org/schema/osgi-compendium" xmlns:ns6="http://www.springframework.org/schema/util" xmlns:ns7="http://www.springframework.org/schema/tool" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd http://www.ops4j.org/schema/wicket http://www.ops4j.org/schema/wicket/wicket.xsd ">
+    <bean class="org.iamtf.tc85.agent.CatalinaSSOAgent" name="josso-tc85-agent">
+        <property name="sessionAccessMinInterval">
+            <value>1000</value>
+        </property>
+        <property name="gatewayLoginUrl">
+            <value>http://localhost:8081/IDBUS/IDA-1/TC85/JOSSO/SSO/REDIR</value>
+        </property>
+        <property name="gatewayLogoutUrl">
+            <value>http://localhost:8081/IDBUS/IDA-1/TC85/JOSSO/SLO/REDIR</value>
+        </property>
+        <property name="gatewayServiceLocator">
+            <bean class="org.iamtf.gateway.jaxws.JAXWSWebserviceGatewayServiceLocator">
+                <description>If your server does not have internet access, use the following expression (replace [path-to-lib]
+ jar:file:/[path-to-lib]/josso-agents-bin-1.8.13-SNAPSHOT-jaxws.jar!/org/josso/gateway/ws/_1_2/wsdl/josso-1.2.wsdl</description>
+                <property name="wsdlLocation">
+                    <value>http://www.iamtf.org/wsdl/josso-1.2/josso-1.2.wsdl</value>
+                </property>
+                <property name="endpoint">
+                    <value>localhost:8081</value>
+                </property>
+                <property name="sessionManagerServicePath">
+                    <value>IDBUS/IDA-1/TC85/JOSSO/SSOSessionManager/SOAP</value>
+                </property>
+                <property name="identityManagerServicePath">
+                    <value>IDBUS/IDA-1/TC85/JOSSO/SSOIdentityManager/SOAP</value>
+                </property>
+                <property name="identityProviderServicePath">
+                    <value>IDBUS/IDA-1/TC85/JOSSO/SSOIdentityProvider/SOAP</value>
+                </property>
+            </bean>
+        </property>
+        <property name="parametersBuilders">
+            <list>
+                <bean class="org.iamtf.agent.http.AppIdParametersBuilder"/>
+            </list>
+        </property>
+        <property name="automaticLoginStrategies">
+            <list>
+                <bean class="org.iamtf.agent.http.DefaultAutomaticLoginStrategy">
+                    <property name="mode">
+                        <value>REQUIRED</value>
+                    </property>
+                    <property name="ignoredReferrers">
+                        <list>
+                            <value>http://localhost:8081/IDBUS/IDA-1</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="configuration">
+            <bean class="org.iamtf.agent.SSOAgentConfigurationImpl">
+                <property name="ssoPartnerApps">
+                    <list>
+                        <bean class="org.iamtf.agent.SSOPartnerAppConfig">
+                            <property name="id">
+<value>partnerapp1-sp</value>
+                            </property>
+                            <property name="vhost">
+<value>localhost</value>
+                            </property>
+                            <property name="context">
+<value>/partnerapp-1</value>
+                            </property>
+                            <property name="defaultResource">
+<value></value>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
