@@ -148,6 +148,6 @@ tools:
 	@which $(TFPROVIDERLINT) || go install github.com/bflad/tfproviderlint/cmd/tfproviderlint
 
 docs: build
-	go run ./jossodocs/jossodocs.go "$(CURDIR)/reference/.tmp" "$(CURDIR)/reference"
+	go run ./iamtf-docs/iamtf-docs.go "$(CURDIR)/reference/.tmp" "$(CURDIR)/reference"
 
 
