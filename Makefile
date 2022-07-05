@@ -2,10 +2,10 @@ SWEEP?=global
 TEST?=$$(go list ./... |grep -v 'vendor')
 GOFMT_FILES?=$$(find . -name '*.go' |grep -v vendor)
 WEBSITE_REPO=github.com/hashicorp/terraform-website
-PKG_NAME=josso
+PKG_NAME=iamtf
 GOLINT=./bin/golangci-lint
 GOFMT:=gofumpt
-TFPROVIDERLINT=/home/sgonzalez/wa/git/go/bin/tfproviderlint
+#TFPROVIDERLINT=/home/sgonzalez/wa/git/go/bin/tfproviderlint
 TF_ACC_TEMP_DIR=.tmp
 
 #GO_SRC?=..
