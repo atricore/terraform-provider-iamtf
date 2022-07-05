@@ -35,8 +35,8 @@ endif
 default: build
 
 dep-replace: # Download required dependencies (DEV MODE: use local dependencies)
-	go mod edit -replace github.com/atricore/josso-api-go='$(GO_SRC)'/josso-api-go
-	go mod edit -replace github.com/atricore/josso-sdk-go='$(GO_SRC)'/josso-sdk-go
+	go mod edit -replace github.com/atricore/josso-api-go='$(GO_SRC)'../josso-api-go
+	go mod edit -replace github.com/atricore/josso-sdk-go='$(GO_SRC)'../josso-sdk-go
 
 dep-dropreplace:
 	go mod edit -dropreplace github.com/atricore/josso-api-go
