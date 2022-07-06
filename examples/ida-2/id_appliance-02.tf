@@ -41,6 +41,10 @@ resource "iamtf_app_oidc" "partnerapp2" {
   client_id   = "1234-5678-9012"
   client_secret = "changeme"
   client_authn = "CLIENT_SECRET_BASIC"
+  grant_types    = ["AUTHORIZATION_CODE"]
+  response_types = ["CODE"]
+  response_modes = ["QUERY"]
+
   redirect_uris = ["http://localhost:8080/oidc/"]
 
   idps = [

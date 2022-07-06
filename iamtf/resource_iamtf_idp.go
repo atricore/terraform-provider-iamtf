@@ -748,7 +748,7 @@ func buildIdPResource(d *schema.ResourceData, idp api.IdentityProviderDTO) error
 	}
 	_ = d.Set("oidc", oidc_m)
 
-	authnbind, err := convertAuthnAuthnBindLdapDTOToMapArr(&idp)
+	authnbind, err := convertAuthnBindLdapDTOToMapArr(&idp)
 	if err != nil {
 		return err
 	}
@@ -883,7 +883,7 @@ func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.Identi
 
 }
 
-func convertAuthnAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
+func convertAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
 
 	authnMechanisms := idp.GetAuthenticationMechanisms()
 	authnTfMapLs := make([]map[string]interface{}, 0)
@@ -891,6 +891,9 @@ func convertAuthnAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[s
 	for _, am := range authnMechanisms {
 
 		authnSvc := am.GetDelegatedAuthentication().AuthnService
+		if authnSvc == nil {
+			continue
+		}
 
 		if authnSvc.IsDirectoryAuthnSvs() {
 			dirAuthnSvc, err := authnSvc.ToDirectoryAuthnSvc()
@@ -959,6 +962,9 @@ func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[s
 	for _, am := range authnMechanisms {
 
 		authnSvc := am.GetDelegatedAuthentication().AuthnService
+		if authnSvc == nil {
+			continue
+		}
 
 		if authnSvc.IsClientCertAuthnSvs() {
 			clientCertAuthnSvc, err := authnSvc.ToClientCertAuthnSvc()
@@ -1024,6 +1030,9 @@ func convertWindowsIntegratedAuthnDTOToMapArr(idp *api.IdentityProviderDTO) ([]m
 	for _, am := range authnMechanisms {
 
 		authnSvc := am.GetDelegatedAuthentication().AuthnService
+		if authnSvc == nil {
+			continue
+		}
 
 		if authnSvc.IsWindowsIntegratedAuthn() {
 			wiaAuthnSvc, err := authnSvc.ToWindowsIntegratedAuthn()
@@ -1095,6 +1104,9 @@ func convertAuthnOAuth2PreDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[strin
 	for _, am := range authnMechanisms {
 
 		authnSvc := am.GetDelegatedAuthentication().AuthnService
+		if authnSvc == nil {
+			continue
+		}
 
 		if authnSvc.IsOauth2PreAuthnSvc() {
 			oauth2svc, err := authnSvc.ToOauth2PreAuthnSvs()

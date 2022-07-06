@@ -15,7 +15,7 @@ NAMESPACE=iam
 #VERSION=0.1.8
 VERSION=$(shell git describe --tags --always --dirty)
 
-NAME=josso
+NAME=iamtf
 OUT_DIR=./.tmp/$(GOOS)/$(GOARCH)/$(VERSION)
 BINARY=terraform-provider-${NAME}
 

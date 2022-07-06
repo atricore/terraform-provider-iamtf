@@ -78,7 +78,7 @@ func ResourceOidcRp() *schema.Resource {
 					Type:             schema.TypeString,
 					ValidateDiagFunc: stringInSlice([]string{"TOKEN", "CODE", "ID_TOKEN"}),
 				},
-				Optional:    true,
+				Required:    true,
 				Description: "List of OIDC response type strings.",
 			},
 			"response_modes": {
@@ -87,7 +87,7 @@ func ResourceOidcRp() *schema.Resource {
 					Type:             schema.TypeString,
 					ValidateDiagFunc: stringInSlice([]string{"QUERY", "JWT"}),
 				},
-				Optional:    true,
+				Required:    true,
 				Description: "List of OIDC response type strings.",
 			},
 			"grant_types": {
@@ -96,7 +96,7 @@ func ResourceOidcRp() *schema.Resource {
 					Type:             schema.TypeString,
 					ValidateDiagFunc: stringInSlice([]string{"AUTHORIZATION_CODE", "REFRESH_TOKEN", "JWT_BEARER_PWD", "CLIENT_CREDENTIALS", "JWT_BEARER", "PASSWORD", "IMPLICIT", "SAML2_BEARER"}),
 				},
-				Optional:    true,
+				Required:    true,
 				Description: "List of OIDC grant types. ",
 			},
 			"signature_alg": {
@@ -265,7 +265,6 @@ func buildOidcRpDTO(d *schema.ResourceData) (api.ExternalOpenIDConnectRelayingPa
 
 	gt := convertInterfaceToStringSetNullable(d.Get("grant_types"))
 	dto.Grants = gt
-
 	dto.SigningAlg = PtrSchemaStr(d, "signature_alg")
 	dto.EncryptionAlg = PtrSchemaStr(d, "encryption_alg")
 	dto.EncryptionMethod = PtrSchemaStr(d, "encryption_method")
