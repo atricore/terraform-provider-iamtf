@@ -41,6 +41,7 @@ resource "iamtf_app_oidc" "test" {
   redirect_uris             = ["http://localhost:8080/partnerapp1"]
   grant_types               = ["AUTHORIZATION_CODE"]
   response_types            = ["CODE"]
+  response_modes            = ["QUERY"]
   encryption_alg            = "NONE"
   encryption_method         = "NONE"
   idtoken_encryption_alg    = "NONE"

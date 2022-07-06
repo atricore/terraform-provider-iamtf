@@ -8,7 +8,7 @@ resource "iamtf_identity_appliance" "test" {
 
 resource "iamtf_execenv_iss" "test" {
     name                              = "iss-replace_with_uuid"
-    description                       = "Iss Iss-Exect-Env"
+    description                       = "Iss Iss-Exect-Env-updated"
     architecture                      = "64"
     activation_remote_target          = "http://remote-josso:8081"
     activation_install_samples        = true
