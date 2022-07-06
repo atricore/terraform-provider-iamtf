@@ -942,15 +942,15 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
 
-	aa := api.NewClientCertAuthnServiceDTO()
-	aa.SetClrEnabled(api.AsBool(m["clr_enabled"], false))
-	aa.SetCrlRefreshSeconds(api.AsInt32(m["crl_refresh_seconds"], 0))
-	aa.SetCrlUrl(api.AsString(m["crl_url"], ""))
-	aa.SetOcspEnabled(api.AsBool(m["ocsp_enabled"], false))
-	aa.SetOcspServer(api.AsString(m["ocsp_server"], ""))
-	aa.SetOcspserver(api.AsString(m["ocspserver"], ""))
-	aa.SetUid(api.AsString(m["uid"], ""))
-	idp.AddClientCertAuthnSvs(aa, api.AsInt32(m["priority"], 0))
+	cas := api.NewClientCertAuthnServiceDTO()
+	cas.SetClrEnabled(api.AsBool(m["clr_enabled"], false))
+	cas.SetCrlRefreshSeconds(api.AsInt32(m["crl_refresh_seconds"], 0))
+	cas.SetCrlUrl(api.AsString(m["crl_url"], ""))
+	cas.SetOcspEnabled(api.AsBool(m["ocsp_enabled"], false))
+	cas.SetOcspServer(api.AsString(m["ocsp_server"], ""))
+	cas.SetOcspserver(api.AsString(m["ocspserver"], ""))
+	cas.SetUid(api.AsString(m["uid"], ""))
+	idp.AddClientCertAuthnSvs(cas, api.AsInt32(m["priority"], 0))
 
 	return nil
 }
@@ -1009,16 +1009,16 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 	}
 
 	// TODO : use initializer
-	aa := api.NewWindowsIntegratedAuthenticationDTO()
-	aa.SetDomain(api.AsString(m["domain"], ""))
-	aa.SetDomainController(api.AsString(m["domain_controller"], ""))
-	aa.SetHost(api.AsString(m["host"], ""))
-	aa.SetOverwriteKerberosSetup(api.AsBool(m["overwrite_kerberos_setup"], false))
-	aa.SetPort(api.AsInt32(m["port"], 0))
-	aa.SetProtocol(api.AsString(m["protocol"], ""))
-	aa.SetServiceClass(api.AsString(m["service_class"], ""))
-	aa.SetServiceName(api.AsString(m["service_name"], ""))
-	idp.AddWindowsIntegratedAuthn(aa, api.AsInt32(m["priority"], 0))
+	wia := api.NewWindowsIntegratedAuthenticationDTO()
+	wia.SetDomain(api.AsString(m["domain"], ""))
+	wia.SetDomainController(api.AsString(m["domain_controller"], ""))
+	wia.SetHost(api.AsString(m["host"], ""))
+	wia.SetOverwriteKerberosSetup(api.AsBool(m["overwrite_kerberos_setup"], false))
+	wia.SetPort(api.AsInt32(m["port"], 0))
+	wia.SetProtocol(api.AsString(m["protocol"], ""))
+	wia.SetServiceClass(api.AsString(m["service_class"], ""))
+	wia.SetServiceName(api.AsString(m["service_name"], ""))
+	idp.AddWindowsIntegratedAuthn(wia, api.AsInt32(m["priority"], 0))
 
 	return nil
 }
@@ -1079,11 +1079,11 @@ func convertAuthnOAuth2PreMapArrToDTO(authn_oauth2_pre interface{}, idp *api.Ide
 
 	for _, e := range tfMapLs {
 		tfMap := e.(map[string]interface{})
-		aa := api.NewOAuth2PreAuthenticationServiceDTO()
-		aa.SetAuthnService(api.AsString(tfMap["authn_service"], ""))
-		aa.SetExternalAuth(api.AsBool(tfMap["external_auth"], false))
-		aa.SetRememberMe(api.AsBool(tfMap["remember_me"], false))
-		idp.AddOauth2PreAuthnSvs(aa, api.AsInt32(tfMap["priority"], 0))
+		oauth2 := api.NewOAuth2PreAuthenticationServiceDTO()
+		oauth2.SetAuthnService(api.AsString(tfMap["authn_service"], ""))
+		oauth2.SetExternalAuth(api.AsBool(tfMap["external_auth"], false))
+		oauth2.SetRememberMe(api.AsBool(tfMap["remember_me"], false))
+		idp.AddOauth2PreAuthnSvs(oauth2, api.AsInt32(tfMap["priority"], 0))
 	}
 
 	return nil
