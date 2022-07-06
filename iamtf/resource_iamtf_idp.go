@@ -195,8 +195,6 @@ func ResourceIdP() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				MaxItems:    1,
-				MinItems:    0,
 				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -253,15 +251,13 @@ func ResourceIdP() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				MaxItems:    1,
-				MinItems:    0,
 				Description: "LDAP bind authentication settings",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"initial_ctx_factory": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: "Java JNDI initial context factory",
+							Description: "Java JNDI initial context factory (default: com.sun.jndi.ldap.LdapCtxFactory)",
 							Default:     "com.sun.jndi.ldap.LdapCtxFactory",
 						},
 						"provider_url": {
@@ -278,12 +274,12 @@ func ResourceIdP() *schema.Resource {
 						"username": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: "credential to connect to the LDAP server",
+							Description: "username credential to connect to the LDAP server",
 						},
 						"password": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: "credential to connect to the LDAP server",
+							Description: "secret credential to connect to the LDAP server",
 						},
 						"authentication": {
 							Type:             schema.TypeString,
@@ -297,7 +293,7 @@ func ResourceIdP() *schema.Resource {
 							Optional:         true,
 							ValidateDiagFunc: stringInSlice([]string{"none", "ldap-rfc-draft"}),
 							Default:          "none",
-							Description:      "Support LDAP password policy management.",
+							Description:      "Support LDAP password policy management. Values : none, ldap-rfc-draft (default none)",
 						},
 						"perform_dn_search": {
 							Type:        schema.TypeBool,
@@ -318,7 +314,7 @@ func ResourceIdP() *schema.Resource {
 						},
 						"saml_authn_ctx": {
 							Type:        schema.TypeString,
-							Description: "password encoding algorithm",
+							Description: "reported SAML 2 authentication context class",
 							Optional:    true,
 							ValidateDiagFunc: stringInSlice([]string{
 								"urn:oasis:names:tc:SAML:2.0:ac:classes:Password",
@@ -330,14 +326,14 @@ func ResourceIdP() *schema.Resource {
 							Optional:         true,
 							ValidateDiagFunc: stringInSlice([]string{"base", "one", "subtree", "chidlren"}),
 							Default:          "subtree",
-							Description:      "LDAP search scope",
+							Description:      "LDAP search scope. Values : base, one, subtree, chidlren",
 						},
 						"referrals": {
 							Type:             schema.TypeString,
 							Optional:         true,
 							ValidateDiagFunc: stringInSlice([]string{"follow", "ignore"}),
 							Default:          "follow",
-							Description:      "how to process referrals in a directory node",
+							Description:      "how to process referrals in a directory node.  Values: follow, ignore",
 						},
 						"operational_attrs": {
 							Type:        schema.TypeBool,
@@ -353,8 +349,6 @@ func ResourceIdP() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				MaxItems:    1,
-				MinItems:    0,
 				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -413,8 +407,6 @@ func ResourceIdP() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				MaxItems:    1,
-				MinItems:    0,
 				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -479,8 +471,6 @@ func ResourceIdP() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				MaxItems:    1,
-				MinItems:    0,
 				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -805,6 +795,9 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 	if err != nil {
 		return err
 	}
+	if len(m) < 1 {
+		return nil
+	}
 
 	if idp.AuthenticationMechanisms == nil {
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
@@ -828,30 +821,29 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 }
 
 func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-	result := make([]map[string]interface{}, 0)
 
 	bas, err := idp.GetBasicAuthns()
 	if err != nil {
-		return result, err
+		return nil, err
+	}
+	if len(bas) < 1 {
+		return nil, nil
 	}
 
-	if len(bas) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(bas))
+	result := make([]map[string]interface{}, 0)
+	for _, ba := range bas {
+		authn_basic_map := map[string]interface{}{
+			"priority":          ba.GetPriority(),
+			"pwd_hash":          ba.GetHashAlgorithm(),
+			"pwd_encoding":      ba.GetHashEncoding(),
+			"crypt_salt_lenght": ba.GetSaltLength(),
+			"salt_prefix":       ba.GetSaltPrefix(),
+			"salt_suffix":       ba.GetSaltSuffix(),
+			"saml_authn_ctx":    ba.GetSimpleAuthnSaml2AuthnCtxClass(),
+		}
+		result = append(result, authn_basic_map)
+
 	}
-
-	authn_basic := bas[0]
-
-	authn_basic_map := map[string]interface{}{
-		"priority":          authn_basic.GetPriority(),
-		"pwd_hash":          authn_basic.GetHashAlgorithm(),
-		"pwd_encoding":      authn_basic.GetHashEncoding(),
-		"crypt_salt_lenght": authn_basic.GetSaltLength(),
-		"salt_prefix":       authn_basic.GetSaltPrefix(),
-		"salt_suffix":       authn_basic.GetSaltSuffix(),
-		"saml_authn_ctx":    authn_basic.GetSimpleAuthnSaml2AuthnCtxClass(),
-	}
-
-	result = append(result, authn_basic_map)
 
 	return result, nil
 
@@ -863,11 +855,12 @@ func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.Identi
 	if err != nil {
 		return err
 	}
+	if len(m) < 1 {
+		return nil
+	}
 	if idp.AuthenticationMechanisms == nil {
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
-	asd := api.NewAuthenticationMechanismDTO()
-	asd.SetPriority(api.AsInt32(m["priority"], 0))
 
 	das := api.NewDirectoryAuthenticationServiceDTO()
 	das.SetInitialContextFactory(api.AsString(m["initial_ctx_factory"], "com.sun.jndi.ldap.LdapCtxFactory"))
@@ -883,50 +876,49 @@ func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.Identi
 	das.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(m["saml_authn_ctx"], ""))
 	das.SetReferrals(api.AsString(m["referrals"], "follow"))
 	das.SetIncludeOperationalAttributes(api.AsBool(m["operational_attrs"], false))
-	idp.AddDirectoryAuthnSvc(das, *asd.Priority)
+
+	idp.AddDirectoryAuthnSvc(das, api.AsInt32(m["priority"], 0))
 
 	return nil
 
 }
 
 func convertAuthnAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-	result := make([]map[string]interface{}, 0)
 
-	das, err := idp.GetDirectoryAuthnSvc()
-	if err != nil {
-		return result, err
+	authnMechanisms := idp.GetAuthenticationMechanisms()
+	authnTfMapLs := make([]map[string]interface{}, 0)
+	// For each authn mech
+	for _, am := range authnMechanisms {
+
+		authnSvc := am.GetDelegatedAuthentication().AuthnService
+
+		if authnSvc.IsDirectoryAuthnSvs() {
+			dirAuthnSvc, err := authnSvc.ToDirectoryAuthnSvc()
+			if err != nil {
+				return nil, err
+			}
+			authnTfMap := map[string]interface{}{
+				"priority":            am.GetPriority(),
+				"initial_ctx_factory": dirAuthnSvc.GetInitialContextFactory(),
+				"provider_url":        dirAuthnSvc.GetProviderUrl(),
+				"perform_dn_search":   dirAuthnSvc.GetPerformDnSearch(),
+				"password_policy":     dirAuthnSvc.GetPasswordPolicy(),
+				"authentication":      dirAuthnSvc.GetSecurityAuthentication(),
+				"users_ctx_dn":        dirAuthnSvc.GetUsersCtxDN(),
+				"userid_attr":         dirAuthnSvc.GetPrincipalUidAttributeID(),
+				"username":            dirAuthnSvc.GetSecurityPrincipal(),
+				"password":            dirAuthnSvc.GetSecurityCredential(),
+				"search_scope":        dirAuthnSvc.GetLdapSearchScope(),
+				"saml_authn_ctx":      dirAuthnSvc.GetSimpleAuthnSaml2AuthnCtxClass(),
+				"referrals":           dirAuthnSvc.GetReferrals(),
+				"operational_attrs":   dirAuthnSvc.GetIncludeOperationalAttributes(),
+			}
+			authnTfMapLs = append(authnTfMapLs, authnTfMap)
+		}
+
 	}
-	if len(das) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(das))
-	}
 
-	auth := idp.GetAuthenticationMechanisms()
-	if len(auth) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(auth))
-	}
-	authn_mech := auth[0]
-	authn_ldap := das[0]
-
-	authn_bindldap_map := map[string]interface{}{
-		"priority":            authn_mech.GetPriority(),
-		"initial_ctx_factory": authn_ldap.GetInitialContextFactory(),
-		"provider_url":        authn_ldap.GetProviderUrl(),
-		"perform_dn_search":   authn_ldap.GetPerformDnSearch(),
-		"password_policy":     authn_ldap.GetPasswordPolicy(),
-		"authentication":      authn_ldap.GetSecurityAuthentication(),
-		"users_ctx_dn":        authn_ldap.GetUsersCtxDN(),
-		"userid_attr":         authn_ldap.GetPrincipalUidAttributeID(),
-		"username":            authn_ldap.GetSecurityPrincipal(),
-		"password":            authn_ldap.GetSecurityCredential(),
-		"search_scope":        authn_ldap.GetLdapSearchScope(),
-		"saml_authn_ctx":      authn_ldap.GetSimpleAuthnSaml2AuthnCtxClass(),
-		"referrals":           authn_ldap.GetReferrals(),
-		"operational_attrs":   authn_ldap.GetIncludeOperationalAttributes(),
-	}
-
-	result = append(result, authn_bindldap_map)
-
-	return result, nil
+	return authnTfMapLs, nil
 
 }
 
@@ -939,11 +931,13 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 	if err != nil {
 		return err
 	}
+	if len(m) < 1 {
+		return nil
+	}
+
 	if idp.AuthenticationMechanisms == nil {
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
-	asd := api.NewAuthenticationMechanismDTO()
-	asd.SetPriority(api.AsInt32(m["priority"], 0))
 
 	aa := api.NewClientCertAuthnServiceDTO()
 	aa.SetClrEnabled(api.AsBool(m["clr_enabled"], false))
@@ -953,44 +947,40 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 	aa.SetOcspServer(api.AsString(m["ocsp_server"], ""))
 	aa.SetOcspserver(api.AsString(m["ocspserver"], ""))
 	aa.SetUid(api.AsString(m["uid"], ""))
-	idp.AddClientCertAuthnSvs(aa, *asd.Priority)
+	idp.AddClientCertAuthnSvs(aa, api.AsInt32(m["priority"], 0))
 
 	return nil
 }
 
 func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-	result := make([]map[string]interface{}, 0)
+	authnMechanisms := idp.GetAuthenticationMechanisms()
+	authnTfMapLs := make([]map[string]interface{}, 0)
+	// For each authn mech
+	for _, am := range authnMechanisms {
 
-	cas, err := idp.GetClientCertAuthnSvs()
-	if err != nil {
-		return result, err
-	}
-	if len(cas) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(cas))
-	}
+		authnSvc := am.GetDelegatedAuthentication().AuthnService
 
-	auth := idp.GetAuthenticationMechanisms()
-	if len(auth) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(auth))
-	}
+		if authnSvc.IsClientCertAuthnSvs() {
+			clientCertAuthnSvc, err := authnSvc.ToClientCertAuthnSvc()
+			if err != nil {
+				return nil, err
+			}
+			authnTfMap := map[string]interface{}{
+				"priority":            am.GetPriority(),
+				"clr_enabled":         clientCertAuthnSvc.GetClrEnabled(),
+				"crl_refresh_seconds": clientCertAuthnSvc.GetCrlRefreshSeconds(),
+				"crl_url":             clientCertAuthnSvc.GetCrlUrl(),
+				"ocsp_enabled":        clientCertAuthnSvc.GetOcspEnabled(),
+				"ocsp_server":         clientCertAuthnSvc.GetOcspServer(),
+				"ocspserver":          clientCertAuthnSvc.GetOcspserver(),
+				"uid":                 clientCertAuthnSvc.GetUid(),
+			}
+			authnTfMapLs = append(authnTfMapLs, authnTfMap)
+		}
 
-	authn_mech := auth[0]
-	authn_basic := cas[0]
-
-	authn_basic_map := map[string]interface{}{
-		"priority":            authn_mech.GetPriority(),
-		"clr_enabled":         authn_basic.GetClrEnabled(),
-		"crl_refresh_seconds": authn_basic.GetCrlRefreshSeconds(),
-		"crl_url":             authn_basic.GetCrlUrl(),
-		"ocsp_enabled":        authn_basic.GetOcspEnabled(),
-		"ocsp_server":         authn_basic.GetOcspServer(),
-		"ocspserver":          authn_basic.GetOcspserver(),
-		"uid":                 authn_basic.GetUid(),
 	}
 
-	result = append(result, authn_basic_map)
-
-	return result, nil
+	return authnTfMapLs, nil
 
 }
 
@@ -1004,12 +994,15 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 	if err != nil {
 		return err
 	}
+	if len(m) < 1 {
+		return nil
+	}
+
 	if idp.AuthenticationMechanisms == nil {
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
-	asd := api.NewAuthenticationMechanismDTO()
-	asd.SetPriority(api.AsInt32(m["priority"], 0))
 
+	// TODO : use initializer
 	aa := api.NewWindowsIntegratedAuthenticationDTO()
 	aa.SetDomain(api.AsString(m["domain"], ""))
 	aa.SetDomainController(api.AsString(m["domain_controller"], ""))
@@ -1019,102 +1012,107 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 	aa.SetProtocol(api.AsString(m["protocol"], ""))
 	aa.SetServiceClass(api.AsString(m["service_class"], ""))
 	aa.SetServiceName(api.AsString(m["service_name"], ""))
-	idp.AddWindowsIntegratedAuthn(aa, *asd.Priority)
+	idp.AddWindowsIntegratedAuthn(aa, api.AsInt32(m["priority"], 0))
 
 	return nil
 }
 
 func convertWindowsIntegratedAuthnDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-	// Ivert conversion from func above
-	result := make([]map[string]interface{}, 0)
+	authnMechanisms := idp.GetAuthenticationMechanisms()
+	authnTfMapLs := make([]map[string]interface{}, 0)
+	// For each authn mech
+	for _, am := range authnMechanisms {
 
-	bas, err := idp.GetWindowsIntegratedAuthn()
-	if err != nil {
-		return result, err
+		authnSvc := am.GetDelegatedAuthentication().AuthnService
+
+		if authnSvc.IsWindowsIntegratedAuthn() {
+			wiaAuthnSvc, err := authnSvc.ToWindowsIntegratedAuthn()
+			if err != nil {
+				return nil, err
+			}
+			authnTfMap := map[string]interface{}{
+				"priority":                 am.GetPriority(),
+				"domain":                   wiaAuthnSvc.GetDomain(),
+				"domain_controller":        wiaAuthnSvc.GetDomainController(),
+				"host":                     wiaAuthnSvc.GetHost(),
+				"overwrite_kerberos_setup": wiaAuthnSvc.GetOverwriteKerberosSetup(),
+				"port":                     wiaAuthnSvc.GetPort(),
+				"protocol":                 wiaAuthnSvc.GetProtocol(),
+				"service_class":            wiaAuthnSvc.GetServiceClass(),
+				"service_name":             wiaAuthnSvc.GetServiceName(),
+			}
+			authnTfMapLs = append(authnTfMapLs, authnTfMap)
+		}
+
 	}
 
-	if len(bas) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(bas))
-	}
-	auth := idp.GetAuthenticationMechanisms()
-	if len(auth) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(auth))
-	}
-	authn_mech := auth[0]
-	windows_integrated := bas[0]
-
-	windows_integrated_map := map[string]interface{}{
-		"priority":                 authn_mech.GetPriority(),
-		"domain":                   windows_integrated.GetDomain(),
-		"domain_controller":        windows_integrated.GetDomainController(),
-		"host":                     windows_integrated.GetHost(),
-		"overwrite_kerberos_setup": windows_integrated.GetOverwriteKerberosSetup(),
-		"port":                     windows_integrated.GetPort(),
-		"protocol":                 windows_integrated.GetProtocol(),
-		"service_class":            windows_integrated.GetServiceClass(),
-		"service_name":             windows_integrated.GetServiceName(),
-	}
-
-	result = append(result, windows_integrated_map)
-
-	return result, nil
+	return authnTfMapLs, nil
 
 }
 
 // --------------------------------------------------------------------
 
-// This takes a TF map and creates the corresponding DTOs
+// This takes a TF map and creates the corresponding DTOs, injecting them into the IDP
 // AuthenticationMechanismDTO -> DelegatedAuthenticationDTO -> AuthenticationServiceDTO
 func convertAuthnOAuth2PreMapArrToDTO(authn_oauth2_pre interface{}, idp *api.IdentityProviderDTO) error {
 
-	m, err := asTFMapSingle(authn_oauth2_pre)
+	tfMapLs, err := asTFMapAll(authn_oauth2_pre)
 	if err != nil {
 		return err
 	}
+	if len(tfMapLs) < 1 {
+		return nil
+	}
+
 	if idp.AuthenticationMechanisms == nil {
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
-	asd := api.NewAuthenticationMechanismDTO()
-	asd.SetPriority(api.AsInt32(m["priority"], 0))
 
-	aa := api.NewOAuth2PreAuthenticationServiceDTO()
-	aa.SetAuthnService(api.AsString(m["authn_service"], ""))
-	aa.SetExternalAuth(api.AsBool(m["external_auth"], false))
-	aa.SetRememberMe(api.AsBool(m["remember_me"], false))
-	idp.AddOauth2PreAuthnSvs(aa, *asd.Priority)
+	for _, e := range tfMapLs {
+		tfMap := e.(map[string]interface{})
+		aa := api.NewOAuth2PreAuthenticationServiceDTO()
+		aa.SetAuthnService(api.AsString(tfMap["authn_service"], ""))
+		aa.SetExternalAuth(api.AsBool(tfMap["external_auth"], false))
+		aa.SetRememberMe(api.AsBool(tfMap["remember_me"], false))
+		idp.AddOauth2PreAuthnSvs(aa, api.AsInt32(tfMap["priority"], 0))
+	}
 
 	return nil
 }
 
 func convertAuthnOAuth2PreDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-	// Ivert conversion from func above
-	result := make([]map[string]interface{}, 0)
-
 	bas, err := idp.GetOauth2PreAuthnSvs()
 	if err != nil {
-		return result, err
+		return nil, err
+	}
+	if len(bas) < 1 {
+		return nil, nil
 	}
 
-	if len(bas) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(bas))
-	}
-	auth := idp.GetAuthenticationMechanisms()
-	if len(auth) != 1 {
-		return result, fmt.Errorf("too many basic authn defines for idp %s, %d", idp.GetName(), len(auth))
-	}
-	authn_mech := auth[0]
-	authn_oauth2_pre := bas[0]
+	authnMechanisms := idp.GetAuthenticationMechanisms()
+	authnTfMapLs := make([]map[string]interface{}, 0)
+	// For each authn mech
+	for _, am := range authnMechanisms {
 
-	authn_oauth2_pre_map := map[string]interface{}{
-		"priority":      authn_mech.GetPriority(),
-		"authn_service": authn_oauth2_pre.GetAuthnService(),
-		"external_auth": authn_oauth2_pre.GetExternalAuth(),
-		"remember_me":   authn_oauth2_pre.GetRememberMe(),
+		authnSvc := am.GetDelegatedAuthentication().AuthnService
+
+		if authnSvc.IsOauth2PreAuthnSvc() {
+			oauth2svc, err := authnSvc.ToOauth2PreAuthnSvs()
+			if err != nil {
+				return nil, err
+			}
+			authnTfMap := map[string]interface{}{
+				"priority":      am.GetPriority(),
+				"authn_service": oauth2svc.GetAuthnService(),
+				"external_auth": oauth2svc.GetExternalAuth(),
+				"remember_me":   oauth2svc.GetRememberMe(),
+			}
+			authnTfMapLs = append(authnTfMapLs, authnTfMap)
+		}
+
 	}
 
-	result = append(result, authn_oauth2_pre_map)
-
-	return result, nil
+	return authnTfMapLs, nil
 }
 
 // --------------------------------------------------------------------

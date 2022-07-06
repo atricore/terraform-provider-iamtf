@@ -140,6 +140,10 @@ func asTFMapSingle(arr interface{}) (map[string]interface{}, error) {
 
 }
 
+func asTFMapAll(arr interface{}) ([]interface{}, error) {
+	return asTFMap(arr, 0)
+}
+
 // when maxLen is 0, it is umbounded
 func asTFMap(arr interface{}, maxLen int) ([]interface{}, error) {
 
