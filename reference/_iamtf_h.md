@@ -19,7 +19,7 @@ You can configure the plugin directly in your terraform descriptor, as follows.
 **provider.tf**
 
 ```
-provider "josso" {
+provider "iamtf" {
   org_name      = "my company"
   endpoint      = "http://localhost:8081/atricore-rest/services"
   client_id     = "idbus-f2f7244e-bbce-44ca-8b33-f5c0bde339f7"
@@ -36,7 +36,7 @@ export JOSSO_API_ENDPOINT=http://localhost:8081/atricore-rest/services
 ```
 
 ```
-provider "josso" {
+provider "iamtf" {
     org_name = "my company"
 }
 ```

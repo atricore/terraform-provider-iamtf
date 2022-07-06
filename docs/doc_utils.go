@@ -42,9 +42,9 @@ func GenerateDocs(out string, src string) error {
 	}
 
 	// 1. Provider documentation
-	err = genProvider("josso", iamtf.Provider())
+	err = genProvider("iamtf", iamtf.Provider())
 	if err != nil {
-		errWrap = errors.Wrap(err, "josso")
+		errWrap = errors.Wrap(err, "iamtf")
 	}
 
 	// 2. Identity Appliance
