@@ -791,11 +791,11 @@ func buildIdPResource(d *schema.ResourceData, idp api.IdentityProviderDTO) error
 
 // --------------------------------------------------------------------
 func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.IdentityProviderDTO) error {
-	m, err := asTFMapSingle(authn_basic_arr)
+	tfMapLs, err := asTFMapAll(authn_basic_arr)
 	if err != nil {
 		return err
 	}
-	if len(m) < 1 {
+	if len(tfMapLs) < 1 {
 		return nil
 	}
 
@@ -803,18 +803,21 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
 
-	ba := api.NewBasicAuthenticationDTOInit()
+	for _, e := range tfMapLs {
+		tfMap := e.(map[string]interface{})
+		ba := api.NewBasicAuthenticationDTOInit()
 
-	ba.SetName(api.AsString(m["name"], "basic-authn"))
-	ba.SetPriority(api.AsInt32(m["priority"], 0))
-	ba.SetHashAlgorithm(api.AsString(m["pwd_hash"], "SHA-256"))
-	ba.SetHashEncoding(api.AsString(m["pwd_encoding"], "BASE64"))
-	ba.SetSaltLength(api.AsInt32(m["crypt_salt_lenght"], 0))
-	ba.SetSaltPrefix(api.AsString(m["salt_prefix"], ""))
-	ba.SetSaltSuffix(api.AsString(m["salt_suffix"], ""))
-	ba.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(m["saml_authn_ctx"], "urn:oasis:names:tc:SAML:2.0:ac:classes:Password"))
-	ba.SetEnabled(true)
-	idp.AddBasicAuthn(ba)
+		ba.SetName(api.AsString(tfMap["name"], "basic-authn"))
+		ba.SetPriority(api.AsInt32(tfMap["priority"], 0))
+		ba.SetHashAlgorithm(api.AsString(tfMap["pwd_hash"], "SHA-256"))
+		ba.SetHashEncoding(api.AsString(tfMap["pwd_encoding"], "BASE64"))
+		ba.SetSaltLength(api.AsInt32(tfMap["crypt_salt_lenght"], 0))
+		ba.SetSaltPrefix(api.AsString(tfMap["salt_prefix"], ""))
+		ba.SetSaltSuffix(api.AsString(tfMap["salt_suffix"], ""))
+		ba.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(tfMap["saml_authn_ctx"], "urn:oasis:names:tc:SAML:2.0:ac:classes:Password"))
+		ba.SetEnabled(true)
+		idp.AddBasicAuthn(ba)
+	}
 
 	return nil
 
@@ -842,7 +845,6 @@ func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]in
 			"saml_authn_ctx":    ba.GetSimpleAuthnSaml2AuthnCtxClass(),
 		}
 		result = append(result, authn_basic_map)
-
 	}
 
 	return result, nil
@@ -851,33 +853,36 @@ func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]in
 
 // --------------------------------------------------------------------
 func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.IdentityProviderDTO) error {
-	m, err := asTFMapSingle(authn_bind_arr)
+	tfMapLs, err := asTFMapAll(authn_bind_arr)
 	if err != nil {
 		return err
 	}
-	if len(m) < 1 {
+	if len(tfMapLs) < 1 {
 		return nil
 	}
 	if idp.AuthenticationMechanisms == nil {
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
 
-	das := api.NewDirectoryAuthenticationServiceDTO()
-	das.SetInitialContextFactory(api.AsString(m["initial_ctx_factory"], "com.sun.jndi.ldap.LdapCtxFactory"))
-	das.SetProviderUrl(api.AsString(m["provider_url"], "ldap://localhost:10389"))
-	das.SetPerformDnSearch(api.AsBool(m["perform_dn_search"], false))
-	das.SetPasswordPolicy(api.AsString(m["password_policy"], ""))
-	das.SetSecurityAuthentication(api.AsString(m["authentication"], "simple"))
-	das.SetUsersCtxDN(api.AsString(m["users_ctx_dn"], "dc=example,dc=com,ou=IAM,ou=People"))
-	das.SetPrincipalUidAttributeID(api.AsString(m["userid_attr"], "uid"))
-	das.SetSecurityPrincipal(api.AsString(m["username"], "uid=admin,ou=system"))
-	das.SetSecurityCredential(api.AsString(m["password"], "secret"))
-	das.SetLdapSearchScope(api.AsString(m["search_scope"], "subtree"))
-	das.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(m["saml_authn_ctx"], ""))
-	das.SetReferrals(api.AsString(m["referrals"], "follow"))
-	das.SetIncludeOperationalAttributes(api.AsBool(m["operational_attrs"], false))
+	for _, e := range tfMapLs {
+		tfMap := e.(map[string]interface{})
+		das := api.NewDirectoryAuthenticationServiceDTO()
+		das.SetInitialContextFactory(api.AsString(tfMap["initial_ctx_factory"], "com.sun.jndi.ldap.LdapCtxFactory"))
+		das.SetProviderUrl(api.AsString(tfMap["provider_url"], "ldap://localhost:10389"))
+		das.SetPerformDnSearch(api.AsBool(tfMap["perform_dn_search"], false))
+		das.SetPasswordPolicy(api.AsString(tfMap["password_policy"], ""))
+		das.SetSecurityAuthentication(api.AsString(tfMap["authentication"], "simple"))
+		das.SetUsersCtxDN(api.AsString(tfMap["users_ctx_dn"], "dc=example,dc=com,ou=IAM,ou=People"))
+		das.SetPrincipalUidAttributeID(api.AsString(tfMap["userid_attr"], "uid"))
+		das.SetSecurityPrincipal(api.AsString(tfMap["username"], "uid=admin,ou=system"))
+		das.SetSecurityCredential(api.AsString(tfMap["password"], "secret"))
+		das.SetLdapSearchScope(api.AsString(tfMap["search_scope"], "subtree"))
+		das.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(tfMap["saml_authn_ctx"], ""))
+		das.SetReferrals(api.AsString(tfMap["referrals"], "follow"))
+		das.SetIncludeOperationalAttributes(api.AsBool(tfMap["operational_attrs"], false))
 
-	idp.AddDirectoryAuthnSvc(das, api.AsInt32(m["priority"], 0))
+		idp.AddDirectoryAuthnSvc(das, api.AsInt32(tfMap["priority"], 0))
+	}
 
 	return nil
 
@@ -930,11 +935,11 @@ func convertAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string
 // This takes a TF map and creates the corresponding DTOs
 // AuthenticationMechanismDTO -> DelegatedAuthenticationDTO -> AuthenticationServiceDTO
 func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.IdentityProviderDTO) error {
-	m, err := asTFMapSingle(client_cert)
+	tfMapLs, err := asTFMapAll(client_cert)
 	if err != nil {
 		return err
 	}
-	if len(m) < 1 {
+	if len(tfMapLs) < 1 {
 		return nil
 	}
 
@@ -942,15 +947,18 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
 
-	cas := api.NewClientCertAuthnServiceDTO()
-	cas.SetClrEnabled(api.AsBool(m["clr_enabled"], false))
-	cas.SetCrlRefreshSeconds(api.AsInt32(m["crl_refresh_seconds"], 0))
-	cas.SetCrlUrl(api.AsString(m["crl_url"], ""))
-	cas.SetOcspEnabled(api.AsBool(m["ocsp_enabled"], false))
-	cas.SetOcspServer(api.AsString(m["ocsp_server"], ""))
-	cas.SetOcspserver(api.AsString(m["ocspserver"], ""))
-	cas.SetUid(api.AsString(m["uid"], ""))
-	idp.AddClientCertAuthnSvs(cas, api.AsInt32(m["priority"], 0))
+	for _, e := range tfMapLs {
+		tfMap := e.(map[string]interface{})
+		cas := api.NewClientCertAuthnServiceDTO()
+		cas.SetClrEnabled(api.AsBool(tfMap["clr_enabled"], false))
+		cas.SetCrlRefreshSeconds(api.AsInt32(tfMap["crl_refresh_seconds"], 0))
+		cas.SetCrlUrl(api.AsString(tfMap["crl_url"], ""))
+		cas.SetOcspEnabled(api.AsBool(tfMap["ocsp_enabled"], false))
+		cas.SetOcspServer(api.AsString(tfMap["ocsp_server"], ""))
+		cas.SetOcspserver(api.AsString(tfMap["ocspserver"], ""))
+		cas.SetUid(api.AsString(tfMap["uid"], ""))
+		idp.AddClientCertAuthnSvs(cas, api.AsInt32(tfMap["priority"], 0))
+	}
 
 	return nil
 }
@@ -996,11 +1004,11 @@ func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[s
 // AuthenticationMechanismDTO -> DelegatedAuthenticationDTO -> AuthenticationServiceDTO
 func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, idp *api.IdentityProviderDTO) error {
 
-	m, err := asTFMapSingle(windows_integrated)
+	tfMapLs, err := asTFMapAll(windows_integrated)
 	if err != nil {
 		return err
 	}
-	if len(m) < 1 {
+	if len(tfMapLs) < 1 {
 		return nil
 	}
 
@@ -1008,17 +1016,19 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 		idp.AuthenticationMechanisms = make([]api.AuthenticationMechanismDTO, 0)
 	}
 
-	// TODO : use initializer
-	wia := api.NewWindowsIntegratedAuthenticationDTO()
-	wia.SetDomain(api.AsString(m["domain"], ""))
-	wia.SetDomainController(api.AsString(m["domain_controller"], ""))
-	wia.SetHost(api.AsString(m["host"], ""))
-	wia.SetOverwriteKerberosSetup(api.AsBool(m["overwrite_kerberos_setup"], false))
-	wia.SetPort(api.AsInt32(m["port"], 0))
-	wia.SetProtocol(api.AsString(m["protocol"], ""))
-	wia.SetServiceClass(api.AsString(m["service_class"], ""))
-	wia.SetServiceName(api.AsString(m["service_name"], ""))
-	idp.AddWindowsIntegratedAuthn(wia, api.AsInt32(m["priority"], 0))
+	for _, e := range tfMapLs {
+		tfMap := e.(map[string]interface{})
+		wia := api.NewWindowsIntegratedAuthenticationDTO()
+		wia.SetDomain(api.AsString(tfMap["domain"], ""))
+		wia.SetDomainController(api.AsString(tfMap["domain_controller"], ""))
+		wia.SetHost(api.AsString(tfMap["host"], ""))
+		wia.SetOverwriteKerberosSetup(api.AsBool(tfMap["overwrite_kerberos_setup"], false))
+		wia.SetPort(api.AsInt32(tfMap["port"], 0))
+		wia.SetProtocol(api.AsString(tfMap["protocol"], ""))
+		wia.SetServiceClass(api.AsString(tfMap["service_class"], ""))
+		wia.SetServiceName(api.AsString(tfMap["service_name"], ""))
+		idp.AddWindowsIntegratedAuthn(wia, api.AsInt32(tfMap["priority"], 0))
+	}
 
 	return nil
 }
