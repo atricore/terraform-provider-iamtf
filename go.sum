@@ -56,6 +56,11 @@ github.com/apparentlymart/go-textseg/v12 v12.0.0/go.mod h1:S/4uRK2UtaQttw1GenVJE
 github.com/apparentlymart/go-textseg/v13 v13.0.0 h1:Y+KvPE1NYz0xl601PVImeQfFyEy6iT90AvPUL1NNfNw=
 github.com/apparentlymart/go-textseg/v13 v13.0.0/go.mod h1:ZK2fH7c4NqDTLtiYLvIkEghdlcqw7yxLeM89kiTRPUo=
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
+github.com/atricore/josso-api-go v0.1.1/go.mod h1:Oys9D0y1x+bvyIsnRFl6JOYiIV7KQkuToIQa+jxeuHs=
+github.com/atricore/josso-api-go v0.2.0 h1:cK3CPxEuX6rJXZcn8TMMNfMAMsbG4W9gpHrX8t1nJ48=
+github.com/atricore/josso-api-go v0.2.0/go.mod h1:Oys9D0y1x+bvyIsnRFl6JOYiIV7KQkuToIQa+jxeuHs=
+github.com/atricore/josso-sdk-go v0.2.0 h1:UoJlZoyyjq4K7oRKo5uuiNPQXrwGvMvi1GxcEb2nDlE=
+github.com/atricore/josso-sdk-go v0.2.0/go.mod h1:enM7ByUrjRYnxggH3jvXdjoT+9+M/+cGmHWO+9r0v/o=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
