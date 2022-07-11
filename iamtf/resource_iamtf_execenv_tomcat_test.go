@@ -13,7 +13,7 @@ func TestAccJossoTomcat_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(tomcat)
 	config := mgr.GetFixtures("tomcat.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("tomcat_update.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("tomcat_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", tomcat)
 
 	resource.Test(t, resource.TestCase{

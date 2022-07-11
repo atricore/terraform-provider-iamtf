@@ -8,35 +8,35 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIss_crud(t *testing.T) {
+func TestAccJossoWebLogic_crud(t *testing.T) {
 	ri := acctest.RandInt()
-	mgr := newFixtureManager(iss)
-	config := mgr.GetFixtures("iss.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("iss_updated.tf", ri, t)
-	resourceName := fmt.Sprintf("%s.test", iss)
+	mgr := newFixtureManager(weblogic)
+	config := mgr.GetFixtures("app_weblogic.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("app_weblogic_updated.tf", ri, t)
+	resourceName := fmt.Sprintf("%s.test", weblogic)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
-		CheckDestroy:      createCheckResourceDestroy(iss, createDoesIssExist()),
+		CheckDestroy:      createCheckResourceDestroy(weblogic, createDoesWebLogicExist()),
 		Steps: []resource.TestStep{
 			{
 				Config: config,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("iss", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("wl", ri)),
 				),
 			},
 			{
 				Config: updatedConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("iss", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("wl", ri)),
 				),
 			},
 		},
 	})
 }
 
-func createDoesIssExist() func(string) (bool, error) {
+func createDoesWebLogicExist() func(string) (bool, error) {
 	// TODO : infer appliance name and lookup for resource
 	return func(id string) (bool, error) {
 		return false, nil

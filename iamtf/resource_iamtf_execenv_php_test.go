@@ -12,7 +12,7 @@ func TestAccJossoPhp_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(php)
 	config := mgr.GetFixtures("php.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("php_update.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("php_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", php)
 
 	resource.Test(t, resource.TestCase{
