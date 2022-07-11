@@ -23,18 +23,18 @@ func ResourceTomcatExecenv() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Josso Execution Enviroment Tomcat name",
+				Description: "Execution environment name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Josso Execution Enviroment Tomcat description",
+				Description: "Execution environment description",
 			},
 			"version": {
 				Type:             schema.TypeString,
 				Optional:         true,
 				ValidateDiagFunc: stringInSlice([]string{"7", "8", "8.5", "9"}),
-				Description:      "Josso Execution Enviroment Tomcat displayname",
+				Description:      "Tomcat version",
 			},
 			"activation_install_samples": {
 				Type:        schema.TypeBool,

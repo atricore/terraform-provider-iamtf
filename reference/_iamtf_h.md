@@ -1,13 +1,13 @@
 
-The JOSSO terreaform plugin allows you to manage identity appliances and appliance elements as terraform resources in a JOSSO server.
+The IAM.tf terreaform plugin allows you to manage identity appliances and appliance elements as terraform resources in a IAM.tf server.
 
 **main.tf**
 ```
 terraform {
   required_providers {
-    josso = {
-      version = "~> 0.1.4"
-      source  = "atricore.com/iam/josso"
+    iamtf = {
+      version = "~> 0.1.0"
+      source  = "atricore.com/iam/iamtf"
     }
   }
 }

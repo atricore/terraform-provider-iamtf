@@ -92,6 +92,18 @@ func GenerateDocs(out string, src string) error {
 	if err != nil {
 		errWrap = errors.Wrap(err, "iamtf_execenv_tomcat")
 	}
+	err = genResource("iamtf_execenv_iis", iamtf.ResourceTomcatExecenv())
+	if err != nil {
+		errWrap = errors.Wrap(err, "iamtf_execenv_iist")
+	}
+	err = genResource("iamtf_execenv_php", iamtf.ResourceTomcatExecenv())
+	if err != nil {
+		errWrap = errors.Wrap(err, "iamtf_execenv_php")
+	}
+	err = genResource("iamtf_execenv_weblogic", iamtf.ResourceTomcatExecenv())
+	if err != nil {
+		errWrap = errors.Wrap(err, "iamtf_execenv_weblogic")
+	}
 
 	return errWrap
 }

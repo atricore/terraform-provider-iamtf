@@ -31,27 +31,22 @@ resource "iamtf_idp" "test1" {
   ]
 }
 
-
 resource "iamtf_app_oidc" "test" {
-  ida                       = iamtf_identity_appliance.test.name
-  name                      = "app-oidc-replace_with_uuid"
-  client_id                 = "my-client1"
-  client_secret             = "my-secret1"
-  client_authn              = "CLIENT_SECRET_BASIC"
-  redirect_uris             = ["http://localhost:8080/partnerapp1"]
-  grant_types               = ["AUTHORIZATION_CODE"]
-  response_types            = ["CODE"]
-  response_modes            = ["QUERY"]
-  encryption_alg            = "NONE"
-  encryption_method         = "NONE"
-  idtoken_encryption_alg    = "NONE"
-  idtoken_encryption_method = "NONE"
-  idtoken_signature_alg     = "HS256"
-  signature_alg             = "HS256"
+  ida            = iamtf_identity_appliance.test.name
+  name           = "app-oidc-replace_with_uuid"
+  client_id      = "my-client1"
+  client_secret  = "my-secret1"
+  redirect_uris  = ["http://localhost1:8080/partnerapp", "http://localhost1:8080/partnerapp/1"]
+  grant_types    = ["AUTHORIZATION_CODE"]
+  response_types = ["CODE"]
+  response_modes = ["QUERY"]
 
-  idps = [iamtf_idp.test1.name]
+  idps = [
+    iamtf_idp.test1.name
+  ]
 
   depends_on = [
     iamtf_idp.test1
   ]
+
 }

@@ -13,12 +13,12 @@ resource "iamtf_idvault" "test1" {
 resource "iamtf_idp" "test1" {
   ida  = iamtf_identity_appliance.test.name
   name = "idp-1-replace_with_uuid"
-  
+
   keystore {
     resource = filebase64("../../acctest-data/idp.p12")
     password = "changeme"
   }
-  
+
   authn_basic {
     pwd_hash     = "SHA-256"
     pwd_encoding = "BASE64"
@@ -40,6 +40,7 @@ resource "iamtf_app_oidc" "test" {
   redirect_uris             = ["http://localhost:8080/partnerapp", "http://localhost:8080/partnerapp/1"]
   grant_types               = ["AUTHORIZATION_CODE"]
   response_types            = ["CODE"]
+  response_modes            = ["QUERY"]
   encryption_alg            = "NONE"
   encryption_method         = "NONE"
   idtoken_encryption_alg    = "NONE"
