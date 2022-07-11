@@ -22,12 +22,12 @@ func ResourcePhpExecenv() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Josso Execution Enviroment Php name",
+				Description: "Execution environment name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Josso Execution Enviroment Php description",
+				Description: "Execution environment description",
 			},
 			"activation_install_samples": {
 				Type:        schema.TypeBool,
@@ -38,7 +38,7 @@ func ResourcePhpExecenv() *schema.Resource {
 			"activation_path": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "(activation) Php path",
+				Description: "(activation) PHP install path",
 			},
 			"activation_remote_target": {
 				Type:        schema.TypeString,
@@ -60,7 +60,7 @@ func ResourcePhpExecenv() *schema.Resource {
 				Type:             schema.TypeString,
 				Required:         true,
 				ValidateDiagFunc: stringInSlice([]string{"STANDARD", "DRUPAL"}),
-				Description:      "Josso Execution Enviroment Php type",
+				Description:      "PHP install type",
 			},
 		},
 	}

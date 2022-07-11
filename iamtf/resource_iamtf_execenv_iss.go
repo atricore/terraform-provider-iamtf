@@ -23,18 +23,18 @@ func ResourceIssExecenv() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Josso Execution Enviroment Iss name",
+				Description: "Execution enviroment IIS name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Josso Execution Enviroment Iss description",
+				Description: "Execution enviroment IIS description",
 			},
 			"architecture": {
 				Type:             schema.TypeString,
 				Optional:         true,
 				ValidateDiagFunc: stringInSlice([]string{"32", "64"}),
-				Description:      "Josso Execution Enviroment Iss displayname",
+				Description:      "Architcture",
 			},
 			"activation_install_samples": {
 				Type:        schema.TypeBool,
@@ -66,7 +66,7 @@ func ResourceIssExecenv() *schema.Resource {
 			"isapi_extension_path": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Josso Execution Enviroment Iss ispiExtensionPath",
+				Description: "IIS ISAPI filter URI",
 			},
 		},
 	}
