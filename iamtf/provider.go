@@ -24,6 +24,7 @@ const (
 	php               = "iamtf_execenv_php"
 	spoint            = "iamtf_app_sharepoint"
 	weblogic          = "iamtf_execenv_weblogic"
+	idFacebook        = "iamtf_idfacebook"
 )
 
 var (
@@ -80,6 +81,7 @@ func Provider() *schema.Provider {
 			php:               ResourcePhpExecenv(),
 			spoint:            ResourceSharePoint(),
 			weblogic:          ResourceWebLogicExecenv(),
+			idFacebook:        ResourceIdFacebook(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			identityAppliance: dataSourceIdentityAppliance(),
