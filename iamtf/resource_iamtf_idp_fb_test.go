@@ -8,35 +8,35 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIss_crud(t *testing.T) {
+func TestAccJossoIdFacebook_crud(t *testing.T) {
 	ri := acctest.RandInt()
-	mgr := newFixtureManager(iss)
-	config := mgr.GetFixtures("iss.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("iss_updated.tf", ri, t)
-	resourceName := fmt.Sprintf("%s.test", iss)
+	mgr := newFixtureManager(idFacebook)
+	config := mgr.GetFixtures("idfacebook.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("idfacebook_updated.tf", ri, t)
+	resourceName := fmt.Sprintf("%s.test", idFacebook)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
-		CheckDestroy:      createCheckResourceDestroy(iss, createDoesIssExist()),
+		CheckDestroy:      createCheckResourceDestroy(idFacebook, createDoesIdFacebookExist()),
 		Steps: []resource.TestStep{
 			{
 				Config: config,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("iss", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idfacebook", ri)),
 				),
 			},
 			{
 				Config: updatedConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("iss", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idfacebook", ri)),
 				),
 			},
 		},
 	})
 }
 
-func createDoesIssExist() func(string) (bool, error) {
+func createDoesIdFacebookExist() func(string) (bool, error) {
 	// TODO : infer appliance name and lookup for resource
 	return func(id string) (bool, error) {
 		return false, nil
