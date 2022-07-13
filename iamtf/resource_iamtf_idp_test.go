@@ -68,11 +68,11 @@ func TestAccJossoIdP_crud1(t *testing.T) {
 	})
 }
 
-func TestAccJossoIdP_AuthnLdapBind_crud(t *testing.T) {
+func TestAccJossoIdP_AuthnWia_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idp)
-	config := mgr.GetFixtures("idp_authn_bind_ldap.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("idp_authn_bind_ldap_updated.tf", ri, t)
+	config := mgr.GetFixtures("idp_authn_wia.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("idp_authn_wia_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", idp)
 
 	// TODO : Validate other fields ?

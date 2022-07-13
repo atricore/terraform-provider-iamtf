@@ -407,62 +407,59 @@ func ResourceIdP() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
+				Description: "Windows Integrated Authentication. JOSSO will verify identity by contacting a domain controller",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"domain": {
 							Type:        schema.TypeString,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Description: "windows domain",
+							Required:    true,
 						},
 						"domain_controller": {
 							Type:        schema.TypeString,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Description: "domain controller server",
+							Required:    true,
 						},
 						"host": {
 							Type:        schema.TypeString,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Description: "JOSSO hostname",
+							Required:    true,
 						},
 						"overwrite_kerberos_setup": {
 							Type:        schema.TypeBool,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
+							Description: "override JOSSO kerberos configuration",
 							Optional:    true,
 							Computed:    true,
 						},
 						"port": {
 							Type:        schema.TypeInt,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Description: "JOSSO server port",
+							Required:    true,
 						},
 						"protocol": {
 							Type:        schema.TypeString,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Description: "JOSSO server protocol (http/https)",
+							Required:    true,
 						},
 						"priority": {
 							Type:        schema.TypeInt,
 							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Required:    true,
 						},
 						"service_class": {
 							Type:        schema.TypeString,
 							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Required:    true,
 						},
 						"service_name": {
 							Type:        schema.TypeString,
 							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
+							Required:    true,
+						},
+						"keytab": {
+							Type:        schema.TypeString,
+							Description: "Kerberos keytab file",
+							Required:    true,
 						},
 					},
 				},
@@ -1027,6 +1024,11 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 		wia.SetProtocol(api.AsString(tfMap["protocol"], ""))
 		wia.SetServiceClass(api.AsString(tfMap["service_class"], ""))
 		wia.SetServiceName(api.AsString(tfMap["service_name"], ""))
+
+		kt := api.NewResourceDTO()
+		kt.SetValue(api.AsString(tfMap["keytab"], ""))
+		wia.SetKeyTab(*kt)
+
 		idp.AddWindowsIntegratedAuthn(wia, api.AsInt32(tfMap["priority"], 0))
 	}
 
@@ -1059,6 +1061,7 @@ func convertWindowsIntegratedAuthnDTOToMapArr(idp *api.IdentityProviderDTO) ([]m
 				"protocol":                 wiaAuthnSvc.GetProtocol(),
 				"service_class":            wiaAuthnSvc.GetServiceClass(),
 				"service_name":             wiaAuthnSvc.GetServiceName(),
+				"keytab":                   wiaAuthnSvc.GetKeyTab().Value,
 			}
 			authnTfMapLs = append(authnTfMapLs, authnTfMap)
 		}
