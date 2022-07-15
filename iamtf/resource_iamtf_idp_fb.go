@@ -38,12 +38,6 @@ func ResourceIdFacebook() *schema.Resource {
 				Optional:    true,
 				Description: "idfacebook description",
 			},
-			"location": {
-				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idfacebook location",
-			},
 			"client_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -56,22 +50,22 @@ func ResourceIdFacebook() *schema.Resource {
 				Optional:    true,
 				Description: "idfacebook serverKey",
 			},
-			//"Authorization endpoint": {
-			//	Type:        schema.TypeString,
-			//	Computed:    true,
-			//	Optional:    true,
-			//	Description: "idfacebook ",
-			//},
-			//"Token endpoint": {
-			//	Type:        schema.TypeString,
-			//	Required:    true,
-			//	Description: "idfacebook ",
-			//},
-			//"Permissions": {
-			//	Type:        schema.TypeString,
-			//	Required:    true,
-			//	Description: "idfacebook ",
-			//},
+			"authz_token_service": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
+				Description: "idfacebook ",
+			},
+			"access_token_service": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "idfacebook ",
+			},
+			"scopes": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "idfacebook ",
+			},
 			"user_fields": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -182,20 +176,20 @@ func buildIdFacebookDTO(d *schema.ResourceData) (api.FacebookOpenIDConnectIdenti
 	dto.Name = PtrSchemaStr(d, "name")
 	dto.ElementId = PtrSchemaStr(d, "element_id")
 	dto.Description = PtrSchemaStr(d, "description")
-
+	dto.ClientId = PtrSchemaStr(d, "client_id")
+	dto.ServerKey = PtrSchemaStr(d, "server_key")
 	_, e := d.GetOk("location")
 	if e {
-		dto.Location, err = PtrSchemaLocation(d, "location")
+		dto.AuthzTokenService, err = PtrSchemaLocation(d, "authz_token_service")
+		if err != nil {
+			return *dto, fmt.Errorf("invalid location %s", err)
+		}
+		dto.AccessTokenService, err = PtrSchemaLocation(d, "access_token_service")
 		if err != nil {
 			return *dto, fmt.Errorf("invalid location %s", err)
 		}
 	}
-	dto.ClientId = PtrSchemaStr(d, "client_id")
-
-	dto.ServerKey = PtrSchemaStr(d, "server_key")
-	//a.ClientId = PtrSchemaStr(d, "Authorization endpoint")
-	//a.ClientId = PtrSchemaStr(d, "Token endpoint")
-	//a.ClientId = PtrSchemaStr(d, "Permissions")
+	dto.Scopes = PtrSchemaStr(d, "scopes")
 	dto.UserFields = PtrSchemaStr(d, "user_fields")
 	return *dto, err
 }
@@ -208,9 +202,9 @@ func buildIdFacebookResource(d *schema.ResourceData, dto api.FacebookOpenIDConne
 	_ = d.Set("location", cli.LocationToStr(dto.Location))
 	_ = d.Set("client_id", cli.StrDeref(dto.ClientId))
 	_ = d.Set("server_key", cli.StrDeref(dto.ServerKey))
-	//	_ = d.Set("Authorization endpoint", cli.StrDeref(idFacebook.Name))
-	//	_ = d.Set("Token endpoint", cli.StrDeref(idFacebook.Name))
-	//	_ = d.Set("Permissions", cli.StrDeref(idFacebook.Name))
+	_ = d.Set("authz_token_service", cli.LocationToStr(dto.AuthzTokenService))
+	_ = d.Set("access_token_service", cli.LocationToStr(dto.AccessTokenService))
+	_ = d.Set("scopes", cli.StrDeref(dto.Scopes))
 	_ = d.Set("user_fields", cli.StrDeref(dto.UserFields))
 
 	return nil
