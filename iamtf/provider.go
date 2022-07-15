@@ -25,6 +25,8 @@ const (
 	spoint            = "iamtf_app_sharepoint"
 	weblogic          = "iamtf_execenv_weblogic"
 	idFacebook        = "iamtf_idfacebook"
+	azure             = "iamtf_idazure"
+	google            = "iamtf_idgoogle"
 )
 
 var (
@@ -82,6 +84,8 @@ func Provider() *schema.Provider {
 			spoint:            ResourceSharePoint(),
 			weblogic:          ResourceWebLogicExecenv(),
 			idFacebook:        ResourceIdFacebook(),
+			azure:             ResourceidAzure(),
+			google:            ResourceidGoogle(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			identityAppliance: dataSourceIdentityAppliance(),
