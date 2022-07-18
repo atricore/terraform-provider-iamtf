@@ -8,6 +8,7 @@ import (
 	cli "github.com/atricore/josso-sdk-go"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/pkg/errors"
 )
 
 func ResourceSharePoint() *schema.Resource {
@@ -20,10 +21,10 @@ func ResourceSharePoint() *schema.Resource {
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		Schema: map[string]*schema.Schema{
-			"slo_location": {
+			"app_slo_location": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "SLO location URL",
 			},
 			"description": {
 				Type:        schema.TypeString,
@@ -40,7 +41,7 @@ func ResourceSharePoint() *schema.Resource {
 				Optional:    true,
 				Description: "",
 			},
-			"slo_location_enabled": {
+			"app_slo_location_enabled": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Description: "",
@@ -55,6 +56,14 @@ func ResourceSharePoint() *schema.Resource {
 				Optional:    true,
 				Description: "identity appliane name",
 			},
+			"sp_id": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "SAML SP internal name",
+			},
+			"keystore": keystoreSchema(),
+			"saml2":    spSamlSchema(),
+			"idp":      idpConnectionSchema(),
 		},
 	}
 }
@@ -63,42 +72,63 @@ func resourceSharePointCreate(ctx context.Context, d *schema.ResourceData, m int
 	l := getLogger(m)
 	l.Debug("resourceSharePointCreate", "ida", d.Get("ida").(string))
 
-	SharePoint, err := buildSharePointDTO(d)
+	josso1re, sp, err := buildSharePointDTO(d)
 	if err != nil {
 		return diag.Errorf("failed to build SharePoint: %v", err)
 	}
-	l.Trace("resourceSharePointCreate", "ida", d.Get("ida").(string), "name", *SharePoint.Name)
+	l.Trace("resourceSharePointCreate", "ida", d.Get("ida").(string), "name", *josso1re.Name)
 
-	a, err := getJossoClient(m).CreateSharePointresource(d.Get("ida").(string), SharePoint)
+	sp, err = getJossoClient(m).CreateIntSaml2Sp(d.Get("ida").(string), sp)
+	if err != nil {
+		l.Debug("resourceSharePointCreate %v", err)
+		return diag.Errorf("failed to create Saml2 SP: %v", err)
+	}
+
+	josso1re.NewServiceConnection(sp.GetName())
+	josso1re, err = getJossoClient(m).CreateSharePointresource(d.Get("ida").(string), josso1re)
 	if err != nil {
 		l.Debug("resourceSharePointCreate %v", err)
 		return diag.Errorf("failed to create SharePoint: %v", err)
 	}
 
-	if err = buildSharePointResource(d, a); err != nil {
+	if err = buildSharePointResource(d, josso1re, sp); err != nil {
 		l.Debug("resourceSharePointCreate %v", err)
 		return diag.FromErr(err)
 	}
 
-	l.Debug("resourceSharePointCreate OK", "ida", d.Get("ida").(string), "name", *SharePoint.Name)
+	l.Debug("resourceSharePointCreate OK", "ida", d.Get("ida").(string), "name", *josso1re.Name)
 
 	return nil
 }
 
 func resourceSharePointRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
+
+	l.Trace("resourceIntSaml2spRead", "ida", d.Get("ida").(string), "spname", *PtrSchemaStr(d, "sp_id"))
+	sp, err := getJossoClient(m).GetIntSaml2Sp(d.Get("ida").(string), *PtrSchemaStr(d, "sp_id"))
+	if err != nil {
+		l.Debug("resourceIntSaml2spRead %v", err)
+		return diag.Errorf("resourceIntSaml2spRead: %v", err)
+	}
+	if sp.Name == nil || *sp.Name == "" {
+		l.Debug("resourceIntSaml2spRead NOT FOUND")
+		d.SetId("")
+		return nil
+	}
+	l.Debug("resourceIntSaml2spRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+
 	l.Trace("resourceSharePointRead", "ida", d.Get("ida").(string), "name", d.Id())
-	SharePoint, err := getJossoClient(m).GetSharePointResource(d.Get("ida").(string), d.Id())
+	josso1re, err := getJossoClient(m).GetSharePointResource(d.Get("ida").(string), d.Id())
 	if err != nil {
 		l.Debug("resourceSharePointRead %v", err)
 		return diag.Errorf("resourceSharePointRead: %v", err)
 	}
-	if SharePoint.Name == nil || *SharePoint.Name == "" {
+	if josso1re.Name == nil || *josso1re.Name == "" {
 		l.Debug("resourceSharePointRead NOT FOUND")
 		d.SetId("")
 		return nil
 	}
-	if err = buildSharePointResource(d, SharePoint); err != nil {
+	if err = buildSharePointResource(d, josso1re, sp); err != nil {
 		l.Debug("resourceSharePointRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -111,19 +141,24 @@ func resourceSharePointUpdate(ctx context.Context, d *schema.ResourceData, m int
 	l := getLogger(m)
 	l.Trace("resourceSharePointUpdate", "ida", d.Get("ida").(string), "name", d.Id())
 
-	SharePoint, err := buildSharePointDTO(d)
+	josso1re, sp, err := buildSharePointDTO(d)
 	if err != nil {
 		l.Debug("resourceSharePointUpdate %v", err)
 		return diag.Errorf("failed to build SharePoint: %v", err)
 	}
 
-	a, err := getJossoClient(m).UpdateSharePointResource(d.Get("ida").(string), SharePoint)
+	b, err := getJossoClient(m).UpdateIntSaml2Sp(d.Get("ida").(string), sp)
 	if err != nil {
-		l.Debug("resourceSharePointUpdate %v", err)
-		return diag.Errorf("failed to update SharePoint: %v", err)
+		l.Debug("resourceSharePointUpdate/intsaml2sp %v", err)
+		return diag.Errorf("failed to update IntSaml2sp: %v", err)
+	}
+	a, err := getJossoClient(m).UpdateSharePointResource(d.Get("ida").(string), josso1re)
+	if err != nil {
+		l.Debug("resourceSharePointUpdate/josso1re %v", err)
+		return diag.Errorf("failed to update josso1re: %v", err)
 	}
 
-	if err = buildSharePointResource(d, a); err != nil {
+	if err = buildSharePointResource(d, a, b); err != nil {
 		l.Debug("resourceSharePointUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -141,7 +176,15 @@ func resourceSharePointDelete(ctx context.Context, d *schema.ResourceData, m int
 	_, err := getJossoClient(m).DeleteSharePointResource(d.Get("ida").(string), d.Id())
 	if err != nil {
 		l.Debug("resourceSharePointDelete %v", err)
-		return diag.Errorf("failed to delete SharePoint: %v", err)
+		return diag.Errorf("failed to delete josso1re: %v", err)
+	}
+	l.Debug("resourceSharePointDelete OK", "ida", d.Get("ida").(string), "name", d.Id())
+	d.Get("idps")
+	l.Trace("resourceIntSaml2spExecenvDelete", "ida", d.Get("ida").(string), "name", d.Get("sp_id").(string))
+	_, err = getJossoClient(m).DeleteIntSaml2Sp(d.Get("ida").(string), d.Get("sp_id").(string))
+	if err != nil {
+		l.Debug("resourceIntSaml2spExecenvDelete %v", err)
+		return diag.Errorf("failed to delete saml2sp: %v", err)
 	}
 
 	l.Debug("resourceSharePointDelete OK", "ida", d.Get("ida").(string), "name", d.Id())
@@ -149,35 +192,109 @@ func resourceSharePointDelete(ctx context.Context, d *schema.ResourceData, m int
 	return nil
 }
 
-func buildSharePointDTO(d *schema.ResourceData) (api.SharepointResourceDTO, error) {
-	var err error
-	dto := api.NewSharepointResourceDTO()
+func buildSharePointDTO(d *schema.ResourceData) (api.SharepointResourceDTO, api.InternalSaml2ServiceProviderDTO, error) {
+	var err, errWrap error
 
-	dto.Name = PtrSchemaStr(d, "name")
-	dto.Description = PtrSchemaStr(d, "description")
+	// Resource (sharepoint inherits JOSSO1Resource)
+	josso1re := api.NewSharepointResourceDTO()
+	// SP
+	sp := api.NewInternalSaml2ServiceProviderDTO()
 
-	_, e := d.GetOk("slo_location")
+	josso1re.Name = PtrSchemaStr(d, "name")
+	josso1re.Description = PtrSchemaStr(d, "description")
+
+	_, e := d.GetOk("app_slo_location")
 	if e {
-		dto.SloLocation, err = PtrSchemaLocation(d, "slo_location")
+		josso1re.SloLocation, err = PtrSchemaLocation(d, "app_slo_location")
 		if err != nil {
-			return *dto, fmt.Errorf("invalid slo_location %s", err)
+			return *josso1re, *sp, fmt.Errorf("invalid app_slo_location %s", err)
 		}
 	}
-	dto.SloLocationEnabled = &e
+	josso1re.SloLocationEnabled = &e
 
-	dto.StsSigningCertSubject = PtrSchemaStr(d, "sts_signing_cert_subject")
-	dto.StsEncryptingCertSubject = PtrSchemaStr(d, "sts_encrypting_cert_subject")
+	josso1re.StsSigningCertSubject = PtrSchemaStr(d, "sts_signing_cert_subject")
+	josso1re.StsEncryptingCertSubject = PtrSchemaStr(d, "sts_encrypting_cert_subject")
 
-	return *dto, err
+	// --------------------------------------------------------
+	// SP
+	// --------------------------------------------------------
+	// On create sp_id is empty, on update it has a valid value
+	spName := PtrSchemaStr(d, "sp_id")
+	if *spName == "" {
+		// This is a create SP
+		spName = PtrSchemaStr(d, "name")
+		*spName = fmt.Sprintf("%s-sp", *spName)
+	}
+	sp.Name = spName
+
+	sp.DashboardUrl = PtrSchemaStr(d, "dashboard_url")
+	sp.Description = PtrSchemaStr(d, "description")
+	sp.DisplayName = PtrSchemaStr(d, "version")
+	sp.EnableMetadataEndpoint = PtrSchemaBool(d, "enable_metadata_endpoint")
+	sp.ErrorBinding = PtrSchemaStr(d, "error_binding")
+
+	// SP Configuration
+	ks, err := convertKeystoreMapArrToDTO(sp.GetName(), d.Get("keystore"))
+	if err != nil {
+		errWrap = errors.Wrap(err, "keystore")
+	}
+
+	cfg := api.NewSamlR2SPConfigDTOInit()
+	cfg.SetSigner(*ks)
+	cfg.SetEncrypter(*ks)
+	cfg.SetUseSampleStore(false)
+	cfg.SetUseSystemStore(false)
+
+	sp.SetSamlR2SPConfig(cfg)
+
+	// Some defaults
+
+	// SAML2 settings
+	err = convertSPSaml2MapArrToDTO(d.Get("saml2"), sp)
+	if err != nil {
+		errWrap = errors.Wrap(err, "saml2")
+	}
+
+	// SP side of federated connection is for the SP
+	sp.FederatedConnectionsB, err = convertIdPFederatedConnectionsMapArrToDTOs(sp, d, d.Get("idp"))
+	if err != nil {
+		return *josso1re, *sp, err
+	}
+
+	// Copy preferred IDP channel values to SP
+	_, idpChannel, err := getPreferredIdPChannel(sp)
+	if err != nil {
+		return *josso1re, *sp, err
+	}
+	if idpChannel == nil {
+		return *josso1re, *sp, fmt.Errorf("iamtf_app_agent resource MUST have a preferred idp: %s", *josso1re.Name)
+	}
+
+	return *josso1re, *sp, errWrap
 }
 
-func buildSharePointResource(d *schema.ResourceData, dto api.SharepointResourceDTO) error {
-	d.SetId(cli.StrDeref(dto.Name))
-	_ = d.Set("name", cli.StrDeref(dto.Name))
-	_ = d.Set("description", cli.StrDeref(dto.Description))
-	_ = d.Set("slo_location", cli.LocationToStr(dto.SloLocation))
-	_ = d.Set("sts_signing_cert_subject", cli.StrDeref(dto.StsSigningCertSubject))
-	_ = d.Set("sts_encrypting_cert_subject", cli.StrDeref(dto.StsEncryptingCertSubject))
+func buildSharePointResource(d *schema.ResourceData, josso1re api.SharepointResourceDTO, sp api.InternalSaml2ServiceProviderDTO) error {
+	d.SetId(cli.StrDeref(josso1re.Name))
+	_ = d.Set("sp_id", cli.StrDeref(sp.Name))
+	_ = d.Set("name", cli.StrDeref(josso1re.Name))
+	_ = d.Set("description", cli.StrDeref(josso1re.Description))
+	_ = d.Set("app_slo_location", cli.LocationToStr(josso1re.SloLocation))
+	_ = d.Set("sts_signing_cert_subject", cli.StrDeref(josso1re.StsSigningCertSubject))
+	_ = d.Set("sts_encrypting_cert_subject", cli.StrDeref(josso1re.StsEncryptingCertSubject))
+
+	// Reuse iamtf_app_agent utils
+
+	saml2_m, err := convertSPSaml2DTOToMapArr(&sp)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("saml2", saml2_m)
+
+	idps, err := convertIdPFederatedConnectionsToMapArr(sp.FederatedConnectionsB)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("idp", idps)
 
 	return nil
 }

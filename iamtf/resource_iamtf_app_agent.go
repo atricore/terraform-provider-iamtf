@@ -186,7 +186,7 @@ func resourceAppAgentUpdate(ctx context.Context, d *schema.ResourceData, m inter
 	}
 
 	if err = buildAppAgentResource(d, a, b); err != nil {
-		l.Debug("resourceAppAgentUpdate/intsaml2sp %v", err)
+		l.Debug("resourceAppAgentUpdate %v", err)
 		return diag.FromErr(err)
 	}
 
