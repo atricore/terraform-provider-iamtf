@@ -21,8 +21,7 @@ func ResourceIdFacebook() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: "idp name",
 			},
 			"description": {
@@ -33,14 +32,12 @@ func ResourceIdFacebook() *schema.Resource {
 			},
 			"client_id": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: "facebook application id",
 			},
 			"client_secret": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: "facebook application secret",
 			},
 			"authz_token_service": {
@@ -54,7 +51,6 @@ func ResourceIdFacebook() *schema.Resource {
 				Required:    true,
 				Description: "facebook access token endpoint",
 			},
-
 			"scopes": {
 				Type: schema.TypeSet,
 				Elem: &schema.Schema{
@@ -187,8 +183,14 @@ func buildIdFacebookDTO(d *schema.ResourceData) (api.FacebookOpenIDConnectIdenti
 	}
 
 	// list to space separated values
-	dto.SetScopes(PtrSchemaAsSpacedList(d, "scopes"))
-	dto.SetUserFields(PtrSchemaAsSpacedList(d, "user_fields"))
+	if notEmpty, s := PtrSchemaAsSpacedList(d, "scopes"); notEmpty {
+		dto.SetScopes(s)
+	}
+
+	if notEmpty, s := PtrSchemaAsSpacedList(d, "user_fields"); notEmpty {
+		dto.SetUserFields(s)
+	}
+
 	return *dto, err
 }
 
@@ -202,8 +204,13 @@ func buildIdFacebookResource(d *schema.ResourceData, dto api.FacebookOpenIDConne
 	_ = d.Set("access_token_service", cli.LocationToStr(dto.AccessTokenService))
 
 	// space separated values to list
-	_ = d.Set("scopes", SpacedListToSet(dto.GetScopes()))
-	_ = d.Set("user_fields", SpacedListToSet(dto.GetUserFields()))
+
+	if notEmtpy, ls := SpacedListToSet(dto.GetScopes()); notEmtpy {
+		_ = d.Set("scopes", ls)
+	}
+	if notEmtpy, ls := SpacedListToSet(dto.GetUserFields()); notEmtpy {
+		_ = d.Set("user_fields", ls)
+	}
 
 	return nil
 }

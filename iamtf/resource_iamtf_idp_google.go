@@ -2,7 +2,6 @@ package iamtf
 
 import (
 	"context"
-	"fmt"
 
 	api "github.com/atricore/josso-api-go"
 	cli "github.com/atricore/josso-sdk-go"
@@ -22,49 +21,48 @@ func ResourceidGoogle() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idGoogle name",
-			},
-			"element_id": {
-				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idGoogle elementId",
+				Required:    true,
+				Description: "idp name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "idGoogle description",
+				Description: "idp description",
 			},
 			"client_id": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idGoogle clientId",
+				Required:    true,
+				Description: "google application id",
 			},
-			"server_key": {
+			"client_secret": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idGoogle serverKey",
+				Required:    true,
+				Description: "google application secret",
 			},
 			"authz_token_service": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "idGoogle ",
+				Description: "google authorization token endpoint",
 			},
 			"access_token_service": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "idGoogle ",
+				Description: "google access token endpoint",
 			},
 			"google_apps_domain": {
 				Type:        schema.TypeString,
-				Required:    true,
-				Description: "idGoogle ",
+				Optional:    true,
+				Description: "google suite domain ",
+			},
+			"google_apis": {
+				Type: schema.TypeSet,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Optional:    true,
+				Description: "APIs to be accessed with the authorization token",
 			},
 			"ida": {
 				Type:        schema.TypeString,
@@ -168,36 +166,41 @@ func buildidGoogleDTO(d *schema.ResourceData) (api.GoogleOpenIDConnectIdentityPr
 	var err error
 	dto := api.NewGoogleOpenIDConnectIdentityProviderDTO()
 	dto.Name = PtrSchemaStr(d, "name")
-	dto.ElementId = PtrSchemaStr(d, "element_id")
 	dto.Description = PtrSchemaStr(d, "description")
 	dto.ClientId = PtrSchemaStr(d, "client_id")
-	dto.ServerKey = PtrSchemaStr(d, "server_key")
-	_, e := d.GetOk("location")
-	if e {
-		dto.AuthzTokenService, err = PtrSchemaLocation(d, "authz_token_service")
-		if err != nil {
-			return *dto, fmt.Errorf("invalid location %s", err)
-		}
-		dto.AccessTokenService, err = PtrSchemaLocation(d, "access_token_service")
-		if err != nil {
-			return *dto, fmt.Errorf("invalid location %s", err)
-		}
-	}
+	dto.ClientSecret = PtrSchemaStr(d, "client_secret")
+	//	dto.ServerKey = PtrSchemaStr(d, "server_key")
 	dto.GoogleAppsDomain = PtrSchemaStr(d, "google_apps_domain")
+
+	dto.AccessTokenService, err = PtrSchemaLocation(d, "access_token_service")
+	if err != nil {
+		return *dto, err
+	}
+	dto.AuthzTokenService, err = PtrSchemaLocation(d, "authz_token_service")
+	if err != nil {
+		return *dto, err
+	}
+
+	if notEmpty, s := PtrSchemaAsSpacedList(d, "google_apis"); notEmpty {
+		dto.SetScopes(s)
+	}
+
 	return *dto, err
 }
 
 func buildidGoogleResource(d *schema.ResourceData, dto api.GoogleOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
-	_ = d.Set("element_id", cli.StrDeref(dto.ElementId))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
-	_ = d.Set("location", cli.LocationToStr(dto.Location))
 	_ = d.Set("client_id", cli.StrDeref(dto.ClientId))
-	_ = d.Set("server_key", cli.StrDeref(dto.ServerKey))
+	_ = d.Set("client_secret", cli.StrDeref(dto.ClientSecret))
 	_ = d.Set("authz_token_service", cli.LocationToStr(dto.AuthzTokenService))
 	_ = d.Set("access_token_service", cli.LocationToStr(dto.AccessTokenService))
 	_ = d.Set("google_apps_domain", cli.StrDeref(dto.GoogleAppsDomain))
+
+	if notEmtpy, ls := SpacedListToSet(dto.GetScopes()); notEmtpy {
+		_ = d.Set("google_apis", ls)
+	}
 
 	return nil
 }

@@ -6,14 +6,12 @@ resource "iamtf_identity_appliance" "test" {
 }
 
 resource "iamtf_idp_google" "test" {
-  name                 = "idGoogle-updated-replace_with_uuid"
-  element_id           = ""
+  name                 = "idp-google-replace_with_uuid"
   description          = "My idGoogle updated"
-  location             = "http://localhost:8082"
   client_id            = "my-client updated"
-  server_key           = "server-key for idpfacebook updated"
-  authz_token_service  = "http://accounts.google.com:443/o/oauth2/auth"
-  access_token_service = "http://accounts.google.com:443/o/oauth2/token"
-  google_apps_domain   = "apps domain"
+  client_secret        = "client-secret-updated"
+  authz_token_service  = "http://accounts.google.com/o/oauth2/auth1"
+  access_token_service = "http://accounts.google.com/o/oauth2/token1"
+  google_apps_domain   = "apps domain1"
   ida                  = iamtf_identity_appliance.test.name
 }

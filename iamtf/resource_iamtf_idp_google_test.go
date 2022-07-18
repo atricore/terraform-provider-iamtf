@@ -11,8 +11,8 @@ import (
 func TestAccJossoIdGoogle_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(google)
-	config := mgr.GetFixtures("idgoogle.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("idgoogle_updated.tf", ri, t)
+	config := mgr.GetFixtures("idp_google.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("idp_google_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", google)
 
 	resource.Test(t, resource.TestCase{
@@ -23,13 +23,13 @@ func TestAccJossoIdGoogle_crud(t *testing.T) {
 			{
 				Config: config,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idgoogle", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp-google", ri)),
 				),
 			},
 			{
 				Config: updatedConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idgoogle", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp-google", ri)),
 				),
 			},
 		},

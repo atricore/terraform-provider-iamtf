@@ -13,26 +13,38 @@ import (
 )
 
 // This builds a space separetd string with the values of the given schema resource (TypeSet -> TypeString)
-func PtrSchemaAsSpacedList(d *schema.ResourceData, p string) string {
+func PtrSchemaAsSpacedList(d *schema.ResourceData, p string) (bool, string) {
 	m := d.Get(p).(*schema.Set)
 
 	if m == nil {
-		return ""
+		return false, ""
 	}
 
 	ls := m.List()
+	if len(ls) < 1 {
+		return false, ""
+	}
+
 	var sb strings.Builder
 	for _, v := range ls {
 		sb.WriteString(v.(string))
 		sb.WriteString(" ")
 	}
 	r := sb.String()
-	return r[:len(r)-1]
+	return true, r[:len(r)-1]
 }
 
-func SpacedListToSet(strLs string) *schema.Set {
+func SpacedListToSet(strLs string) (bool, *schema.Set) {
+
+	if strLs == "" {
+		return false, nil
+	}
+
 	ls := strings.Split(strLs, " ")
-	return convertStringSetToInterface(ls)
+	if len(ls) < 1 {
+		return false, nil
+	}
+	return true, convertStringSetToInterface(ls)
 }
 
 // Gets the value of the resources property as a string pointer
