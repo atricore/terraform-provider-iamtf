@@ -6,7 +6,7 @@ resource "iamtf_identity_appliance" "test" {
   location    = "http://localhost:8081"
 }
 
-resource "iamtf_idgoogle" "test" {
+resource "iamtf_idp_google" "test" {
   name                 = "idGoogle-replace_with_uuid"
   element_id           = ""
   description          = "My idGoogle"

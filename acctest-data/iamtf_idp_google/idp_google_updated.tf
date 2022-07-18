@@ -5,16 +5,15 @@ resource "iamtf_identity_appliance" "test" {
   location    = "http://localhost:8081"
 }
 
-resource "iamtf_idfacebook" "test" {
-  name                 = "idFacebook-updated-replace_with_uuid"
+resource "iamtf_idp_google" "test" {
+  name                 = "idGoogle-updated-replace_with_uuid"
   element_id           = ""
-  description          = "My IdFacebook updated"
+  description          = "My idGoogle updated"
   location             = "http://localhost:8082"
   client_id            = "my-client updated"
   server_key           = "server-key for idpfacebook updated"
-  authz_token_service  = "http://www.facebook.com:443/dialog/oauth"
-  access_token_service = "http://graph.facebook.com:443/oauth/access_token"
-  scopes               = "public_profile"
-  user_fields          = "gender"
+  authz_token_service  = "http://accounts.google.com:443/o/oauth2/auth"
+  access_token_service = "http://accounts.google.com:443/o/oauth2/token"
+  google_apps_domain   = "apps domain"
   ida                  = iamtf_identity_appliance.test.name
 }

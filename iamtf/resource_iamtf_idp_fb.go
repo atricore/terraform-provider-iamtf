@@ -2,7 +2,6 @@ package iamtf
 
 import (
 	"context"
-	"fmt"
 
 	api "github.com/atricore/josso-api-go"
 	cli "github.com/atricore/josso-sdk-go"
@@ -24,53 +23,53 @@ func ResourceIdFacebook() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "idfacebook name",
-			},
-			"element_id": {
-				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idfacebook elementId",
+				Description: "idp name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "idfacebook description",
+				Description: "idp description",
 			},
 			"client_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "idfacebook clientId",
+				Description: "facebook application id",
 			},
-			"server_key": {
+			"client_secret": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "idfacebook serverKey",
+				Description: "facebook application secret",
 			},
 			"authz_token_service": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "idfacebook ",
+				Description: "facebook authorization token endpoint",
 			},
 			"access_token_service": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "idfacebook ",
+				Description: "facebook access token endpoint",
 			},
+
 			"scopes": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "idfacebook ",
+				Type: schema.TypeSet,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Optional:    true,
+				Description: "facebook premissions. These will be added to **email** and **public_profile**",
 			},
 			"user_fields": {
-				Type:        schema.TypeString,
-				Computed:    true,
+				Type: schema.TypeSet,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 				Optional:    true,
-				Description: "idfacebook userFields",
+				Description: "facebook user fields. These will be added to **id**, **name**, **email**, **first_name**, **last_name**",
 			},
 			"ida": {
 				Type:        schema.TypeString,
@@ -174,38 +173,37 @@ func buildIdFacebookDTO(d *schema.ResourceData) (api.FacebookOpenIDConnectIdenti
 	var err error
 	dto := api.NewFacebookOpenIDConnectIdentityProviderDTO()
 	dto.Name = PtrSchemaStr(d, "name")
-	dto.ElementId = PtrSchemaStr(d, "element_id")
 	dto.Description = PtrSchemaStr(d, "description")
 	dto.ClientId = PtrSchemaStr(d, "client_id")
-	dto.ServerKey = PtrSchemaStr(d, "server_key")
-	_, e := d.GetOk("location")
-	if e {
-		dto.AuthzTokenService, err = PtrSchemaLocation(d, "authz_token_service")
-		if err != nil {
-			return *dto, fmt.Errorf("invalid location %s", err)
-		}
-		dto.AccessTokenService, err = PtrSchemaLocation(d, "access_token_service")
-		if err != nil {
-			return *dto, fmt.Errorf("invalid location %s", err)
-		}
+	dto.ClientSecret = PtrSchemaStr(d, "client_secret")
+
+	dto.AccessTokenService, err = PtrSchemaLocation(d, "access_token_service")
+	if err != nil {
+		return *dto, err
 	}
-	dto.Scopes = PtrSchemaStr(d, "scopes")
-	dto.UserFields = PtrSchemaStr(d, "user_fields")
+	dto.AuthzTokenService, err = PtrSchemaLocation(d, "authz_token_service")
+	if err != nil {
+		return *dto, err
+	}
+
+	// list to space separated values
+	dto.SetScopes(PtrSchemaAsSpacedList(d, "scopes"))
+	dto.SetUserFields(PtrSchemaAsSpacedList(d, "user_fields"))
 	return *dto, err
 }
 
 func buildIdFacebookResource(d *schema.ResourceData, dto api.FacebookOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
-	_ = d.Set("element_id", cli.StrDeref(dto.ElementId))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
-	_ = d.Set("location", cli.LocationToStr(dto.Location))
 	_ = d.Set("client_id", cli.StrDeref(dto.ClientId))
-	_ = d.Set("server_key", cli.StrDeref(dto.ServerKey))
+	_ = d.Set("client_secret", cli.StrDeref(dto.ClientSecret))
 	_ = d.Set("authz_token_service", cli.LocationToStr(dto.AuthzTokenService))
 	_ = d.Set("access_token_service", cli.LocationToStr(dto.AccessTokenService))
-	_ = d.Set("scopes", cli.StrDeref(dto.Scopes))
-	_ = d.Set("user_fields", cli.StrDeref(dto.UserFields))
+
+	// space separated values to list
+	_ = d.Set("scopes", SpacedListToSet(dto.GetScopes()))
+	_ = d.Set("user_fields", SpacedListToSet(dto.GetUserFields()))
 
 	return nil
 }

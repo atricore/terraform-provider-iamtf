@@ -11,8 +11,8 @@ import (
 func TestAccJossoIdFacebook_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idFacebook)
-	config := mgr.GetFixtures("idfacebook.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("idfacebook_updated.tf", ri, t)
+	config := mgr.GetFixtures("idp_facebook.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("idp_facebook_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", idFacebook)
 
 	resource.Test(t, resource.TestCase{
@@ -23,13 +23,13 @@ func TestAccJossoIdFacebook_crud(t *testing.T) {
 			{
 				Config: config,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idfacebook", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp_fb", ri)),
 				),
 			},
 			{
 				Config: updatedConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idfacebook", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp_fb", ri)),
 				),
 			},
 		},

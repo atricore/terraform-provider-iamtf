@@ -24,9 +24,9 @@ const (
 	php               = "iamtf_execenv_php"
 	spoint            = "iamtf_app_sharepoint"
 	weblogic          = "iamtf_execenv_weblogic"
-	idFacebook        = "iamtf_idfacebook"
+	idFacebook        = "iamtf_idp_facebook"
 	azure             = "iamtf_idazure"
-	google            = "iamtf_idgoogle"
+	google            = "iamtf_idp_google"
 )
 
 var (

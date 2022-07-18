@@ -3,6 +3,7 @@ package iamtf
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	cli "github.com/atricore/josso-sdk-go"
 	"github.com/hashicorp/go-hclog"
@@ -10,6 +11,29 @@ import (
 
 	api "github.com/atricore/josso-api-go"
 )
+
+// This builds a space separetd string with the values of the given schema resource (TypeSet -> TypeString)
+func PtrSchemaAsSpacedList(d *schema.ResourceData, p string) string {
+	m := d.Get(p).(*schema.Set)
+
+	if m == nil {
+		return ""
+	}
+
+	ls := m.List()
+	var sb strings.Builder
+	for _, v := range ls {
+		sb.WriteString(v.(string))
+		sb.WriteString(" ")
+	}
+	r := sb.String()
+	return r[:len(r)-1]
+}
+
+func SpacedListToSet(strLs string) *schema.Set {
+	ls := strings.Split(strLs, " ")
+	return convertStringSetToInterface(ls)
+}
 
 // Gets the value of the resources property as a string pointer
 func PtrSchemaStr(d *schema.ResourceData, p string) *string {
