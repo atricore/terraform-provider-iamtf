@@ -11,8 +11,8 @@ import (
 func TestAccJossoIdAzure_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(azure)
-	config := mgr.GetFixtures("idazure.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("idazure_updated.tf", ri, t)
+	config := mgr.GetFixtures("idp_azure.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("idp_azure_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", azure)
 
 	resource.Test(t, resource.TestCase{
@@ -23,13 +23,13 @@ func TestAccJossoIdAzure_crud(t *testing.T) {
 			{
 				Config: config,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idazure", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp-az", ri)),
 				),
 			},
 			{
 				Config: updatedConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idazure", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp-az", ri)),
 				),
 			},
 		},

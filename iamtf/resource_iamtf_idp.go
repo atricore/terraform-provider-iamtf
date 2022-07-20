@@ -506,6 +506,71 @@ func ResourceIdP() *schema.Resource {
 				Optional:    true,
 				Description: "list of identity sources used by the IDP.  At least one is required.",
 			},
+
+			"attributes": idpAttributeProfileSchema(),
+		},
+	}
+}
+
+func idpAttributeProfileSchema() *schema.Schema {
+	return &schema.Schema{
+		Type:        schema.TypeList,
+		Optional:    true,
+		Computed:    true,
+		MinItems:    0,
+		MaxItems:    1,
+		Description: "attributes mappings.  Define IdP claim mappings.",
+
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"profile": {
+					Type:             schema.TypeString,
+					Description:      "Attribute profile to use",
+					Optional:         true,
+					ValidateDiagFunc: stringInSlice([]string{"JOSSO", "BASIC", "ONE_TO_ONE", "CUSTOM"}),
+					Default:          "JOSSO",
+				},
+				"include_unmapped_claims": {
+					Type:        schema.TypeBool,
+					Description: "when using a custom profile, include unmapped claims",
+					Optional:    true,
+					Default:     true,
+				},
+				"map": {
+					Type:        schema.TypeSet,
+					Optional:    true,
+					MinItems:    1,
+					Description: "Custom attribute mappings",
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"name": {
+								Type:        schema.TypeString,
+								Required:    true,
+								Description: "name of the new claim",
+							},
+							"type": {
+								Type:             schema.TypeString,
+								Description:      "mapping type.  claim if you want to man an existing claim to a new name.  const if you want to add a new constant value as claim.  exp if you want to create a claim using an expression",
+								Optional:         true,
+								Default:          "claim",
+								ValidateDiagFunc: stringInSlice([]string{"claim", "const", "exp"}),
+							},
+							"mapping": {
+								Type:        schema.TypeString,
+								Required:    true,
+								Description: "value to us when doing the mapping, depending on the type this will be an existing claim name, a constant value or an expresison value",
+							},
+							"format": {
+								Type:             schema.TypeString,
+								Optional:         true,
+								Default:          "BASIC",
+								ValidateDiagFunc: stringInSlice([]string{"BASIC", "URN"}),
+								Description:      "how the new claim name should be formatted.  Basic if the name will be used as is, URN to add a default SAML2 urn to the claim",
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -638,10 +703,9 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 	}
 
 	// Attribute profile
-	af := api.NewBasicAttributeProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
-	ap, err := af.ToAttrProfile()
+	ap, err := convertAttributeProfileMapArrToDTOs(idp, d.Get("attributes"))
 	if err != nil {
-		errWrap = errors.Wrap(err, "attrs")
+		errWrap = errors.Wrap(err, "attributes")
 	}
 	idp.SetAttributeProfile(*ap)
 
@@ -774,6 +838,12 @@ func buildIdPResource(d *schema.ResourceData, idp api.IdentityProviderDTO) error
 		return err
 	}
 	_ = d.Set("authn_basic", basic_authn)
+
+	attributes, err := convertAttributeProfileDTOToMapArr(&idp)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("attributes", attributes)
 
 	// TODO : Get from additional properties !?
 	ids := convertIdLookupsToStringArr(idp.IdentityLookups)
@@ -1219,4 +1289,83 @@ func convertOAuth2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interf
 	result = append(result, oauth2_map)
 
 	return result, nil
+}
+
+func convertAttributeProfileMapArrToDTOs(idp *api.IdentityProviderDTO, attrs interface{}) (*api.AttributeProfileDTO, error) {
+	// TODO
+
+	attrMap, err := asTFMapSingle(attrs)
+	if err != nil {
+		return nil, err
+	}
+
+	profile := api.AsString(attrMap["profile"], "JOSSO")
+	include_unmapped_claims := api.AsBool(attrMap["include_unmapped_claims"], true)
+
+	switch profile {
+	case "JOSSO":
+		af := api.NewJOSSOAttributeProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+		return af.ToAttrProfile()
+	case "BASIC":
+		af := api.NewBasicAttributeProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+		return af.ToAttrProfile()
+	case "ONE_TO_ONE":
+		af := api.NewOneToOneAttributeProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+		return af.ToAttrProfile()
+	case "CUSTOM":
+		af := api.NewAttriburteMapperProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+
+		af.SetIncludeNonMappedProperties(include_unmapped_claims)
+		var mappings []api.AttributeMappingDTO
+
+		am := attrMap["map"].(*schema.Set)
+
+		for _, v := range am.List() {
+
+			mappingMap := v.(map[string]interface{})
+
+			m := api.NewAttributeMappingDTO()
+			m.SetAttrName(mappingMap["name"].(string))
+			m.SetReportedAttrName(api.ToAttributeMapping(mappingMap["type"].(string), mappingMap["mapping"].(string)))
+			m.SetReportedAttrNameFormat(api.AsString(mappingMap["format"], "BASIC"))
+
+			mappings = append(mappings, *m)
+		}
+
+		af.SetAttributeMaps(mappings)
+		return af.ToAttrProfile()
+	}
+
+	return nil, fmt.Errorf("invalid profile type %s\n", profile)
+}
+
+func convertAttributeProfileDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
+	var r []map[string]interface{}
+
+	ap := idp.GetAttributeProfile()
+
+	apMap := make(map[string]interface{})
+	apMap["profile"] = ap.GetProfileType()
+
+	if ap.GetProfileType() == "CUSTOM" {
+		amp := ap.ToAttributeMapperProfile()
+		apMap["include_unmapped_claims"] = amp.GetIncludeNonMappedProperties()
+
+		var maps []map[string]interface{}
+		for _, m := range amp.GetAttributeMaps() {
+			mMap := make(map[string]interface{})
+			mMap["type"] = m.GetType()
+			mMap["name"] = m.GetAttrName()
+
+			mMap["mapping"] = m.GetMapping()
+			mMap["format"] = m.GetReportedAttrNameFormat()
+			maps = append(maps, mMap)
+		}
+
+		apMap["map"] = maps
+	}
+
+	r = append(r, apMap)
+
+	return r, nil
 }

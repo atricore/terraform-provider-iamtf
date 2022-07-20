@@ -13,20 +13,20 @@ import (
 const (
 	identityAppliance = "iamtf_identity_appliance"
 	idp               = "iamtf_idp"
+	idFacebook        = "iamtf_idp_facebook"
+	azure             = "iamtf_idp_azure"
+	google            = "iamtf_idp_google"
 	idVault           = "iamtf_idvault"
 	idSourceLdap      = "iamtf_idsource_ldap"
+	dbidsource        = "iamtf_idsource_db"
 	oidcRp            = "iamtf_app_oidc"
 	extSaml2Sp        = "iamtf_app_saml2"
-	tomcat            = "iamtf_execenv_tomcat"
 	josso1Rs          = "iamtf_app_agent"
-	dbidsource        = "iamtf_idsource_db"
+	spoint            = "iamtf_app_sharepoint"
+	tomcat            = "iamtf_execenv_tomcat"
 	iss               = "iamtf_execenv_iss"
 	php               = "iamtf_execenv_php"
-	spoint            = "iamtf_app_sharepoint"
 	weblogic          = "iamtf_execenv_weblogic"
-	idFacebook        = "iamtf_idp_facebook"
-	azure             = "iamtf_idazure"
-	google            = "iamtf_idp_google"
 )
 
 var (

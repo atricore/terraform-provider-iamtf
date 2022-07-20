@@ -97,6 +97,35 @@ func TestAccJossoIdP_AuthnWia_crud(t *testing.T) {
 	})
 }
 
+func TestAccJossoIdP_Attrs1_crud(t *testing.T) {
+	ri := acctest.RandInt()
+	mgr := newFixtureManager(idp)
+	config := mgr.GetFixtures("idp_attrs_1.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("idp_attrs_1_updated.tf", ri, t)
+	resourceName := fmt.Sprintf("%s.test", idp)
+
+	// TODO : Validate other fields ?
+	resource.Test(t, resource.TestCase{
+		PreCheck:          func() { testaccPreCheck(t) },
+		ProviderFactories: testaccProvidersFactories,
+		CheckDestroy:      createCheckResourceDestroy(idp, createDoesIdPExist()),
+		Steps: []resource.TestStep{
+			{
+				Config: config,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp", ri)),
+				),
+			},
+			{
+				Config: updatedConfig,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("idp", ri)),
+				),
+			},
+		},
+	})
+}
+
 func createDoesIdPExist() func(string) (bool, error) {
 	// TODO : infer appliance name and lookup for resource
 	return func(id string) (bool, error) {

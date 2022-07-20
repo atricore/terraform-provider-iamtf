@@ -22,44 +22,38 @@ func ResourceidAzure() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idAzure name",
-			},
-			"element_id": {
-				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idAzure elementId",
+				Required:    true,
+				Description: "IdP name",
 			},
 			"description": {
 				Type:        schema.TypeString,
-				Computed:    true,
 				Optional:    true,
-				Description: "idAzure description",
+				Description: "IdP description",
 			},
 			"client_id": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idAzure clientId",
+				Required:    true,
+				Description: "azure app client id",
+			},
+			"client_secret": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "azure app secret",
 			},
 			"server_key": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idAzure serverKey",
+				Required:    true,
+				Description: "azure app server key",
 			},
 			"authz_token_service": {
 				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "idAzure ",
+				Required:    true,
+				Description: "token endpoint: https://login.microsoft.com/<tenant>/oauth2/v2.0/authorize",
 			},
 			"access_token_service": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "idAzure ",
+				Description: "authorization endpiont: https://login.microsoft.com/<tenant>/oauth2/v2.0/token",
 			},
 			"ida": {
 				Type:        schema.TypeString,
@@ -163,20 +157,17 @@ func buildidAzureDTO(d *schema.ResourceData) (api.AzureOpenIDConnectIdentityProv
 	var err error
 	dto := api.NewAzureOpenIDConnectIdentityProviderDTO()
 	dto.Name = PtrSchemaStr(d, "name")
-	dto.ElementId = PtrSchemaStr(d, "element_id")
 	dto.Description = PtrSchemaStr(d, "description")
 	dto.ClientId = PtrSchemaStr(d, "client_id")
+	dto.ClientSecret = PtrSchemaStr(d, "client_secret")
 	dto.ServerKey = PtrSchemaStr(d, "server_key")
-	_, e := d.GetOk("location")
-	if e {
-		dto.AuthzTokenService, err = PtrSchemaLocation(d, "authz_token_service")
-		if err != nil {
-			return *dto, fmt.Errorf("invalid location %s", err)
-		}
-		dto.AccessTokenService, err = PtrSchemaLocation(d, "access_token_service")
-		if err != nil {
-			return *dto, fmt.Errorf("invalid location %s", err)
-		}
+	dto.AuthzTokenService, err = PtrSchemaLocation(d, "authz_token_service")
+	if err != nil {
+		return *dto, fmt.Errorf("invalid authz_token_service %s", err)
+	}
+	dto.AccessTokenService, err = PtrSchemaLocation(d, "access_token_service")
+	if err != nil {
+		return *dto, fmt.Errorf("invalid access_token_service %s", err)
 	}
 	return *dto, err
 }
@@ -184,10 +175,9 @@ func buildidAzureDTO(d *schema.ResourceData) (api.AzureOpenIDConnectIdentityProv
 func buildidAzureResource(d *schema.ResourceData, dto api.AzureOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
-	_ = d.Set("element_id", cli.StrDeref(dto.ElementId))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
-	_ = d.Set("location", cli.LocationToStr(dto.Location))
 	_ = d.Set("client_id", cli.StrDeref(dto.ClientId))
+	_ = d.Set("client_secret", cli.StrDeref(dto.ClientSecret))
 	_ = d.Set("server_key", cli.StrDeref(dto.ServerKey))
 	_ = d.Set("authz_token_service", cli.LocationToStr(dto.AuthzTokenService))
 	_ = d.Set("access_token_service", cli.LocationToStr(dto.AccessTokenService))
