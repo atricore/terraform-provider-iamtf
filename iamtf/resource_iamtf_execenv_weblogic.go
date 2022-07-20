@@ -20,62 +20,55 @@ func ResourceWebLogicExecenv() *schema.Resource {
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		Schema: map[string]*schema.Schema{
-			"active": {
-				Type:        schema.TypeBool,
+			"name": {
+				Type:        schema.TypeString,
 				Required:    true,
-				Description: " Execution Enviroment WebLogic active",
+				Description: "execution environment ",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: " Execution Enviroment WebLogic description",
+				Description: "execution environment description",
 			},
-			"display_name": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: " Execution Enviroment WebLogic display_name",
+			"version": {
+				Type:             schema.TypeString,
+				Required:         true,
+				ValidateDiagFunc: stringInSlice([]string{"9.2", "11", "12", "14"}),
+				Description:      "Weblogic version",
 			},
 			"domain": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: " Execution Enviroment WebLogic domain",
-			},
-			"install_demo_apps": {
-				Type:        schema.TypeBool,
-				Required:    true,
-				Description: " Execution Enviroment WebLogic install_demo_apps",
-			},
-			"install_uri": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: " Execution Enviroment WebLogic install_uri",
-			},
-			"name": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: " Execution Enviroment WebLogic name",
-			},
-			"overwrite_original_setup": {
-				Type:        schema.TypeBool,
-				Required:    true,
-				Description: " Execution Enviroment WebLogic overwrite_original_setup",
-			},
-			"version": {
-				Type:             schema.TypeString,
-				Optional:         true,
-				ValidateDiagFunc: stringInSlice([]string{"9.2", "11", "12", "14"}),
-				Description:      "Josso Execution Enviroment WebLogic displayname",
+				Description: "weblogic domain",
 			},
 			"target_jdk": {
 				Type:        schema.TypeString,
-				Required:    true,
-				Description: " Execution Enviroment WebLogic target_jdk",
+				Optional:    true,
+				Description: "target jdk",
 			},
-			"type": {
+			"activation_install_samples": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "(activation) install samples",
+			},
+			"activation_path": {
 				Type:        schema.TypeString,
-				Required:    true,
-				Description: " Execution Enviroment WebLogic type",
+				Optional:    true,
+				Description: "(activation) Weblogic server path",
 			},
+			"activation_remote_target": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "(activation) activate using remote JOSSO server ",
+			},
+			"activation_override_setup": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "(activation) override agent setup",
+			},
+
 			"ida": {
 				Type:        schema.TypeString,
 				Required:    true,
@@ -176,23 +169,22 @@ func resourceWebLogicExecenvDelete(ctx context.Context, d *schema.ResourceData, 
 func buildWebLogicExecenvDTO(d *schema.ResourceData) (api.WeblogicExecutionEnvironmentDTO, error) {
 	var err error
 	dto := api.NewWeblogicExecutionEnvironmentDTO()
-	dto.Active = PtrSchemaBool(d, "active")
-	dto.Description = PtrSchemaStr(d, "description")
-	dto.DisplayName = PtrSchemaStr(d, "display_name")
-	dto.Domain = PtrSchemaStr(d, "domain")
-	dto.InstallDemoApps = PtrSchemaBool(d, "install_demo_apps")
-	dto.InstallUri = PtrSchemaStr(d, "install_uri")
 	dto.Name = PtrSchemaStr(d, "name")
-	dto.OverwriteOriginalSetup = PtrSchemaBool(d, "overwrite_original_setup")
-
+	dto.Description = PtrSchemaStr(d, "description")
 	pid, err := versionToWLogic(d.Get("version").(string))
 	if err != nil {
 		return *dto, err
 	}
 	dto.PlatformId = &pid
-
+	dto.Domain = PtrSchemaStr(d, "domain")
 	dto.TargetJDK = PtrSchemaStr(d, "target_jdk")
-	dto.Type = PtrSchemaStr(d, "type")
+
+	dto.InstallDemoApps = PtrSchemaBool(d, "activation_install_samples")
+	dto.InstallUri = PtrSchemaStr(d, "activation_path")
+	dto.OverwriteOriginalSetup = PtrSchemaBool(d, "activation_override_setup")
+	dto.Location = PtrSchemaStr(d, "activation_remote_target")
+
+	// TODO : dto.SetBindingLocation
 
 	return *dto, err
 }
@@ -201,12 +193,19 @@ func buildWebLogicExecenvResource(d *schema.ResourceData, dto api.WeblogicExecut
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
-
 	ver, err := platformIdVersion(cli.StrDeref(dto.PlatformId))
 	if err != nil {
 		return err
 	}
 	_ = d.Set("version", ver)
+
+	_ = d.Set("domain", cli.StrDeref(dto.Domain))
+	_ = d.Set("target_jdk", cli.StrDeref(dto.TargetJDK))
+
+	_ = d.Set("activation_install_samples", cli.BoolDeref(dto.InstallDemoApps))
+	_ = d.Set("activation_path", cli.StrDeref(dto.InstallUri))
+	_ = d.Set("activation_override_setup", cli.BoolDeref(dto.OverwriteOriginalSetup))
+	_ = d.Set("activation_remote_target", cli.StrDeref(dto.Location))
 
 	return nil
 }

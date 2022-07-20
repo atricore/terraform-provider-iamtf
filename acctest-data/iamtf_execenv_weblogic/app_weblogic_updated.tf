@@ -7,16 +7,16 @@ resource "iamtf_identity_appliance" "test" {
 
 
 resource "iamtf_execenv_weblogic" "test" {
-  active                   = true
-  description              = "wl description updated "
-  display_name             = "wl displayName updated"
-  domain                   = "wl domain updated"
-  install_demo_apps        = true
-  install_uri              = "wl installUri updated"
-  name                     = "wl-replace_with_uuid updated"
-  overwrite_original_setup = true
-  version                  = "12"
-  target_jdk               = "Remote"
-  type                     = "wl type updated"
+  name        = "wl-replace_with_uuid"
+  description = "wl description 1"
+  version     = "12"
+  domain      = "wl_domain_1"
+  target_jdk  = "jdk18"
+
+  activation_remote_target   = "http://remote-josso:8081"
+  activation_install_samples = true
+  activation_path            = "/opt/Oracle/wl_server"
+  activation_override_setup  = true
+
   ida                      = iamtf_identity_appliance.test.name
 }

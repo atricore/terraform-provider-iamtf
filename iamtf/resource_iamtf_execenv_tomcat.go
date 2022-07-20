@@ -23,12 +23,12 @@ func ResourceTomcatExecenv() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Execution environment name",
+				Description: "execution environment name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Execution environment description",
+				Description: "execution environment description",
 			},
 			"version": {
 				Type:             schema.TypeString,
@@ -50,13 +50,13 @@ func ResourceTomcatExecenv() *schema.Resource {
 			"activation_remote_target": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "(activation) Activate using remote JOSSO server ",
+				Description: "(activation) activate using remote JOSSO server ",
 			},
 			"activation_override_setup": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "(activation) Override agent setup",
+				Description: "(activation) override agent setup",
 			},
 			"ida": {
 				Type:        schema.TypeString,
@@ -171,6 +171,8 @@ func buildTomcatExecenvDTO(d *schema.ResourceData) (api.TomcatExecutionEnvironme
 	dto.InstallUri = PtrSchemaStr(d, "activation_path")
 	dto.OverwriteOriginalSetup = PtrSchemaBool(d, "activation_override_setup")
 	dto.Location = PtrSchemaStr(d, "activation_remote_target")
+
+	// TODO : dto.SetBindingLocation
 
 	return *dto, err
 }
