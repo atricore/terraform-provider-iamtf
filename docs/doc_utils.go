@@ -59,6 +59,19 @@ func GenerateDocs(out string, src string) error {
 		errWrap = errors.Wrap(err, "iamtf_idp")
 	}
 
+	err = genResource("iamtf_idp_facebook", iamtf.ResourceIdFacebook())
+	if err != nil {
+		errWrap = errors.Wrap(err, "iamtf_idp_facebook")
+	}
+	err = genResource("iamtf_idp_google", iamtf.ResourceidGoogle())
+	if err != nil {
+		errWrap = errors.Wrap(err, "iamtf_idp_google")
+	}
+	err = genResource("iamtf_idp_azure", iamtf.ResourceidAzure())
+	if err != nil {
+		errWrap = errors.Wrap(err, "iamtf_idp_azure")
+	}
+
 	// 4. Identity Sources/Vaults
 	err = genResource("iamtf_idsource_db", iamtf.ResourcedbidSource())
 	if err != nil {
@@ -85,6 +98,10 @@ func GenerateDocs(out string, src string) error {
 	err = genResource("iamtf_app_saml2", iamtf.ResourceExtSaml2Sp())
 	if err != nil {
 		errWrap = errors.Wrap(err, "iamtf_app_saml2")
+	}
+	err = genResource("iamtf_app_sharepoint", iamtf.ResourceSharePoint())
+	if err != nil {
+		errWrap = errors.Wrap(err, "iamtf_app_sharepoint")
 	}
 
 	// 6. Execution Environments

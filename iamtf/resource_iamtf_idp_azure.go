@@ -48,12 +48,12 @@ func ResourceidAzure() *schema.Resource {
 			"authz_token_service": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "token endpoint: https://login.microsoft.com/<tenant>/oauth2/v2.0/authorize",
+				Description: "token endpoint: https://login.microsoft.com/{tenant}/oauth2/v2.0/authorize",
 			},
 			"access_token_service": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "authorization endpiont: https://login.microsoft.com/<tenant>/oauth2/v2.0/token",
+				Description: "authorization endpiont: https://login.microsoft.com/{tenant}/oauth2/v2.0/token",
 			},
 			"ida": {
 				Type:        schema.TypeString,
