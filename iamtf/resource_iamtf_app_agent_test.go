@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJosso1Re_crud(t *testing.T) {
+func TestAccAppAgentRe_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(josso1Rs)
 	config := mgr.GetFixtures("app_agent.tf", ri, t)
@@ -53,7 +53,7 @@ func TestAccJosso1Re_crud(t *testing.T) {
 	})
 }
 
-func TestAccJosso1Re_crud1(t *testing.T) {
+func TestAcc1Re_crud1(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(josso1Rs)
 	config := mgr.GetFixtures("app_agent_1.tf", ri, t)

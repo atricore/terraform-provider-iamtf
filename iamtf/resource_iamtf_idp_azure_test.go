@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIdAzure_crud(t *testing.T) {
+func TestAccIdAzure_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(azure)
 	config := mgr.GetFixtures("idp_azure.tf", ri, t)

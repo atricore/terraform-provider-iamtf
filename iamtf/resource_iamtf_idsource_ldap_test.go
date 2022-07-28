@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIdSourceLdap_crud(t *testing.T) {
+func TestAccIdSourceLdap_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idSourceLdap)
 	config := mgr.GetFixtures("idsource_ldap.tf", ri, t)

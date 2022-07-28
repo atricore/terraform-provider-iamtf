@@ -45,6 +45,27 @@ func ResourceExtSaml2Sp() *schema.Resource {
 				Description: "SAML 2 service provider XML metadata descriptor",
 				Required:    true,
 			},
+			"idp": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Computed:    true,
+				Description: "SP to IDP SAML 2 settings",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "name of the trusted IdP",
+						},
+						"is_preferred": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Default:     true,
+							Description: "identifies this IdP as the preferred one (only one IdP must be set to preferred)",
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -152,6 +173,13 @@ func buildExtSaml2SpDTO(d *schema.ResourceData) (api.ExternalSaml2ServiceProvide
 	m.SetName(fmt.Sprintf("%s-md", dto.GetName()))
 	dto.SetMetadata(*m)
 
+	// Federated connections / idps
+	// SP side of federated connection is for the SP
+	dto.FederatedConnectionsB, err = convertExtSsamlSp_IdPFederatedConnectionsMapArrToDTOs(dto, d, d.Get("idp"))
+	if err != nil {
+		return *dto, err
+	}
+
 	return *dto, err
 }
 
@@ -164,5 +192,71 @@ func buildExtSaml2SpResource(d *schema.ResourceData, dto api.ExternalSaml2Servic
 	m := dto.GetMetadata()
 	_ = d.Set("metadata", m.GetValue())
 
+	// Federated connections / idps
+	idps, err := convertExtSaml2_IdPFederatedConnectionsToMapArr(dto.FederatedConnectionsB)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("idp", idps)
+
 	return nil
+}
+
+func convertExtSaml2_IdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
+
+	result := make([]map[string]interface{}, 0)
+
+	for _, fc := range fcs {
+
+		idpChannel, err := fc.GetIDPChannel()
+		if err != nil {
+			return result, err
+		}
+		idp_map := map[string]interface{}{
+			"name":         fc.GetName(),
+			"is_preferred": idpChannel.GetPreferred(),
+		}
+		result = append(result, idp_map)
+
+	}
+
+	return result, nil
+}
+
+func convertExtSsamlSp_IdPFederatedConnectionsMapArrToDTOs(sp *api.ExternalSaml2ServiceProviderDTO, d *schema.ResourceData, idp interface{}) ([]api.FederatedConnectionDTO, error) {
+	result := make([]api.FederatedConnectionDTO, 0)
+	ls, ok := idp.([]interface{})
+	if !ok {
+		return result, fmt.Errorf("invalid type: %T", idp)
+	}
+
+	for _, v := range ls {
+		// 1. For each IdP(terraform), create a FederatedConnection
+		// Store all connections in sp.FederatedConnectionsB array.
+		// The idp name is to be used as the federated connection name
+		// 2. Each connection will have a FederatedChannel,
+		// Create an IDPChannel and use convertion function to get FederatecChannel
+		// Store the FederatedChannel in the federatedConnection.federatedChannelB member/element/var
+		m, ok := v.(map[string]interface{})
+		if !ok {
+			return result, fmt.Errorf("invalid element type: %T", v)
+		}
+
+		// build new federatedconnectionDTO
+		c := api.NewFederatedConnectionDTO()
+		c.AdditionalProperties = make(map[string]interface{})
+
+		c.SetName(m["name"].(string))
+		c.AdditionalProperties["@c"] = ".FederatedConnectionDTO"
+
+		// from federatedconnectionDTO.Channelb values
+		idpChannel := api.NewIdentityProviderChannelDTO()
+		// Assing values for preferred option
+		idpChannel.SetPreferred(m["is_preferred"].(bool))
+
+		idpChannel.SetOverrideProviderSetup(false)
+		c.SetIDPChannel(idpChannel)
+		result = append(result, *c)
+	}
+	return result, nil
 }

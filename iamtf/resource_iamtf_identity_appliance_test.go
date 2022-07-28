@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIdentityAppliance_crud(t *testing.T) {
+func TestAccIdentityAppliance_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(identityAppliance)
 	config := mgr.GetFixtures("ida.tf", ri, t)

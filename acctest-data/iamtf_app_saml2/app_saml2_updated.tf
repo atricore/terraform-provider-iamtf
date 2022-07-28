@@ -28,11 +28,17 @@ resource "iamtf_idp" "test" {
 
 
 resource "iamtf_app_saml2" "test" {
-  ida  = iamtf_identity_appliance.test.name // Required, no default
-  name = "sp-replace_with_uuid"            // Required, no default
+  ida         = iamtf_identity_appliance.test.name // Required, no default
+  name        = "sp-replace_with_uuid"             // Required, no default
   description = "SP 1 #replace_with_uuid"
 
   metadata = filebase64("../../acctest-data/iamtf_app_saml2/md.xml")
+
+
+  idp {
+    name         = iamtf_idp.test.name
+    is_preferred = false
+  }
 
   depends_on = [
     iamtf_idp.test

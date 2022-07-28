@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIdGoogle_crud(t *testing.T) {
+func TestAccIdGoogle_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(google)
 	config := mgr.GetFixtures("idp_google.tf", ri, t)

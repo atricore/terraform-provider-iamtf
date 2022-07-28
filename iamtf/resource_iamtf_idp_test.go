@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIdP_crud(t *testing.T) {
+func TestAccIdP_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idp)
 	config := mgr.GetFixtures("idp.tf", ri, t)
@@ -39,7 +39,7 @@ func TestAccJossoIdP_crud(t *testing.T) {
 	})
 }
 
-func TestAccJossoIdP_crud1(t *testing.T) {
+func TestAccIdP_crud1(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idp)
 	config := mgr.GetFixtures("idp_1.tf", ri, t)
@@ -68,7 +68,7 @@ func TestAccJossoIdP_crud1(t *testing.T) {
 	})
 }
 
-func TestAccJossoIdP_AuthnWia_crud(t *testing.T) {
+func TestAccIdP_AuthnWia_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idp)
 	config := mgr.GetFixtures("idp_authn_wia.tf", ri, t)
@@ -97,7 +97,7 @@ func TestAccJossoIdP_AuthnWia_crud(t *testing.T) {
 	})
 }
 
-func TestAccJossoIdP_Attrs1_crud(t *testing.T) {
+func TestAccIdP_Attrs1_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idp)
 	config := mgr.GetFixtures("idp_attrs_1.tf", ri, t)

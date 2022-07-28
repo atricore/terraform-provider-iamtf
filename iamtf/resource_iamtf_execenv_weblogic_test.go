@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoWebLogic_crud(t *testing.T) {
+func TestAccWebLogic_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(weblogic)
 	config := mgr.GetFixtures("app_weblogic.tf", ri, t)

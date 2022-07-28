@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIdVault_crud(t *testing.T) {
+func TestAccIdVault_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idVault)
 	config := mgr.GetFixtures("idvault.tf", ri, t)

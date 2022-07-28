@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoDataSourceIdentityAppliance_read(t *testing.T) {
+func TestAccDataSourceIdentityAppliance_read(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(identityAppliance)
 	identityApplianceConfig := mgr.GetFixtures("generic_ida.tf", ri, t)

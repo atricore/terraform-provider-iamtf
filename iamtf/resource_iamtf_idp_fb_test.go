@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoIdFacebook_crud(t *testing.T) {
+func TestAccIdFacebook_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(idFacebook)
 	config := mgr.GetFixtures("idp_facebook.tf", ri, t)

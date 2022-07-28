@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoTomcat_crud(t *testing.T) {
+func TestAccTomcat_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(tomcat)
 	config := mgr.GetFixtures("tomcat.tf", ri, t)

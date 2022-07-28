@@ -8,7 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccJossoExtSaml2Sp_crud(t *testing.T) {
+func TestAccExtSaml2Sp_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(extSaml2Sp)
 	config := mgr.GetFixtures("app_saml2.tf", ri, t)
