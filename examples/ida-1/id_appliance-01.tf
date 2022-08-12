@@ -26,6 +26,23 @@ resource "iamtf_idp" "idp" {
     password = "changeme"
   }
 
+  authn_bind_ldap {
+    priority          = 0
+    provider_url      = "ldap://localhost:389"
+    username          = "cn=admin,dc=mycompany,dc=com"
+    password          = "chageme"
+    authentication    = "strong"
+    password_policy   = "none"
+    perform_dn_search = false
+    users_ctx_dn      = "ou=People,dc=mycompany,dc=com"
+    userid_attr       = "uid"
+
+    saml_authn_ctx    = "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+    referrals         = "ignore"
+    operational_attrs = true
+
+  }
+
   id_sources = [iamtf_idvault.sso-users.name]
   depends_on = [
     iamtf_idvault.sso-users
