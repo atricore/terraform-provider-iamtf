@@ -1,0 +1,52 @@
+version: 1
+
+dn: dc=acct02,dc=atricore,dc=com
+objectClass: organization
+objectClass: dcObject
+dc: acct02
+o: example
+
+dn: ou=users,dc=acct02,dc=atricore,dc=com
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=groups,dc=acct02,dc=atricore,dc=com
+objectClass: organizationalUnit
+ou: groups
+
+dn: cn=user1,ou=users,dc=acct02,dc=atricore,dc=com
+objectClass: shadowAccount
+objectClass: posixAccount
+objectClass: inetOrgPerson
+cn: User1
+gidNumber: 1000
+homeDirectory: /home/user1
+sn: Bar1
+uid: user1
+uidNumber: 1000
+userPassword:: dXNlcjFwd2Q=
+mail: user1@atricore.com
+
+dn: cn=user2,ou=users,dc=acct02,dc=atricore,dc=com
+objectClass: shadowAccount
+objectClass: posixAccount
+objectClass: inetOrgPerson
+cn: User2
+gidNumber: 1001
+homeDirectory: /home/user2
+sn: Bar2
+uid: user2
+uidNumber: 1001
+userPassword:: dXNlcjJwd2Q=
+mail: user2@atricore.com
+
+dn: cn=role1,ou=groups,dc=acct02,dc=atricore,dc=com
+objectClass: groupOfNames
+cn: readers
+member: cn=user1,ou=users,dc=acct02,dc=atricore,dc=com
+member: cn=user2,ou=users,dc=acct02,dc=atricore,dc=com
+
+dn: cn=role2,ou=groups,dc=acct02,dc=atricore,dc=com
+objectClass: groupOfNames
+cn: readers
+member: cn=user1,ou=users,dc=acct02,dc=atricore,dc=com
