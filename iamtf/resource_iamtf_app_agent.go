@@ -375,7 +375,7 @@ func convertSPSaml2MapArrToDTO(saml2_arr interface{}, sp *api.InternalSaml2Servi
 	al := api.NewAccountLinkagePolicyDTO()
 	al.AdditionalProperties = make(map[string]interface{})
 	al.AdditionalProperties["@c"] = ".AccountLinkagePolicyDTO"
-	al.SetName(fmt.Sprintf("%s-account-linkage" + sp.GetName()))
+	// TODO : support for custom mappings : al.SetName(api.AsStringDef(m["account_linkage_name"], "my-account-linkage", true))
 	al.SetLinkEmitterType(api.AsStringDef(m["account_linkage"], "ONE_TO_ONE", true))
 	sp.SetAccountLinkagePolicy(*al)
 
@@ -383,7 +383,7 @@ func convertSPSaml2MapArrToDTO(saml2_arr interface{}, sp *api.InternalSaml2Servi
 	im := api.NewIdentityMappingPolicyDTO()
 	im.AdditionalProperties = make(map[string]interface{})
 	im.AdditionalProperties["@c"] = ".IdentityMappingPolicyDTO"
-	im.SetName(fmt.Sprintf("%s-identity-mapping" + sp.GetName()))
+	// TODO : support for custom mappings : im.SetName(api.AsStringDef(m["identity_mapping_name"], "my-identity-mapping", true))
 	im.SetMappingType(api.AsStringDef(m["identity_mapping"], "REMOTE", true))
 	sp.SetIdentityMappingPolicy(*im)
 

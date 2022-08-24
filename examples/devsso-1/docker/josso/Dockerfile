@@ -1,7 +1,9 @@
-FROM  atricore/josso:latest
+FROM  atricore/josso-ee:latest
 
-COPY ./atricore.lic /opt/atricore/josso/server/etc/atricore.lic
+COPY ./atricore.lic /opt/atricore/josso-ee/server/etc/atricore.lic
 
-RUN chown -R atricore /opt/atricore/josso
+COPY host.key /opt/atricore/josso-ee/server/etc/host.key
 
-RUN chgrp -R atricore /opt/atricore/josso
+RUN chown -R atricore /opt/atricore
+
+RUN chgrp -R atricore /opt/atricore

@@ -1304,15 +1304,16 @@ func convertAttributeProfileMapArrToDTOs(idp *api.IdentityProviderDTO, attrs int
 
 	switch profile {
 	case "JOSSO":
-		af := api.NewJOSSOAttributeProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+		af := api.NewJOSSOAttributeProfileDTOInit("josso-built-in")
 		return af.ToAttrProfile()
 	case "BASIC":
-		af := api.NewBasicAttributeProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+		af := api.NewBasicAttributeProfileDTOInit("basic-built-in")
 		return af.ToAttrProfile()
 	case "ONE_TO_ONE":
-		af := api.NewOneToOneAttributeProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+		af := api.NewOneToOneAttributeProfileDTOInit("one-to-one-built-in")
 		return af.ToAttrProfile()
 	case "CUSTOM":
+
 		af := api.NewAttriburteMapperProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
 
 		af.SetIncludeNonMappedProperties(include_unmapped_claims)
