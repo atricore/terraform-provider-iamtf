@@ -1,20 +1,20 @@
 version: 1
 
-dn: dc=acct02,dc=atricore,dc=com
+dn: dc=devsso1,dc=atricore,dc=com
 objectClass: organization
 objectClass: dcObject
-dc: acct02
-o: example
+dc: devsso1
+o: sso
 
-dn: ou=users,dc=acct02,dc=atricore,dc=com
+dn: ou=users,dc=devsso1,dc=atricore,dc=com
 objectClass: organizationalUnit
 ou: users
 
-dn: ou=groups,dc=acct02,dc=atricore,dc=com
+dn: ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: organizationalUnit
 ou: groups
 
-dn: cn=user1,ou=users,dc=acct02,dc=atricore,dc=com
+dn: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com
 objectClass: shadowAccount
 objectClass: posixAccount
 objectClass: inetOrgPerson
@@ -27,7 +27,7 @@ uidNumber: 1000
 userPassword:: dXNlcjFwd2Q=
 mail: user1@atricore.com
 
-dn: cn=user2,ou=users,dc=acct02,dc=atricore,dc=com
+dn: cn=user2,ou=users,dc=devsso1,dc=atricore,dc=com
 objectClass: shadowAccount
 objectClass: posixAccount
 objectClass: inetOrgPerson
@@ -40,13 +40,13 @@ uidNumber: 1001
 userPassword:: dXNlcjJwd2Q=
 mail: user2@atricore.com
 
-dn: cn=role1,ou=groups,dc=acct02,dc=atricore,dc=com
+dn: cn=role1,ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: groupOfNames
 cn: readers
-member: cn=user1,ou=users,dc=acct02,dc=atricore,dc=com
-member: cn=user2,ou=users,dc=acct02,dc=atricore,dc=com
+member: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com
+member: cn=user2,ou=users,dc=devsso1,dc=atricore,dc=com
 
-dn: cn=role2,ou=groups,dc=acct02,dc=atricore,dc=com
+dn: cn=role2,ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: groupOfNames
 cn: readers
-member: cn=user1,ou=users,dc=acct02,dc=atricore,dc=com
+member: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com

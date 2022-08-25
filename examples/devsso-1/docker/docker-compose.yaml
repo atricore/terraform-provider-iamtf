@@ -12,13 +12,11 @@ services:
       - '1636:1636'
     environment:
       - LDAP_ADMIN_USERNAME=admin
-      - LDAP_ADMIN_PASSWORD=adminpassword
-      - LDAP_USERS=user01,user02
-      - LDAP_PASSWORDS=password1,password2
+      - LDAP_ADMIN_PASSWORD=secret
+      - LDAP_ROOT=dc=devsso1,dc=atricore,dc=com
+      - LDAP_LOGLEVEL=-1
     networks:
       - my-network
-    volumes:
-      - 'openldap_data:/bitnami/openldap'
   josso:
     build: josso
     ports:
@@ -36,7 +34,7 @@ services:
       - my-network
 
   josso-wb:
-    image: atricore/josso-wb:latest
+    image: atricore/josso-wb:3.1.0-unstable
     ports:
       - '8082:8082'
     networks:

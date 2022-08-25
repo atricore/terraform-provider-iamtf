@@ -9,13 +9,13 @@ resource "iamtf_idp" "idp-1" {
 
   authn_bind_ldap {
     priority          = 0
-    provider_url      = "ldap://localhost:389"
-    username          = "cn=admin,dc=mycompany,dc=com"
-    password          = "chageme"
-    authentication    = "strong"
+    provider_url      = "ldap://openldap:1389"
+    username          = "admin"
+    password          = "secret"
+    authentication    = "simple"
     password_policy   = "none"
     perform_dn_search = false
-    users_ctx_dn      = "ou=People,dc=mycompany,dc=com"
+    users_ctx_dn      = "ou=users,dc=devsso1,dc=atricore,dc=com"
     userid_attr       = "uid"
 
     saml_authn_ctx    = "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"

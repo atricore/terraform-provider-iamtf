@@ -2,14 +2,14 @@
 resource "iamtf_idsource_ldap" "ad-users" {
     ida             = iamtf_identity_appliance.devsso-1.name
     name            = "ad-users"
-    provider_url    = "ldap://localhost:10389"
-    username        = "uid=admin,ou=system"
-    password        = "secret1"
-    users_ctx_dn    = "dc=example,dc=com,ou=IAM,ou=People"
+    provider_url    = "ldap://openldap:1389"
+    username        = "admin"
+    password        = "secret"
+    users_ctx_dn    = "ou=users,dc=devsso,dc=atricore,dc=com"
     userid_attr     = "uid"
-    groups_ctx_dn   = "dc=example,dc=com,ou=IAM,ou=Groups"
+    groups_ctx_dn   = "ou=groups,dc=devsso,dc=atricore,dc=com"
     groupid_attr    = "cn"
-    groupmember_attr = "uniquemember"
+    groupmember_attr = "member"
     
     user_attributes {
         attribute = "cn"

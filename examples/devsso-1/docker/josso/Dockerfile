@@ -1,4 +1,4 @@
-FROM  atricore/josso-ee:latest
+FROM  atricore/josso-ee:2.6.0-unstable
 
 COPY ./atricore.lic /opt/atricore/josso-ee/server/etc/atricore.lic
 
