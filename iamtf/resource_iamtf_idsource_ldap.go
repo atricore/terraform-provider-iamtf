@@ -263,10 +263,10 @@ func buildIdSourceLdapDTO(d *schema.ResourceData) (api.LdapIdentitySourceDTO, er
 	dto.SecurityAuthentication = PtrSchemaStr(d, "authentication")
 	dto.LdapSearchScope = PtrSchemaStr(d, "search_scope")
 	dto.UsersCtxDN = PtrSchemaStr(d, "users_ctx_dn")
-	dto.UidAttributeID = PtrSchemaStr(d, "userid_attr")
+	dto.PrincipalUidAttributeID = PtrSchemaStr(d, "userid_attr")
 	dto.RolesCtxDN = PtrSchemaStr(d, "groups_ctx_dn")
 	dto.RoleAttributeID = PtrSchemaStr(d, "groupid_attr")
-	dto.PrincipalUidAttributeID = PtrSchemaStr(d, "groupmember_attr")
+	dto.UidAttributeID = PtrSchemaStr(d, "groupmember_attr")
 	dto.RoleMatchingMode = PtrSchemaStr(d, "group_match_mode")
 
 	if v, ok := d.Get("user_attributes").([]interface{}); ok {
@@ -302,10 +302,10 @@ func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourc
 	d.Set("authentication", cli.StrDeref(dto.SecurityAuthentication))
 	d.Set("search_scope", cli.StrDeref(dto.LdapSearchScope))
 	d.Set("users_ctx_dn", cli.StrDeref(dto.UsersCtxDN))
-	d.Set("userid_attr", cli.StrDeref(dto.UidAttributeID))
+	d.Set("userid_attr", cli.StrDeref(dto.PrincipalUidAttributeID))
 	d.Set("groups_ctx_dn", cli.StrDeref(dto.RolesCtxDN))
 	d.Set("groupid_attr", cli.StrDeref(dto.RoleAttributeID))
-	d.Set("groupmember_attr", cli.StrDeref(dto.PrincipalUidAttributeID))
+	d.Set("groupmember_attr", cli.StrDeref(dto.UidAttributeID))
 	d.Set("group_match_mode", cli.StrDeref(dto.RoleMatchingMode))
 
 	atrs, err := unflattenUserAttrs(cli.StrDeref(dto.UserPropertiesQueryString))

@@ -10,7 +10,7 @@ resource "iamtf_idp" "idp-1" {
   authn_bind_ldap {
     priority          = 0
     provider_url      = "ldap://openldap:1389"
-    username          = "admin"
+    username          = "cn=admin,dc=devsso1,dc=atricore,dc=com"
     password          = "secret"
     authentication    = "simple"
     password_policy   = "none"
@@ -19,7 +19,7 @@ resource "iamtf_idp" "idp-1" {
     userid_attr       = "uid"
 
     saml_authn_ctx    = "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
-    referrals         = "ignore"
+    referrals         = "follow"
     operational_attrs = true
 
   }

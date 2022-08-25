@@ -14,7 +14,7 @@ dn: ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: organizationalUnit
 ou: groups
 
-dn: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com
+dn: uid=user1,ou=users,dc=devsso1,dc=atricore,dc=com
 objectClass: shadowAccount
 objectClass: posixAccount
 objectClass: inetOrgPerson
@@ -27,7 +27,7 @@ uidNumber: 1000
 userPassword:: dXNlcjFwd2Q=
 mail: user1@atricore.com
 
-dn: cn=user2,ou=users,dc=devsso1,dc=atricore,dc=com
+dn: uid=user2,ou=users,dc=devsso1,dc=atricore,dc=com
 objectClass: shadowAccount
 objectClass: posixAccount
 objectClass: inetOrgPerson
@@ -42,11 +42,11 @@ mail: user2@atricore.com
 
 dn: cn=role1,ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: groupOfNames
-cn: readers
+cn: role1
 member: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com
 member: cn=user2,ou=users,dc=devsso1,dc=atricore,dc=com
 
 dn: cn=role2,ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: groupOfNames
-cn: readers
+cn: role2
 member: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com
