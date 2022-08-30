@@ -11,7 +11,7 @@ resource "iamtf_execenv_weblogic" "wl" {
 resource "iamtf_app_agent" "partnerapp1" {
   ida          = iamtf_identity_appliance.devsso-1.name
   name         = "partnerapp1"
-  app_location = "http://localhost:8080/partnerapp-1"
+  app_location = "https://dev.atricore.com/partnerapp"
 
   keystore {
     resource     = filebase64("./saml.p12")

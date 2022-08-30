@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:ns2="http://www.springframework.org/schema/util" xmlns:ns3="http://www.springframework.org/schema/osgi-compendium" xmlns:ns4="http://www.springframework.org/schema/osgi" xmlns:ns5="http://www.springframework.org/schema/context" xmlns:ns6="http://www.ops4j.org/schema/wicket" xmlns:ns7="http://www.springframework.org/schema/tool" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd http://www.ops4j.org/schema/wicket http://www.ops4j.org/schema/wicket/wicket.xsd ">
+    <bean class="org.josso.wls12.agent.WLSSSOAgent" name="josso-wl12-agent">
+        <property name="sessionAccessMinInterval">
+            <value>1000</value>
+        </property>
+        <property name="gatewayLoginUrl">
+            <value>https://devsso.atricore.com/IDBUS/DEVSSO-1/WL/JOSSO/SSO/REDIR</value>
+        </property>
+        <property name="gatewayLogoutUrl">
+            <value>https://devsso.atricore.com/IDBUS/DEVSSO-1/WL/JOSSO/SLO/REDIR</value>
+        </property>
+        <property name="gatewayServiceLocator">
+            <bean class="org.josso.gateway.jaxws.JAXWSWebserviceGatewayServiceLocator">
+                <property name="endpoint">
+                    <value>localhost:8081</value>
+                </property>
+                <property name="sessionManagerServicePath">
+                    <value>IDBUS/DEVSSO-1/WL/JOSSO/SSOSessionManager/SOAP</value>
+                </property>
+                <property name="identityManagerServicePath">
+                    <value>IDBUS/DEVSSO-1/WL/JOSSO/SSOIdentityManager/SOAP</value>
+                </property>
+                <property name="identityProviderServicePath">
+                    <value>IDBUS/DEVSSO-1/WL/JOSSO/SSOIdentityProvider/SOAP</value>
+                </property>
+            </bean>
+        </property>
+        <property name="parametersBuilders">
+            <list>
+                <bean class="org.josso.agent.http.AppIdParametersBuilder"/>
+            </list>
+        </property>
+        <property name="automaticLoginStrategies">
+            <list>
+                <bean class="org.josso.agent.http.DefaultAutomaticLoginStrategy">
+                    <property name="mode">
+                        <value>REQUIRED</value>
+                    </property>
+                    <property name="ignoredReferrers">
+                        <list>
+                            <value>https://devsso.atricore.com/IDBUS/DEVSSO-1</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="configuration">
+            <bean class="org.josso.agent.SSOAgentConfigurationImpl">
+                <property name="ssoPartnerApps">
+                    <list>
+                        <bean class="org.josso.agent.SSOPartnerAppConfig">
+                            <property name="id">
+                                <value>partnerapp1-sp</value>
+                            </property>
+                            <property name="context">
+                                <value>/partnerapp</value>
+                            </property>
+                            <property name="defaultResource">
+                                <value></value>
+                            </property>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>

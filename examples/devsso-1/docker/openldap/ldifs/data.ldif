@@ -43,10 +43,10 @@ mail: user2@atricore.com
 dn: cn=role1,ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: groupOfNames
 cn: role1
-member: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com
-member: cn=user2,ou=users,dc=devsso1,dc=atricore,dc=com
+member: uid=user1,ou=users,dc=devsso1,dc=atricore,dc=com
+member: uid=user2,ou=users,dc=devsso1,dc=atricore,dc=com
 
 dn: cn=role2,ou=groups,dc=devsso1,dc=atricore,dc=com
 objectClass: groupOfNames
 cn: role2
-member: cn=user1,ou=users,dc=devsso1,dc=atricore,dc=com
+member: uid=user1,ou=users,dc=devsso1,dc=atricore,dc=com
