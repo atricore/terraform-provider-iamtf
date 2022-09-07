@@ -6,25 +6,34 @@ resource "iamtf_identity_appliance" "test" {
 }
 
 resource "iamtf_idsource_db" "test" {
-    acquireincrement                  = 2
-    admin                             = "usr-dbid"
-    connectionurl                     = "jdbc:mysql:localhost/%s?create=true"
-    credentialsquerystring            = "SELECT PASSWORD FROM JOSSO_USER WHERE LOGIN = ?"
-    description                       = "Descrip"
-    drivername                        = "org.mysql.driver"
-    idleconnectiontestperiod          = 2
-    initialpoolsize                   = 11
-    maxidletime                       = 16
-    maxpoolsize                       = 21
-    minpoolsize                       = 2
+
     name                              = "dbid-replace_with_uuid"
-    password                          = "pdw-dbid"
-    pooleddatasource                  = false
-    relaycredentialquerystring        = "n/a"
-    resetcredentialdml                = ""
-    rolesquerystring                  = "SELECT R.ROLE FROM JOSSO_USER U"
-    usecolumnnamesaspropertynames     = false
-    userpropertiesquerystring         = "EMAIL"
-    userquerystring                   = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN = ?"
     ida                               = iamtf_identity_appliance.test.name
+
+      connectionurl = "jdbc:mysql:localhost/%s?create=true"
+  drivername    = "org.mysql.driver"
+
+  description = "SSO Users (Mysql DB)"
+  admin       = "usr-dbid"
+  password    = "pdw-dbid"
+
+  # DB pool
+  pooleddatasource         = true
+  acquireincrement         = 1
+  idleconnectiontestperiod = 1
+  initialpoolsize          = 10
+  maxidletime              = 15
+  maxpoolsize              = 20
+  minpoolsize              = 1
+
+
+  # SQL to retrieve user information
+  sql_user             = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN1 = ?"
+  sql_user_attrs       = "LASTNAME1"
+  sql_credentials      = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN1 = ?"
+  sql_relay_credential = "n/a1"
+  sql_groups           = "SELECT R.ROLE FROM JOSSO_ROLE1 R"
+  dml_reset_credential = "1"
+
+  use_column_name_as_property_name = true
 }
