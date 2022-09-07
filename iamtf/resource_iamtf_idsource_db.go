@@ -34,7 +34,7 @@ func ResourcedbidSource() *schema.Resource {
 				Required:    true,
 				Description: "dbidentitysource connectionurl",
 			},
-			"credentialsquerystring": {
+			"sql_credentials": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "dbidentitysource credentialsquerystring",
@@ -89,32 +89,32 @@ func ResourcedbidSource() *schema.Resource {
 				Required:    true,
 				Description: "dbidentitysource pooleddatasource",
 			},
-			"relaycredentialquerystring": {
+			"sql_relay_credential": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "dbidentitysource relaycredentialquerystring",
 			},
-			"resetcredentialdml": {
+			"dml_reset_credential": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "dbidentitysource resetcredentialdml",
 			},
-			"rolesquerystring": {
+			"sql_groups": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "dbidentitysource rolesquerystring",
 			},
-			"usecolumnnamesaspropertynames": {
+			"use_column_name_as_property_name": {
 				Type:        schema.TypeBool,
 				Required:    true,
 				Description: "dbidentitysource usecolumnnamesaspropertynames",
 			},
-			"userpropertiesquerystring": {
+			"sql_user_attrs": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "dbidentitysource userpropertiesquerystring",
 			},
-			"userquerystring": {
+			"sql_user": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "dbidentitysource userquerystring",
@@ -224,7 +224,7 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	dto.AcquireIncrement = PtrSchemaInt32(d, "acquireincrement")
 	dto.Admin = PtrSchemaStr(d, "admin")
 	dto.ConnectionUrl = PtrSchemaStr(d, "connectionurl")
-	dto.CredentialsQueryString = PtrSchemaStr(d, "credentialsquerystring")
+	dto.CredentialsQueryString = PtrSchemaStr(d, "sql_credentials")
 	dto.Description = PtrSchemaStr(d, "description")
 	dto.DriverName = PtrSchemaStr(d, "drivername")
 	dto.IdleConnectionTestPeriod = PtrSchemaInt32(d, "idleconnectiontestperiod")
@@ -235,12 +235,12 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	dto.Name = PtrSchemaStr(d, "name")
 	dto.Password = PtrSchemaStr(d, "password")
 	dto.PooledDatasource = PtrSchemaBool(d, "pooleddatasource")
-	dto.RelayCredentialQueryString = PtrSchemaStr(d, "relaycredentialquerystring")
-	dto.ResetCredentialDml = PtrSchemaStr(d, "resetcredentialdml")
-	dto.RolesQueryString = PtrSchemaStr(d, "rolesquerystring")
-	dto.UseColumnNamesAsPropertyNames = PtrSchemaBool(d, "usecolumnnamesaspropertynames")
-	dto.UserPropertiesQueryString = PtrSchemaStr(d, "userpropertiesquerystring")
-	dto.UserQueryString = PtrSchemaStr(d, "userquerystring")
+	dto.RelayCredentialQueryString = PtrSchemaStr(d, "sql_relay_credential")
+	dto.ResetCredentialDml = PtrSchemaStr(d, "dml_reset_credential")
+	dto.RolesQueryString = PtrSchemaStr(d, "sql_groups")
+	dto.UseColumnNamesAsPropertyNames = PtrSchemaBool(d, "use_column_name_as_property_name")
+	dto.UserPropertiesQueryString = PtrSchemaStr(d, "sql_user_attrs")
+	dto.UserQueryString = PtrSchemaStr(d, "sql_user")
 
 	return *dto, err
 }
@@ -250,7 +250,7 @@ func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO
 	_ = d.Set("acquireincrement", dto.GetAcquireIncrement())
 	_ = d.Set("admin", dto.GetAdmin())
 	_ = d.Set("connectionurl", dto.GetConnectionUrl())
-	_ = d.Set("credentialsquerystring", dto.GetCredentialsQueryString())
+	_ = d.Set("sql_credentials", dto.GetCredentialsQueryString())
 	_ = d.Set("description", dto.GetDescription())
 	_ = d.Set("drivername", dto.GetDriverName())
 	_ = d.Set("idleconnectiontestperiod", dto.GetIdleConnectionTestPeriod())
@@ -261,12 +261,12 @@ func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO
 	_ = d.Set("name", dto.GetName())
 	_ = d.Set("password", dto.GetPassword())
 	_ = d.Set("pooleddatasource", dto.GetPooledDatasource())
-	_ = d.Set("relaycredentialquerystring", dto.GetRelayCredentialQueryString())
-	_ = d.Set("resetcredentialdml", dto.GetResetCredentialDml())
-	_ = d.Set("rolesquerystring", dto.GetRolesQueryString())
-	_ = d.Set("usecolumnnamesaspropertynames", dto.GetUseColumnNamesAsPropertyNames())
-	_ = d.Set("userpropertiesquerystring", dto.GetUserPropertiesQueryString())
-	_ = d.Set("userquerystring", dto.GetUserQueryString())
+	_ = d.Set("sql_relay_credential", dto.GetRelayCredentialQueryString())
+	_ = d.Set("dml_reset_credential", dto.GetResetCredentialDml())
+	_ = d.Set("sql_groups", dto.GetRolesQueryString())
+	_ = d.Set("use_column_name_as_property_name", dto.GetUseColumnNamesAsPropertyNames())
+	_ = d.Set("sql_user_attrs", dto.GetUserPropertiesQueryString())
+	_ = d.Set("sql_user", dto.GetUserQueryString())
 
 	return nil
 }

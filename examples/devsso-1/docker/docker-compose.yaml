@@ -1,4 +1,4 @@
-version: '2'
+version: '3.8'
 
 networks:
   my-network:
@@ -14,22 +14,20 @@ services:
       - LDAP_ADMIN_USERNAME=admin
       - LDAP_ADMIN_PASSWORD=secret
       - LDAP_ROOT=dc=devsso1,dc=atricore,dc=com
-      - LDAP_LOGLEVEL=-1
     networks:
       - my-network
+
   josso:
     build: josso
     ports:
       - '8081:8081'
       - '8101:8101'
-      - '5005:5005'
     environment:
         - JOSSO_CLIENT_ID=idbus-f2f7244e-bbce-44ca-8b33-f5c0bde339f7
         - JOSSO_CLIENT_SECRET=7oUHlv(HLT%vxK4L
         - JOSSO_ADMIN_USR=myadmin
         - JOSSO_ADMIN_PWD=changeme
         - JOSSO_SKIP_ADMIN_CREATE=false
-        - KARAF_DEBUG=true
     networks:
       - my-network
 
@@ -39,8 +37,3 @@ services:
       - '8082:8082'
     networks:
       - my-network
-
-      
-volumes:
-  openldap_data:
-    driver: local

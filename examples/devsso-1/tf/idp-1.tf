@@ -15,6 +15,8 @@ resource "iamtf_idp" "idp-1" {
     authentication    = "simple"
     password_policy   = "none"
     perform_dn_search = false
+
+    // Users
     users_ctx_dn      = "ou=users,dc=devsso1,dc=atricore,dc=com"
     userid_attr       = "uid"
 
