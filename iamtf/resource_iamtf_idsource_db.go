@@ -24,7 +24,7 @@ func ResourcedbidSource() *schema.Resource {
 				Required:    true,
 				Description: "dbidentitysource name",
 			},
-			"admin": {
+			"username": {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: "dbidentitysource admin",
@@ -81,7 +81,7 @@ func ResourcedbidSource() *schema.Resource {
 			},
 			"password": {
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
 				Description: "dbidentitysource password",
 			},
 			"pooleddatasource": {

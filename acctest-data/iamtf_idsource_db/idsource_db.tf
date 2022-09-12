@@ -7,14 +7,14 @@ resource "iamtf_identity_appliance" "test" {
 
 resource "iamtf_idsource_db" "test" {
 
-    name                              = "dbid-replace_with_uuid"
-    ida                               = iamtf_identity_appliance.test.name
+  name = "dbid-replace_with_uuid"
+  ida  = iamtf_identity_appliance.test.name
 
-      connectionurl = "jdbc:mysql:localhost/%s?create=true"
+  connectionurl = "jdbc:mysql:localhost/%s?create=true"
   drivername    = "org.mysql.driver"
 
   description = "SSO Users (Mysql DB)"
-  admin       = "usr-dbid"
+  username    = "usr-dbid"
   password    = "pdw-dbid"
 
   # DB pool

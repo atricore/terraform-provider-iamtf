@@ -14,7 +14,7 @@ resource "iamtf_idsource_db" "test" {
   drivername    = "org.mysql.driver"
 
   description = "SSO Users (Mysql DB)"
-  admin       = "usr-dbid"
+  username    = "usr-dbid"
   password    = "pdw-dbid"
 
   # DB pool

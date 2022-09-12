@@ -48,8 +48,8 @@ dep: # Download required dependencies
 	go mod vendor
 
 # For develoeprs!
-dep-dev: dep-replace dep
-build-dev: fmtcheck install dep-dropreplace
+dep-dev: dep-replace dep dep-dropreplace
+build-dev: dep-replace fmtcheck install dep-dropreplace
 test-dev: fmtcheck install test dep-dropreplace
 testacc-dev: fmtcheck install testacc dep-dropreplace
 
