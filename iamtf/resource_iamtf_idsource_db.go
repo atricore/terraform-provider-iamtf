@@ -19,76 +19,46 @@ func ResourcedbidSource() *schema.Resource {
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		Schema: map[string]*schema.Schema{
-			"acquireincrement": {
-				Type:        schema.TypeInt,
-				Required:    true,
-				Description: "dbidentitysource name",
-			},
-			"username": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "dbidentitysource admin",
-			},
-			"connectionurl": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "dbidentitysource connectionurl",
-			},
-			"sql_credentials": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "dbidentitysource credentialsquerystring",
-			},
-			"description": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "dbidentitysource description",
-			},
-			"drivername": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "dbidentitysource drivername",
-			},
-			"idleconnectiontestperiod": {
-				Type:        schema.TypeInt,
-				Required:    true,
-				Description: "dbidentitysource idleconnectiontestperiod",
-			},
-			"initialpoolsize": {
-				Type:        schema.TypeInt,
-				Required:    true,
-				Description: "dbidentitysource initialpoolsize",
-			},
-			"maxidletime": {
-				Type:        schema.TypeInt,
-				Required:    true,
-				Description: "dbidentitysource maxidletime",
-			},
-			"maxpoolsize": {
-				Type:        schema.TypeInt,
-				Required:    true,
-				Description: "dbidentitysource maxpoolsize",
-			},
-			"minpoolsize": {
-				Type:        schema.TypeInt,
-				Required:    true,
-				Description: "dbidentitysource minpoolsize",
-			},
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "dbidentitysource name",
+				Description: "identiy source name",
+			},
+			"ida": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "identity appliance name",
+			},
+			"description": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "resource description",
+			},
+
+			// Connection
+			"connectionurl": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "jdbc connection string",
+			},
+			"jdbc_driver": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "JDBC driver",
+			},
+			"username": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "connection username",
 			},
 			"password": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "dbidentitysource password",
+				Description: "connection password",
 			},
-			"pooleddatasource": {
-				Type:        schema.TypeBool,
-				Required:    true,
-				Description: "dbidentitysource pooleddatasource",
-			},
+
+			// SQL queries
+
 			"sql_relay_credential": {
 				Type:        schema.TypeString,
 				Required:    true,
@@ -102,27 +72,61 @@ func ResourcedbidSource() *schema.Resource {
 			"sql_groups": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "dbidentitysource rolesquerystring",
+				Description: "user groups query string.  Must return a single column with group names",
 			},
-			"use_column_name_as_property_name": {
-				Type:        schema.TypeBool,
+			"sql_credentials": {
+				Type:        schema.TypeString,
 				Required:    true,
-				Description: "dbidentitysource usecolumnnamesaspropertynames",
+				Description: "credentials query string. Must return a single row with columns: username, password, salt (optional)",
 			},
 			"sql_user_attrs": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "dbidentitysource userpropertiesquerystring",
+				Description: "user attributes query string. Must return a single row with columns: username, name, value",
 			},
-			"sql_user": {
+			"use_column_name_as_property_name": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     true,
+				Description: "Use sql_user_attrs resultset column names as properties names",
+			},
+			"sql_username": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "dbidentitysource userquerystring",
+				Description: "username query string. Used to retrieve the username from the DB",
 			},
-			"ida": {
-				Type:        schema.TypeString,
+
+			// Connection pool
+
+			"idle_connection_test_period": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Description: "dbidentitysource idleconnectiontestperiod",
+			},
+			"acquireincrement": {
+				Type:        schema.TypeInt,
 				Required:    true,
-				Description: "dbidentitysource name",
+				Description: "number of connections to aquire when incrementing the pool",
+			},
+			"initialpoolsize": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Description: "dbidentitysource initialpoolsize",
+			},
+			"maxidletime": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Description: "dbidentitysource maxidletime",
+			},
+			"maxpoolsize": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Description: "dbidentitysource maxpoolsize",
+			},
+			"minpoolsize": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Description: "dbidentitysource minpoolsize",
 			},
 		},
 	}
@@ -221,8 +225,12 @@ func resourcedbidSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, error) {
 	var err error
 	dto := api.NewDbIdentitySourceDTO()
-	dto.AcquireIncrement = PtrSchemaInt32(d, "acquireincrement")
-	dto.Admin = PtrSchemaStr(d, "admin")
+
+	dto.Name = PtrSchemaStr(d, "name")
+
+	dto.Admin = PtrSchemaStr(d, "username")
+	dto.Password = PtrSchemaStr(d, "password")
+
 	dto.ConnectionUrl = PtrSchemaStr(d, "connectionurl")
 	dto.CredentialsQueryString = PtrSchemaStr(d, "sql_credentials")
 	dto.Description = PtrSchemaStr(d, "description")
@@ -232,15 +240,15 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	dto.MaxIdleTime = PtrSchemaInt32(d, "maxidletime")
 	dto.MaxPoolSize = PtrSchemaInt32(d, "maxpoolsize")
 	dto.MinPoolSize = PtrSchemaInt32(d, "minpoolsize")
-	dto.Name = PtrSchemaStr(d, "name")
-	dto.Password = PtrSchemaStr(d, "password")
+
+	dto.AcquireIncrement = PtrSchemaInt32(d, "acquireincrement")
 	dto.PooledDatasource = PtrSchemaBool(d, "pooleddatasource")
 	dto.RelayCredentialQueryString = PtrSchemaStr(d, "sql_relay_credential")
 	dto.ResetCredentialDml = PtrSchemaStr(d, "dml_reset_credential")
 	dto.RolesQueryString = PtrSchemaStr(d, "sql_groups")
 	dto.UseColumnNamesAsPropertyNames = PtrSchemaBool(d, "use_column_name_as_property_name")
 	dto.UserPropertiesQueryString = PtrSchemaStr(d, "sql_user_attrs")
-	dto.UserQueryString = PtrSchemaStr(d, "sql_user")
+	dto.UserQueryString = PtrSchemaStr(d, "sql_username")
 
 	return *dto, err
 }
@@ -248,7 +256,7 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO) error {
 	d.SetId(sdk.StrDeref(dto.Name))
 	_ = d.Set("acquireincrement", dto.GetAcquireIncrement())
-	_ = d.Set("admin", dto.GetAdmin())
+	_ = d.Set("username", dto.GetAdmin())
 	_ = d.Set("connectionurl", dto.GetConnectionUrl())
 	_ = d.Set("sql_credentials", dto.GetCredentialsQueryString())
 	_ = d.Set("description", dto.GetDescription())
@@ -266,7 +274,7 @@ func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO
 	_ = d.Set("sql_groups", dto.GetRolesQueryString())
 	_ = d.Set("use_column_name_as_property_name", dto.GetUseColumnNamesAsPropertyNames())
 	_ = d.Set("sql_user_attrs", dto.GetUserPropertiesQueryString())
-	_ = d.Set("sql_user", dto.GetUserQueryString())
+	_ = d.Set("sql_username", dto.GetUserQueryString())
 
 	return nil
 }
