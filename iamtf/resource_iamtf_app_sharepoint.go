@@ -29,27 +29,27 @@ func ResourceSharePoint() *schema.Resource {
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "TODO description",
 			},
 			"name": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "TODO description",
 			},
 			"sts_signing_cert_subject": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "TODO description",
 			},
 			"app_slo_location_enabled": {
 				Type:        schema.TypeBool,
 				Optional:    true,
-				Description: "",
+				Description: "TODO description",
 			},
 			"sts_encrypting_cert_subject": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "TODO description",
 			},
 			"ida": {
 				Type:        schema.TypeString,

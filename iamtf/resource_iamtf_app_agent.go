@@ -24,38 +24,38 @@ func ResourceJosso1Re() *schema.Resource {
 			"ida": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "identity appliane name",
+				Description: "TODO description",
 			},
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "application name (no spaces)",
+				Description: "TODO description",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "application description",
+				Description: "TODO description",
 			},
 			"app_slo_location": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "SLO location URL",
+				Description: "TODO description",
 			},
 			"sp_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "SAML SP internal name",
+				Description: "TODO description",
 			},
 			"dashboard_url": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "application dashboard (if any)",
+				Description: "TODO description",
 			},
 			"app_location": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "application main url",
+				Description: "TODO description",
 			},
 			"ignored_web_resources": {
 				Type: schema.TypeSet,

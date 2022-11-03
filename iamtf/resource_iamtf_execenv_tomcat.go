@@ -50,7 +50,7 @@ func ResourceTomcatExecenv() *schema.Resource {
 			"activation_remote_target": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "(activation) activate using remote JOSSO server ",
+				Description: "(activation) activate using remote JOSSO server",
 			},
 			"activation_override_setup": {
 				Type:        schema.TypeBool,
@@ -61,7 +61,7 @@ func ResourceTomcatExecenv() *schema.Resource {
 			"ida": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "identity appliane name",
+				Description: "identity appliance name",
 			},
 		},
 	}

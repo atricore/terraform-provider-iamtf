@@ -169,7 +169,7 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp *api.InternalSaml2ServiceProv
 
 			idpChannel.SetMessageTtl(GetAsInt32(d, fmt.Sprintf("idp.%d.saml2.0.message_ttl", idpIdx), sp.GetMessageTtl()))
 			idpChannel.SetMessageTtlTolerance(GetAsInt32(d, fmt.Sprintf("idp.%d.saml2.0.message_ttl_tolerance", idpIdx), sp.GetMessageTtlTolerance()))
-			// NOT SUPPORETD BY SERVER :idpChannel.SetSignRequests(api.AsBool(saml2_m["sign_requests"], true))
+			// NOT SUPPORTED BY SERVER :idpChannel.SetSignRequests(api.AsBool(saml2_m["sign_requests"], true))
 			idpChannel.SetSignAuthenticationRequests(
 				GetAsBool(d, fmt.Sprintf("idp.%d.saml2.0.sign_authentication_requests", idpIdx), sp.GetSignAuthenticationRequests()))
 			idpChannel.SetWantAssertionSigned(
@@ -216,7 +216,7 @@ func convertIdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([
 					"sign_authentication_requests": idpChannel.GetSignAuthenticationRequests(),
 					"signature_hash":               idpChannel.GetSignatureHash(),
 					"want_assertion_signed":        idpChannel.GetWantAssertionSigned(),
-					//NOT SUPPORETD BY SERVER "sign_requests":                idpChannel.GetSignRequests(),
+					//NOT SUPPORTED BY SERVER "sign_requests":                idpChannel.GetSignRequests(),
 				}}
 			idp_map["saml2"] = saml2_map
 		}

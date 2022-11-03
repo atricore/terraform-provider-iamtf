@@ -28,7 +28,7 @@ func ResourceExtSaml2Sp() *schema.Resource {
 			"ida": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "identity appliane name",
+				Description: "identity appliance name",
 			},
 			"name": {
 				Type:        schema.TypeString,

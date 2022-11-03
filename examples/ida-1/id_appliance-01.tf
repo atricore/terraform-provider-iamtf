@@ -57,6 +57,38 @@ resource "iamtf_execenv_tomcat" "tc85" {
   version     = "8.5"
   depends_on  = [iamtf_idp.idp]
 }
+resource "iamtf_idsource_db" "test" {
+
+  name = "dbid-replace_with_uuid"
+  ida  = iamtf_identity_appliance.ida-1.name
+
+  connectionurl = "jdbc:mysql:localhost/%s?create=true"
+  drivername    = "org.mysql.driver"
+
+  description = "SSO Users (Mysql DB)"
+  username    = "usr-dbid"
+  password    = "pdw-dbid"
+
+  # DB pool
+  pooleddatasource         = true
+  acquireincrement         = 1
+  idleconnectiontestperiod = 1
+  initialpoolsize          = 10
+  maxidletime              = 15
+  maxpoolsize              = 20
+  minpoolsize              = 1
+
+
+  # SQL to retrieve user information
+  sql_user             = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN = ?"
+  sql_user_attrs       = "LASTNAME"
+  sql_credentials      = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN = ?"
+  sql_relay_credential = "n/a"
+  sql_groups           = "SELECT R.ROLE FROM JOSSO_ROLE R"
+  dml_reset_credential = ""
+
+  use_column_name_as_property_name = true
+}
 
 resource "iamtf_app_agent" "partnerapp1" {
   ida          = iamtf_identity_appliance.ida-1.name
