@@ -54,12 +54,12 @@ func ResourceIdP() *schema.Resource {
 			},
 			"dashboard_url": {
 				Type:        schema.TypeString,
-				Description: "URL to an external resource that can handle user UI",
+				Description: "External user dashborad URL",
 				Optional:    true,
 			},
 			"error_binding": {
 				Type:             schema.TypeString,
-				Description:      "how the IDP reports errors, works combinded with **dashboard_url**",
+				Description:      "how error information is encoded and shared with a custom user dashboard",
 				ValidateDiagFunc: stringInSlice([]string{"JSON", "ARTIFACT", "GET"}),
 				Default:          "JSON",
 				Optional:         true,
@@ -79,7 +79,7 @@ func ResourceIdP() *schema.Resource {
 			},
 			"destroy_previous_session": {
 				Type:        schema.TypeBool,
-				Description: "If the max sessions per user is reached, JOSSO can destroy previously crated sessions (default), or prevent new logins",
+				Description: "JOSSO will logout an existing session to avoid exceeding the max session per user. if false, login will be  denied after reaching the max.",
 				Optional:    true,
 				Default:     true,
 			},
@@ -310,7 +310,7 @@ func ResourceIdP() *schema.Resource {
 							Type:        schema.TypeString,
 							Optional:    true,
 							Default:     "uid",
-							Description: "LDAP attribute containing a user identifier",
+							Description: "The Idp will provide the configured user identifier, ignoring the requested type(SAML 2)",
 						},
 						"saml_authn_ctx": {
 							Type:        schema.TypeString,
