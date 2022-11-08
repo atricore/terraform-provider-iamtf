@@ -29,6 +29,7 @@ const (
 	weblogic          = "iamtf_execenv_weblogic"
 )
 
+// comment
 var (
 	apiClient *cli.IdbusApiClient
 )
