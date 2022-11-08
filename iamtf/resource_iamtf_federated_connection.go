@@ -270,12 +270,14 @@ func idpSamlSchema() *schema.Schema {
 					ValidateDiagFunc: stringInSlice([]string{"NONE", "AES-128", "AES-256", "AES-3DES"}),
 					Default:          "NONE",
 				},
-				"metadata_endpoint": {
-					Type:        schema.TypeBool,
-					Description: "enable metadata endpoint",
-					Optional:    true,
-					Default:     true,
-				},
+				/*
+					"metadata_endpoint": {
+						Type:        schema.TypeBool,
+						Description: "enable metadata endpoint",
+						Optional:    true,
+						Default:     true,
+					},
+				*/
 				"message_ttl": {
 					Type:        schema.TypeInt,
 					Description: "message ttl (sec)",
@@ -331,7 +333,7 @@ func convertIdPSaml2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]inte
 		"sign_reqs":             idp.GetSignRequests(),
 		"signature_hash":        idp.GetSignatureHash(),
 		"encrypt_algorithm":     idp.GetEncryptAssertionAlgorithm(),
-		"metadata_endpoint":     idp.GetEnableMetadataEndpoint(),
+		//		"metadata_endpoint":     idp.GetEnableMetadataEndpoint(),
 		"message_ttl":           int(idp.GetMessageTtl()),
 		"message_ttl_tolerance": int(idp.GetMessageTtlTolerance()),
 	}
@@ -355,7 +357,8 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 	idp.SetSignRequests(saml2_map["sign_reqs"].(bool))
 	idp.SetSignatureHash(saml2_map["signature_hash"].(string))
 	idp.SetEncryptAssertionAlgorithm(saml2_map["encrypt_algorithm"].(string))
-	idp.SetEnableMetadataEndpoint(saml2_map["metadata_endpoint"].(bool))
+	//idp.SetEnableMetadataEndpoint(saml2_map["metadata_endpoint"].(bool))
+	idp.SetEnableMetadataEndpoint(true)
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
 

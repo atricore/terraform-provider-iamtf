@@ -20,7 +20,7 @@ OUT_DIR=./.tmp/$(GOOS)/$(GOARCH)/$(VERSION)
 BINARY=terraform-provider-${NAME}
 
 PLATFORMS=darwin linux windows openbsd
-ARCHITECTURES=386 amd64 arm arm64
+ARCHITECTURES=386 amd64,
 
 # Setup linker flags option for build that interoperate with variable names in src code
 LDFLAGS=-ldflags "-X main.Version=${VERSION} -X main.Build=${BUILD}"

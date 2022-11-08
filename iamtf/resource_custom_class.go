@@ -46,7 +46,7 @@ func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interfa
 		"fqcn":        cc.GetFqcn(),
 		"osgiFilter":  cc.GetOsgiFilter(),
 		"osgiService": cc.GetOsgiService(),
-		"properties":  cc.GetProperties(),
+		// TODO : Array of CustomClassPropertyDTO "properties":  cc.GetProperties(),
 	}
 	result = append(result, cc_map)
 
@@ -56,10 +56,10 @@ func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interfa
 func convertCustomClassMapArrToDTO(name string, cc_arr interface{}) (*api.CustomClassDTO, error) {
 	var cc *api.CustomClassDTO
 	cc = api.NewCustomClassDTO()
-	cc.SetFqcn()
-	cc.SetOsgiFilter()
+	cc.SetFqcn("fqcn")
+	cc.SetOsgiFilter("osgiFilter")
 	cc.SetOsgiService(false)
-	cc.SetProperties()
+	// TODO : Array of CustomClassPropertyDTO  cc.setProperties("properties")
 	return cc, nil
 
 }
