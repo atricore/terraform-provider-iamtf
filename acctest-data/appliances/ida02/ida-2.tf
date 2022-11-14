@@ -59,7 +59,6 @@ resource "iamtf_app_agent" "partnerapp1" {
     default_resource                = "/index.jsp"
     description                     = "Sample JEE partner app" 
     name                            = "app-1"
-    enable_metadata_endpoint        = true
     error_binding                   = "JSON"
     message_ttl                     = 300
     message_ttl_tolerance           = 300

@@ -64,7 +64,7 @@ resource "iamtf_app_agent" "test" {
   description              = "desc app-a"
   name                     = "app-agent-replace_with_uuid"
   dashboard_url            = "http://myapp-replace_with_uuid:8080/partnerapp/dashboard"
-  enable_metadata_endpoint = true
+  
   error_binding            = "JSON"
 
   exec_env = iamtf_execenv_tomcat.test.name

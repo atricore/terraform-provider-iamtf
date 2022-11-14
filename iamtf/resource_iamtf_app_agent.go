@@ -24,38 +24,38 @@ func ResourceJosso1Re() *schema.Resource {
 			"ida": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "TODO description",
+				Description: "Identity appliance name",
 			},
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "TODO description",
+				Description: "Application name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Optional:    true,
-				Description: "TODO description",
+				Description: "Application description",
 			},
 			"app_slo_location": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "TODO description",
+				Description: "Application single logout location",
 			},
 			"sp_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "TODO description",
+				Description: "Service provider ID. The name of the SP that will be associated with the application",
 			},
 			"dashboard_url": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "TODO description",
+				Description: "Application URL used to display error information (combined with error_binding)",
 			},
 			"app_location": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "TODO description",
+				Description: "application location.  Base application URL, i.e. https://myapp.com",
 			},
 			"ignored_web_resources": {
 				Type: schema.TypeSet,
@@ -63,28 +63,22 @@ func ResourceJosso1Re() *schema.Resource {
 					Type: schema.TypeString,
 				},
 				Optional:    true,
-				Description: "list of URL patterns not subject to SSO control",
+				Description: "list of URL patterns not subject to SSO control (space sperated)",
 			},
 			"default_resource": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "application default resource (after SSO/SLO)",
+				Description: "application default resource (after SSO/SLO) i.e. https://myapp.com/home",
 			},
 			"element_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "model element id",
+				Description: "internal element ID",
 			},
 			"exec_env": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "execution environment",
-			},
-			"enable_metadata_endpoint": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     true,
-				Description: "enable SP SAML metadata endpoint",
+				Description: "name of the execution environment resource",
 			},
 			"error_binding": {
 				Type:             schema.TypeString,

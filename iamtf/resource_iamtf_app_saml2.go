@@ -23,7 +23,7 @@ func ResourceExtSaml2Sp() *schema.Resource {
 			"element_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "SAML 2 sp element ID (internal use)",
+				Description: "internal element id",
 			},
 			"ida": {
 				Type:        schema.TypeString,
@@ -33,7 +33,7 @@ func ResourceExtSaml2Sp() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "SAML 2 service provider name",
+				Description: "resource name",
 			},
 			"description": {
 				Type:        schema.TypeString,
@@ -49,7 +49,7 @@ func ResourceExtSaml2Sp() *schema.Resource {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
-				Description: "SP to IDP SAML 2 settings",
+				Description: "List of IDP resource names trusted by this SP",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"name": {

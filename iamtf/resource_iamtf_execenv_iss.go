@@ -23,24 +23,18 @@ func ResourceIssExecenv() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Execution enviroment IIS name",
+				Description: "resource name",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Execution enviroment IIS description",
+				Description: "IIS execution environment description",
 			},
 			"architecture": {
 				Type:             schema.TypeString,
 				Optional:         true,
 				ValidateDiagFunc: stringInSlice([]string{"32", "64"}),
-				Description:      "Architcture",
-			},
-			"activation_install_samples": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "(activation) install samples",
+				Description:      "IIS architecture. Values: 32, 64",
 			},
 			"activation_path": {
 				Type:        schema.TypeString,
@@ -66,7 +60,7 @@ func ResourceIssExecenv() *schema.Resource {
 			"isapi_extension_path": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "IIS ISAPI filter URI",
+				Description: "IIS ISAPI filter URI (i.e. /josso)",
 			},
 		},
 	}
@@ -172,7 +166,7 @@ func buildIssExecenvDTO(d *schema.ResourceData) (api.WindowsIISExecutionEnvironm
 	}
 	dto.PlatformId = &pid
 
-	dto.InstallDemoApps = PtrSchemaBool(d, "activation_install_samples")
+	//dto.InstallDemoApps = PtrSchemaBool(d, "activation_install_samples")
 	dto.InstallUri = PtrSchemaStr(d, "activation_path")
 	dto.OverwriteOriginalSetup = PtrSchemaBool(d, "activation_override_setup")
 	dto.Location = PtrSchemaStr(d, "activation_remote_target")
@@ -191,7 +185,6 @@ func buildIssExecenvResource(d *schema.ResourceData, dto api.WindowsIISExecution
 	}
 	_ = d.Set("architecture", ver)
 
-	_ = d.Set("activation_install_samples", cli.BoolDeref(dto.InstallDemoApps))
 	_ = d.Set("activation_path", cli.StrDeref(dto.InstallUri))
 	_ = d.Set("activation_override_setup", cli.BoolDeref(dto.OverwriteOriginalSetup))
 	_ = d.Set("activation_remote_target", cli.StrDeref(dto.Location))

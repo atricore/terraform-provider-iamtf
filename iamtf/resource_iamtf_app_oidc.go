@@ -22,7 +22,7 @@ func ResourceOidcRp() *schema.Resource {
 			"element_id": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "OidcRp element ID",
+				Description: "internal element ID",
 			},
 			"ida": {
 				Type:        schema.TypeString,
@@ -32,11 +32,11 @@ func ResourceOidcRp() *schema.Resource {
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "OidcRp name",
+				Description: "resource name",
 			},
 			"description": {
 				Type:        schema.TypeString,
-				Description: "OidcRp description",
+				Description: "relaying party description",
 				Optional:    true,
 			},
 			"client_id": {
@@ -62,7 +62,7 @@ func ResourceOidcRp() *schema.Resource {
 					Type: schema.TypeString,
 				},
 				Required:    true,
-				Description: "List of URIs for use in the redirect-based flow. This is required for all application types except service. Note: see okta_app_oauth_redirect_uri for appending to this list in a decentralized way.",
+				Description: "list of URIs for use in the redirect-based flow. This is required for all application types except service. Note: see okta_app_oauth_redirect_uri for appending to this list in a decentralized way.",
 			},
 			"post_logout_redirect_uris": {
 				Type: schema.TypeSet,
@@ -70,7 +70,7 @@ func ResourceOidcRp() *schema.Resource {
 					Type: schema.TypeString,
 				},
 				Optional:    true,
-				Description: "List of URIs for redirection after logout",
+				Description: "list of URIs for redirection after logout",
 			},
 			"response_types": {
 				Type: schema.TypeSet,
@@ -79,7 +79,7 @@ func ResourceOidcRp() *schema.Resource {
 					ValidateDiagFunc: stringInSlice([]string{"TOKEN", "CODE", "ID_TOKEN"}),
 				},
 				Required:    true,
-				Description: "List of OIDC response type strings.",
+				Description: "list of OIDC response type strings.",
 			},
 			"response_modes": {
 				Type: schema.TypeSet,
@@ -88,7 +88,7 @@ func ResourceOidcRp() *schema.Resource {
 					ValidateDiagFunc: stringInSlice([]string{"QUERY", "JWT"}),
 				},
 				Required:    true,
-				Description: "List of OIDC response type strings.",
+				Description: "list of OIDC response type strings.",
 			},
 			"grant_types": {
 				Type: schema.TypeSet,
@@ -97,7 +97,7 @@ func ResourceOidcRp() *schema.Resource {
 					ValidateDiagFunc: stringInSlice([]string{"AUTHORIZATION_CODE", "REFRESH_TOKEN", "JWT_BEARER_PWD", "CLIENT_CREDENTIALS", "JWT_BEARER", "PASSWORD", "IMPLICIT", "SAML2_BEARER"}),
 				},
 				Required:    true,
-				Description: "List of OIDC grant types. ",
+				Description: "list of OIDC grant types. ",
 			},
 			"signature_alg": {
 				Type:             schema.TypeString,
@@ -122,21 +122,21 @@ func ResourceOidcRp() *schema.Resource {
 			},
 			"idtoken_signature_alg": {
 				Type:             schema.TypeString,
-				Description:      "signature algorithm",
+				Description:      "ID token signature algorithm",
 				ValidateDiagFunc: stringInSlice([]string{"NONE", "HS256", "HS384", "HS512", "RS256", "RS384", "RS512"}),
 				Optional:         true,
 				Default:          "HS256",
 			},
 			"idtoken_encryption_alg": {
 				Type:             schema.TypeString,
-				Description:      "encryption algorithm",
+				Description:      "ID token encryption algorithm",
 				ValidateDiagFunc: stringInSlice([]string{"NONE", "RSA1_5", "A128KW", "A128GCMKW", "A192KW", "A192GCMKW", "A256KW", "A256GCMKW"}),
 				Optional:         true,
 				Default:          "NONE",
 			},
 			"idtoken_encryption_method": {
 				Type:             schema.TypeString,
-				Description:      "encryption method",
+				Description:      "ID token encryption method",
 				ValidateDiagFunc: stringInSlice([]string{"NONE", "A128CBC-HS256", "A192CBC-HS384", "A256CBC-HS512", "A128GCM", "A192GCM", "A256GCM"}),
 				Optional:         true,
 				Default:          "NONE",
@@ -145,7 +145,7 @@ func ResourceOidcRp() *schema.Resource {
 				Type:        schema.TypeSet,
 				Elem:        &schema.Schema{Type: schema.TypeString},
 				Optional:    true,
-				Description: "List of trusted IdPs. If empty, all IdPs in the appliance will be trusted",
+				Description: "list idp resource names that are trusted by the relying party. If empty, all IdPs in the appliance will be trusted",
 			},
 		},
 	}

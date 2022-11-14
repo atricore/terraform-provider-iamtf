@@ -67,7 +67,7 @@ func keystoreSchema() *schema.Schema {
 	return &schema.Schema{
 		Type:        schema.TypeList,
 		Required:    true,
-		Description: "Keystore configuration",
+		Description: "Keystore configuration.  A single keystore containing the private key and certificate is supported.",
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"resource": {

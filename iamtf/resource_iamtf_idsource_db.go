@@ -98,32 +98,37 @@ func ResourcedbidSource() *schema.Resource {
 
 			// Connection pool
 
+			"connection_pool": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "enable a connection pool",
+			},
 			"idle_connection_test_period": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Description: "dbidentitysource idleconnectiontestperiod",
 			},
-			"acquireincrement": {
+			"acquire_increment": {
 				Type:        schema.TypeInt,
 				Required:    true,
 				Description: "number of connections to aquire when incrementing the pool",
 			},
-			"initialpoolsize": {
+			"initial_pool_size": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Description: "dbidentitysource initialpoolsize",
 			},
-			"maxidletime": {
+			"max_idle_time": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Description: "dbidentitysource maxidletime",
 			},
-			"maxpoolsize": {
+			"max_pool_size": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Description: "dbidentitysource maxpoolsize",
 			},
-			"minpoolsize": {
+			"min_pool_size": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Description: "dbidentitysource minpoolsize",
@@ -234,15 +239,16 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	dto.ConnectionUrl = PtrSchemaStr(d, "connectionurl")
 	dto.CredentialsQueryString = PtrSchemaStr(d, "sql_credentials")
 	dto.Description = PtrSchemaStr(d, "description")
-	dto.DriverName = PtrSchemaStr(d, "drivername")
-	dto.IdleConnectionTestPeriod = PtrSchemaInt32(d, "idleconnectiontestperiod")
-	dto.InitialPoolSize = PtrSchemaInt32(d, "initialpoolsize")
-	dto.MaxIdleTime = PtrSchemaInt32(d, "maxidletime")
-	dto.MaxPoolSize = PtrSchemaInt32(d, "maxpoolsize")
-	dto.MinPoolSize = PtrSchemaInt32(d, "minpoolsize")
+	dto.DriverName = PtrSchemaStr(d, "jdbc_driver")
+	dto.IdleConnectionTestPeriod = PtrSchemaInt32(d, "idle_connection_test_period")
+	dto.InitialPoolSize = PtrSchemaInt32(d, "initial_pool_size")
+	dto.MaxIdleTime = PtrSchemaInt32(d, "max_idle_time")
+	dto.MaxPoolSize = PtrSchemaInt32(d, "max_pool_size")
+	dto.MinPoolSize = PtrSchemaInt32(d, "min_pool_size")
 
-	dto.AcquireIncrement = PtrSchemaInt32(d, "acquireincrement")
-	dto.PooledDatasource = PtrSchemaBool(d, "pooleddatasource")
+	dto.AcquireIncrement = PtrSchemaInt32(d, "acquire_increment")
+
+	dto.PooledDatasource = PtrSchemaBool(d, "connection_pool")
 	dto.RelayCredentialQueryString = PtrSchemaStr(d, "sql_relay_credential")
 	dto.ResetCredentialDml = PtrSchemaStr(d, "dml_reset_credential")
 	dto.RolesQueryString = PtrSchemaStr(d, "sql_groups")
@@ -255,20 +261,20 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 
 func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO) error {
 	d.SetId(sdk.StrDeref(dto.Name))
-	_ = d.Set("acquireincrement", dto.GetAcquireIncrement())
+	_ = d.Set("acquire_increment", dto.GetAcquireIncrement())
 	_ = d.Set("username", dto.GetAdmin())
 	_ = d.Set("connectionurl", dto.GetConnectionUrl())
 	_ = d.Set("sql_credentials", dto.GetCredentialsQueryString())
 	_ = d.Set("description", dto.GetDescription())
-	_ = d.Set("drivername", dto.GetDriverName())
-	_ = d.Set("idleconnectiontestperiod", dto.GetIdleConnectionTestPeriod())
-	_ = d.Set("initialpoolsize", dto.GetInitialPoolSize())
-	_ = d.Set("maxidletime", dto.GetMaxIdleTime())
-	_ = d.Set("maxpoolsize", dto.GetMaxPoolSize())
-	_ = d.Set("minpoolsize", dto.GetMinPoolSize())
+	_ = d.Set("jdbc_driver", dto.GetDriverName())
+	_ = d.Set("idle_connection_test_period", dto.GetIdleConnectionTestPeriod())
+	_ = d.Set("initial_pool_size", dto.GetInitialPoolSize())
+	_ = d.Set("max_idle_time", dto.GetMaxIdleTime())
+	_ = d.Set("max_pool_size", dto.GetMaxPoolSize())
+	_ = d.Set("min_pool_size", dto.GetMinPoolSize())
 	_ = d.Set("name", dto.GetName())
 	_ = d.Set("password", dto.GetPassword())
-	_ = d.Set("pooleddatasource", dto.GetPooledDatasource())
+	_ = d.Set("connection_pool", dto.GetPooledDatasource())
 	_ = d.Set("sql_relay_credential", dto.GetRelayCredentialQueryString())
 	_ = d.Set("dml_reset_credential", dto.GetResetCredentialDml())
 	_ = d.Set("sql_groups", dto.GetRolesQueryString())

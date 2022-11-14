@@ -35,7 +35,6 @@ resource "iamtf_idp" "test" {
     want_authn_req_signed = false // Optional, default false
     want_req_signed       = false // Optional, default false
     sign_reqs             = true  // Optional, default true
-    metadata_endpoint     = true  // Optional, default true
     message_ttl           = 302   // Optional, computed (server will provide)
     message_ttl_tolerance = 303   // Optional , computed (server will provide)
 
