@@ -20,7 +20,7 @@ OUT_DIR=./.tmp/$(GOOS)/$(GOARCH)/$(VERSION)
 BINARY=terraform-provider-${NAME}
 
 PLATFORMS=darwin linux windows openbsd
-ARCHITECTURES=386 amd64,
+ARCHITECTURES=amd64 386
 
 # Setup linker flags option for build that interoperate with variable names in src code
 LDFLAGS=-ldflags "-X main.Version=${VERSION} -X main.Build=${BUILD}"
@@ -61,10 +61,10 @@ install:
 
 
 build_all:
-	$(foreach GOOS, $(PLATFORMS),\
-		$(foreach GOARCH, $(ARCHITECTURES), \
-			$(shell export GOOS=$(GOOS); \
-				export GOARCH=$(GOARCH); \
+	$(foreach GOOS,$(PLATFORMS),\
+		$(foreach GOARCH,$(ARCHITECTURES),\
+			$(shell export GOOS=$(GOOS);\
+				export GOARCH=$(GOARCH);\
 				go build -v -o $(OUT_DIR)/$(BINARY); \
 				if test -f "$(OUT_DIR)/$(BINARY)" ; then cd $(OUT_DIR) ; zip -q ../../../$(BINARY)-$(GOOS)-$(GOARCH)-$(VERSION).zip $(BINARY) ; fi)))
 
