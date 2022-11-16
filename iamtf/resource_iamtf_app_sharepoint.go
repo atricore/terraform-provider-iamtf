@@ -230,7 +230,6 @@ func buildSharePointDTO(d *schema.ResourceData) (api.SharepointResourceDTO, api.
 	sp.DashboardUrl = PtrSchemaStr(d, "dashboard_url")
 	sp.Description = PtrSchemaStr(d, "description")
 	sp.DisplayName = PtrSchemaStr(d, "version")
-	sp.EnableMetadataEndpoint = PtrSchemaBool(d, "enable_metadata_endpoint")
 	sp.ErrorBinding = PtrSchemaStr(d, "error_binding")
 
 	// SP Configuration

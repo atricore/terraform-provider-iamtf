@@ -60,7 +60,7 @@ install:
 #	go install ./...
 
 
-build_all:
+dist:
 	$(foreach GOOS,$(PLATFORMS),\
 		$(foreach GOARCH,$(ARCHITECTURES),\
 			$(shell export GOOS=$(GOOS);\

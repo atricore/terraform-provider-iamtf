@@ -2,7 +2,6 @@ package iamtf
 
 import (
 	"fmt"
-	"strconv"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -31,7 +30,6 @@ func TestAccAppAgentRe_crud(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "description", "desc app-a"),
 					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("app-agent", ri)),
 					resource.TestCheckResourceAttr(resourceName, "dashboard_url", fmt.Sprintf("http://myapp-%d:8080/partnerapp/dashboard", ri)),
-					resource.TestCheckResourceAttr(resourceName, "enable_metadata_endpoint", strconv.FormatBool(true)),
 					resource.TestCheckResourceAttr(resourceName, "error_binding", "JSON"),
 				),
 			},
@@ -45,7 +43,6 @@ func TestAccAppAgentRe_crud(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "description", "desc app-a updated"),
 					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("app-agent", ri)),
 					resource.TestCheckResourceAttr(resourceName, "dashboard_url", fmt.Sprintf("http://myapp-updated-%d:8080/partnerapp/dashboard", ri)),
-					resource.TestCheckResourceAttr(resourceName, "enable_metadata_endpoint", strconv.FormatBool(false)),
 					resource.TestCheckResourceAttr(resourceName, "error_binding", "ARTIFACT"),
 				),
 			},
@@ -75,7 +72,6 @@ func TestAcc1Re_crud1(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "description", "desc app-a"),
 					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("app-agent", ri)),
 					resource.TestCheckResourceAttr(resourceName, "dashboard_url", fmt.Sprintf("http://myapp-%d:8080/partnerapp/dashboard", ri)),
-					resource.TestCheckResourceAttr(resourceName, "enable_metadata_endpoint", strconv.FormatBool(true)),
 					resource.TestCheckResourceAttr(resourceName, "error_binding", "JSON"),
 				),
 			},
@@ -89,7 +85,6 @@ func TestAcc1Re_crud1(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "description", "desc app-a updated"),
 					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("app-agent", ri)),
 					resource.TestCheckResourceAttr(resourceName, "dashboard_url", fmt.Sprintf("http://myapp-updated-%d:8080/partnerapp/dashboard", ri)),
-					resource.TestCheckResourceAttr(resourceName, "enable_metadata_endpoint", strconv.FormatBool(false)),
 					resource.TestCheckResourceAttr(resourceName, "error_binding", "ARTIFACT"),
 				),
 			},

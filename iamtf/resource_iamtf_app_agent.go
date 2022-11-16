@@ -260,7 +260,6 @@ func buildAppAgentDTO(d *schema.ResourceData) (api.JOSSO1ResourceDTO, api.Intern
 	sp.DashboardUrl = PtrSchemaStr(d, "dashboard_url")
 	sp.Description = PtrSchemaStr(d, "description")
 	sp.DisplayName = PtrSchemaStr(d, "version")
-	sp.EnableMetadataEndpoint = PtrSchemaBool(d, "enable_metadata_endpoint")
 	sp.ErrorBinding = PtrSchemaStr(d, "error_binding")
 
 	// SP Configuration
@@ -321,7 +320,6 @@ func buildAppAgentResource(d *schema.ResourceData, josso1 api.JOSSO1ResourceDTO,
 
 	// SP
 	_ = d.Set("dashboard_url", cli.StrDeref(sp.DashboardUrl))
-	_ = d.Set("enable_metadata_endpoint", cli.BoolDeref(sp.EnableMetadataEndpoint))
 	_ = d.Set("error_binding", cli.StrDeref(sp.ErrorBinding))
 
 	saml2_m, err := convertSPSaml2DTOToMapArr(&sp)
