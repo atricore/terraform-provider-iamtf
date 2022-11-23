@@ -18,22 +18,23 @@ func customClassSchema() *schema.Schema {
 					Description: "Component FQCN. Refers to the OSGi component class or Java class to be instantiated",
 					Required:    true,
 				},
-				"osgiFilter": {
+				// TODO : enforce that one of the values is used
+				"extension_type": {
 					Type:        schema.TypeString,
-					Description: "filter to locate the OSGi component.",
-					Required:    true,
+					Description: "Type of extension: SERVICE or INSTANCE.",
+					Optional:    true,
+					Default:     "SERVICE",
 				},
-				"osgiService": {
-					Type:        schema.TypeBool,
-					Description: "TODO.",
-					Required:    true,
+				"osgi_filter": {
+					Type:        schema.TypeString,
+					Description: "filter to locate the OSGi component (Only when extension type is SERVICE).",
+					Optional:    true,
 				},
 				// TODO : Must be a list
 				"properties": {
 					Type:        schema.TypeString,
-					Description: "List of configuration properties and its values",
+					Description: "List of configuration properties and its values (Only when extension type is INSTANCE)",
 					Optional:    true,
-					Required:    true,
 				},
 			},
 		},
