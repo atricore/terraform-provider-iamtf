@@ -10,17 +10,17 @@ func customClassSchema() *schema.Schema {
 	return &schema.Schema{
 		Type:        schema.TypeList,
 		Optional:    true,
-		Description: "CustomClass settings",
+		Description: "Allows you to use a custom component for a given resource.  Componentse are installed as OSGi extensions.  You can refer to a component instance or create a new instance based on its class",
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"fqcn": {
 					Type:        schema.TypeString,
-					Description: "Component FQCN.",
+					Description: "Component FQCN. Refers to the OSGi component class or Java class to be instantiated",
 					Required:    true,
 				},
 				"osgiFilter": {
 					Type:        schema.TypeString,
-					Description: "TODO.",
+					Description: "filter to locate the OSGi component.",
 					Required:    true,
 				},
 				"osgiService": {
@@ -28,9 +28,10 @@ func customClassSchema() *schema.Schema {
 					Description: "TODO.",
 					Required:    true,
 				},
+				// TODO : Must be a list
 				"properties": {
 					Type:        schema.TypeString,
-					Description: "TODO.",
+					Description: "List of configuration properties and its values",
 					Optional:    true,
 					Required:    true,
 				},
