@@ -157,6 +157,7 @@ func ResourceIdSourceLdap() *schema.Resource {
 				Default:     false,
 				Description: "Require LDAP operational attributes (useful for LDAP password policy management)",
 			},
+			"extension": customClassSchema(),
 		},
 	}
 }
@@ -307,6 +308,8 @@ func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourc
 	d.Set("groupid_attr", cli.StrDeref(dto.RoleAttributeID))
 	d.Set("groupmember_attr", cli.StrDeref(dto.UidAttributeID))
 	d.Set("group_match_mode", cli.StrDeref(dto.RoleMatchingMode))
+
+	d.Set("extension"), toTfEx
 
 	atrs, err := unflattenUserAttrs(cli.StrDeref(dto.UserPropertiesQueryString))
 	if err != nil {
