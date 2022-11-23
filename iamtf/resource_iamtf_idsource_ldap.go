@@ -309,7 +309,7 @@ func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourc
 	d.Set("groupmember_attr", cli.StrDeref(dto.UidAttributeID))
 	d.Set("group_match_mode", cli.StrDeref(dto.RoleMatchingMode))
 
-	d.Set("extension"), toTfEx
+	// d.Set("extension"), toTfEx
 
 	atrs, err := unflattenUserAttrs(cli.StrDeref(dto.UserPropertiesQueryString))
 	if err != nil {
