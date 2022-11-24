@@ -11,10 +11,6 @@ resource "iamtf_execenv_iss" "test" {
     description                       = "Iss Iss-Exect-Env"
     architecture                      = "32"
     activation_remote_target          = "http://remote-josso:8081"
-    activation_install_samples        = true
-    activation_path                   = "/opt/atricore/josso-ee-2/Iss-Exect-Env"
-    activation_override_setup         = true
     ida                               = iamtf_identity_appliance.test.name
-    isapi_extension_path              = "/isapi/sso.a"
-      
+    isapi_extension_path              = "/isapi/sso.a"      
 }

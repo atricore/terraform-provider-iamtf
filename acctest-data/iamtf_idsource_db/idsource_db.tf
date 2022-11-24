@@ -35,6 +35,6 @@ resource "iamtf_idsource_db" "test" {
   sql_groups           = "SELECT R.ROLE FROM JOSSO_ROLE R"
   dml_reset_credential = ""
 
-  use_column_name_as_property_name = true4
+  use_column_name_as_property_name = true
 
 }

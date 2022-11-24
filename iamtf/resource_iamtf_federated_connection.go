@@ -458,7 +458,6 @@ func convertSPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]
 				// NOT SUPPORETD BY SERVER "want_req_signed":     spChannel.GetWantSignedRequests(),
 				// NOT SUPPORETD BY SERVER "sign_reqs":           spChannel.GetSignRequests(),
 				"sign_reqs":             true,
-				"metadata_endpoint":     true,
 				"signature_hash":        spChannel.GetSignatureHash(),
 				"encrypt_algorithm":     spChannel.GetEncryptAssertionAlgorithm(),
 				"message_ttl":           spChannel.GetMessageTtl(),

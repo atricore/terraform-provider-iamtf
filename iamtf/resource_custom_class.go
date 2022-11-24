@@ -43,14 +43,14 @@ func customClassSchema() *schema.Schema {
 
 func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interface{}, error) {
 
-	et := "SERVICE";
-	if (!cc.GetOsgiService()) {
+	et := "SERVICE"
+	if !cc.GetOsgiService() {
 		et = "INSTANCE;"
 	}
 	result := make([]map[string]interface{}, 0)
 	cc_map := map[string]interface{}{
-		"fqcn":        cc.GetFqcn(),
-		"osgi_filter":  cc.GetOsgiFilter(),
+		"fqcn":           cc.GetFqcn(),
+		"osgi_filter":    cc.GetOsgiFilter(),
 		"extension_type": et,
 		// TODO : Array of CustomClassPropertyDTO "properties":  cc.GetProperties(),
 	}
@@ -61,7 +61,7 @@ func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interfa
 
 func convertCustomClassMapArrToDTO(name string, cc_arr interface{}) (*api.CustomClassDTO, error) {
 	var cc *api.CustomClassDTO
-	cc = api.NewCustomClassDTO()	
+	cc = api.NewCustomClassDTO()
 	cc.SetFqcn("fqcn")
 	cc.SetOsgiFilter("osgi_filter")
 	cc.SetOsgiService(false)
