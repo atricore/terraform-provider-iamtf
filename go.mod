@@ -13,7 +13,3 @@ require (
 	google.golang.org/genproto v0.0.0-20200904004341-0bd0a958aa1d // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
-
-replace github.com/atricore/josso-api-go => ../josso-api-go
-
-replace github.com/atricore/josso-sdk-go => ../josso-sdk-go
