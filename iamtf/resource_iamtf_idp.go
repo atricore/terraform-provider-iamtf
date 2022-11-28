@@ -194,7 +194,6 @@ func ResourceIdP() *schema.Resource {
 			"authn_basic": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Computed:    true,
 				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -218,9 +217,9 @@ func ResourceIdP() *schema.Resource {
 							ValidateDiagFunc: stringInSlice([]string{"NONE", "BASE64", "HEX"}),
 							Default:          "BASE64",
 						},
-						"crypt_salt_lenght": {
+						"crypt_salt_length": {
 							Type:             schema.TypeInt,
-							Description:      "crypt salt lenght (in bytes: 0, 8, 16, 24, 32, 48, 64, 128, 256)",
+							Description:      "crypt salt length (in bytes: 0, 8, 16, 24, 32, 48, 64, 128, 256)",
 							Optional:         true,
 							Default:          0,
 							ValidateDiagFunc: intInSlice([]int{0, 8, 16, 24, 32, 48, 64, 128, 256}),
@@ -250,7 +249,6 @@ func ResourceIdP() *schema.Resource {
 			"authn_bind_ldap": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Computed:    true,
 				Description: "LDAP bind authentication settings",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -348,7 +346,6 @@ func ResourceIdP() *schema.Resource {
 			"authn_client_cert": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Computed:    true,
 				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -406,7 +403,6 @@ func ResourceIdP() *schema.Resource {
 			"authn_wia": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Computed:    true,
 				Description: "Windows Integrated Authentication. JOSSO will verify identity by contacting a domain controller",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
@@ -467,7 +463,6 @@ func ResourceIdP() *schema.Resource {
 			"authn_oauth2_pre": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Computed:    true,
 				Description: "Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
