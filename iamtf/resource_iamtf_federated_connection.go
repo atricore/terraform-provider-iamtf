@@ -37,7 +37,7 @@ func spSamlSchema() *schema.Schema {
 				},
 				"identity_mapping": {
 					Type:             schema.TypeString,
-					Description:      "AppAgent_idp Resource identity_mapping",
+					Description:      "how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)",
 					ValidateDiagFunc: stringInSlice([]string{"LOCAL", "REMOTE", "MERGED", "CUSTOM"}),
 					Computed:         true,
 					Optional:         true,
@@ -141,7 +141,7 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp *api.InternalSaml2ServiceProv
 		// build new identityMappingPolicyDTO
 		it := sp.GetIdentityMappingPolicy()
 		if it.MappingType == nil {
-			it.SetMappingType("ONE_TO_ONE")
+			it.SetMappingType("REMOTE")
 		}
 
 		im := api.NewIdentityMappingPolicyDTO()
@@ -154,7 +154,7 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp *api.InternalSaml2ServiceProv
 		// build new accountLinkagePolicyDTO
 		at := sp.GetAccountLinkagePolicy()
 		if at.LinkEmitterType == nil {
-			at.SetLinkEmitterType("REMOTE")
+			at.SetLinkEmitterType("ONE_TO_ONE")
 		}
 		al := api.NewAccountLinkagePolicyDTO()
 		al.AdditionalProperties = make(map[string]interface{})
@@ -306,7 +306,7 @@ func spConnectionSchema() *schema.Schema {
 				"name": {
 					Type:        schema.TypeString,
 					Required:    true,
-					Description: "name of the trusted sp",
+					Description: "name of the trusted sp. It normally is the name of the application plus the -sp suffix",
 				},
 				"saml2": idpSamlSchema(),
 			},
@@ -458,7 +458,6 @@ func convertSPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]
 				// NOT SUPPORETD BY SERVER "want_req_signed":     spChannel.GetWantSignedRequests(),
 				// NOT SUPPORETD BY SERVER "sign_reqs":           spChannel.GetSignRequests(),
 				"sign_reqs":             true,
-				"metadata_endpoint":     true,
 				"signature_hash":        spChannel.GetSignatureHash(),
 				"encrypt_algorithm":     spChannel.GetEncryptAssertionAlgorithm(),
 				"message_ttl":           spChannel.GetMessageTtl(),

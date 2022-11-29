@@ -139,7 +139,7 @@ func ResourceIdSourceLdap() *schema.Resource {
 						"claim": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: "claim name",
+							Description: "claim name reported to applications",
 						},
 					},
 				},
@@ -338,13 +338,13 @@ func flattenUserAttrs(attrs []interface{}) (string, error) {
 			return reg, fmt.Errorf("invalid attribute map %#v", e)
 		}
 
-		if claim, ok = m["claim"].(string); ok {
+		if claim, ok = m["attribute"].(string); ok {
 			reg += claim + "="
 		} else {
 			return reg, fmt.Errorf("invalid attribute map %#v", e)
 		}
 
-		if attribute, ok = m["attribute"].(string); ok {
+		if attribute, ok = m["claim"].(string); ok {
 			reg += attribute + ","
 		}
 
@@ -382,7 +382,7 @@ func unmarshalAttr(mapping string) (map[string]interface{}, error) {
 		return nil, fmt.Errorf("invalid string for attribute %s", mapping)
 	}
 	return map[string]interface{}{
-		"attribute": reg[1],
-		"claim":     reg[0],
+		"claim":     reg[1],
+		"attribute": reg[0],
 	}, nil
 }
