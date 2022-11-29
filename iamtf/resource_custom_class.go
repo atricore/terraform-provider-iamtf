@@ -30,11 +30,11 @@ func customClassSchema() *schema.Schema {
 					Description: "filter to locate the OSGi component (Only when extension type is SERVICE).",
 					Optional:    true,
 				},
-				// TODO : Must be a list
 				"properties": {
-					Type:        schema.TypeString,
-					Description: "List of configuration properties and its values (Only when extension type is INSTANCE)",
-					Optional:    true,
+					Type:             schema.TypeString,
+					Optional:         true,
+					Description:      "List of configuration properties and its values (Only when extension type is INSTANCE)",
+					ValidateDiagFunc: stringInSlice([]string{"base", "one"}),
 				},
 			},
 		},
@@ -43,16 +43,16 @@ func customClassSchema() *schema.Schema {
 
 func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interface{}, error) {
 
-	et := "SERVICE";
-	if (!cc.GetOsgiService()) {
+	et := "SERVICE"
+	if !cc.GetOsgiService() {
 		et = "INSTANCE;"
 	}
 	result := make([]map[string]interface{}, 0)
 	cc_map := map[string]interface{}{
-		"fqcn":        cc.GetFqcn(),
-		"osgi_filter":  cc.GetOsgiFilter(),
+		"fqcn":           cc.GetFqcn(),
+		"osgi_filter":    cc.GetOsgiFilter(),
 		"extension_type": et,
-		// TODO : Array of CustomClassPropertyDTO "properties":  cc.GetProperties(),
+		"properties":     cc.GetProperties(),
 	}
 	result = append(result, cc_map)
 
@@ -61,10 +61,11 @@ func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interfa
 
 func convertCustomClassMapArrToDTO(name string, cc_arr interface{}) (*api.CustomClassDTO, error) {
 	var cc *api.CustomClassDTO
-	cc = api.NewCustomClassDTO()	
+	cc = api.NewCustomClassDTO()
 	cc.SetFqcn("fqcn")
 	cc.SetOsgiFilter("osgi_filter")
 	cc.SetOsgiService(false)
+	cc.SetProperties([""],[""])
 	// TODO : Array of CustomClassPropertyDTO  cc.setProperties("properties")
 	return cc, nil
 
