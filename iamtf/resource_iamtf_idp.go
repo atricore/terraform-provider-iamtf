@@ -322,9 +322,9 @@ func ResourceIdP() *schema.Resource {
 						"search_scope": {
 							Type:             schema.TypeString,
 							Optional:         true,
-							ValidateDiagFunc: stringInSlice([]string{"base", "one", "subtree", "chidlren"}),
+							ValidateDiagFunc: stringInSlice([]string{"base", "one", "subtree", "children"}),
 							Default:          "subtree",
-							Description:      "LDAP search scope. Values : base, one, subtree, chidlren",
+							Description:      "LDAP search scope. Values : base, one, subtree, children",
 						},
 						"referrals": {
 							Type:             schema.TypeString,
