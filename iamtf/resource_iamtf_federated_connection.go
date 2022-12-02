@@ -8,6 +8,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
+type IdPRole interface {
+	GetName() string
+	GetWantAuthnRequestsSigned() bool
+	GetSignatureHash() string
+	GetEncryptAssertionAlgorithm() string
+	GetMessageTtl() int32
+	GetMessageTtlTolerance() int32
+}
+
+type SPRole interface {
+	GetName() string
+	GetSignAuthenticationRequests() bool
+	GetIdentityMappingPolicy() api.IdentityMappingPolicyDTO
+	GetAccountLinkagePolicy() api.AccountLinkagePolicyDTO
+	GetWantAssertionSigned() bool
+	GetSignatureHash() string
+	GetMessageTtl() int32
+	GetMessageTtlTolerance() int32
+}
+
 func spSamlSchema() *schema.Schema {
 	return &schema.Schema{
 		Type:        schema.TypeList,
@@ -102,7 +122,7 @@ func idpConnectionSchema() *schema.Schema {
 }
 
 // Name of the parent provider
-func convertIdPFederatedConnectionsMapArrToDTOs(sp *api.InternalSaml2ServiceProviderDTO, d *schema.ResourceData, idp interface{}) ([]api.FederatedConnectionDTO, error) {
+func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceData, idp interface{}) ([]api.FederatedConnectionDTO, error) {
 	result := make([]api.FederatedConnectionDTO, 0)
 	ls, ok := idp.([]interface{})
 	if !ok {
@@ -365,7 +385,7 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 	return nil
 }
 
-func convertSPFederatedConnectionsMapArrToDTOs(idp *api.IdentityProviderDTO, d *schema.ResourceData, sp interface{}) ([]api.FederatedConnectionDTO, error) {
+func convertSPFederatedConnectionsMapArrToDTOs(idp IdPRole, d *schema.ResourceData, sp interface{}) ([]api.FederatedConnectionDTO, error) {
 	result := make([]api.FederatedConnectionDTO, 0)
 	ls, ok := sp.([]interface{})
 	if !ok {

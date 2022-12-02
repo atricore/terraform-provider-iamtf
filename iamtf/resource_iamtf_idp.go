@@ -698,7 +698,7 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 	}
 
 	// Attribute profile
-	ap, err := convertAttributeProfileMapArrToDTOs(idp, d.Get("attributes"))
+	ap, err := convertAttributeProfileMapArrToDTOs(idp.GetName(), d.Get("attributes"))
 	if err != nil {
 		errWrap = errors.Wrap(err, "attributes")
 	}
@@ -834,7 +834,7 @@ func buildIdPResource(d *schema.ResourceData, idp api.IdentityProviderDTO) error
 	}
 	_ = d.Set("authn_basic", basic_authn)
 
-	attributes, err := convertAttributeProfileDTOToMapArr(&idp)
+	attributes, err := convertAttributeProfileDTOToMapArr(idp.AttributeProfile)
 	if err != nil {
 		return err
 	}
@@ -873,7 +873,7 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 		ba.SetPriority(api.AsInt32(tfMap["priority"], 0))
 		ba.SetHashAlgorithm(api.AsString(tfMap["pwd_hash"], "SHA-256"))
 		ba.SetHashEncoding(api.AsString(tfMap["pwd_encoding"], "BASE64"))
-		ba.SetSaltLength(api.AsInt32(tfMap["crypt_salt_lenght"], 0))
+		ba.SetSaltLength(api.AsInt32(tfMap["crypt_salt_length"], 0))
 		ba.SetSaltPrefix(api.AsString(tfMap["salt_prefix"], ""))
 		ba.SetSaltSuffix(api.AsString(tfMap["salt_suffix"], ""))
 		ba.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(tfMap["saml_authn_ctx"], "urn:oasis:names:tc:SAML:2.0:ac:classes:Password"))
@@ -901,7 +901,7 @@ func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]in
 			"priority":          ba.GetPriority(),
 			"pwd_hash":          ba.GetHashAlgorithm(),
 			"pwd_encoding":      ba.GetHashEncoding(),
-			"crypt_salt_lenght": ba.GetSaltLength(),
+			"crypt_salt_length": ba.GetSaltLength(),
 			"salt_prefix":       ba.GetSaltPrefix(),
 			"salt_suffix":       ba.GetSaltSuffix(),
 			"saml_authn_ctx":    ba.GetSimpleAuthnSaml2AuthnCtxClass(),
@@ -1286,7 +1286,7 @@ func convertOAuth2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interf
 	return result, nil
 }
 
-func convertAttributeProfileMapArrToDTOs(idp *api.IdentityProviderDTO, attrs interface{}) (*api.AttributeProfileDTO, error) {
+func convertAttributeProfileMapArrToDTOs(provider_name string, attrs interface{}) (*api.AttributeProfileDTO, error) {
 	// TODO
 
 	attrMap, err := asTFMapSingle(attrs)
@@ -1309,7 +1309,7 @@ func convertAttributeProfileMapArrToDTOs(idp *api.IdentityProviderDTO, attrs int
 		return af.ToAttrProfile()
 	case "CUSTOM":
 
-		af := api.NewAttriburteMapperProfileDTOInit(fmt.Sprintf("%s-attr", idp.GetName()))
+		af := api.NewAttriburteMapperProfileDTOInit(fmt.Sprintf("%s-attr", provider_name))
 
 		af.SetIncludeNonMappedProperties(include_unmapped_claims)
 		var mappings []api.AttributeMappingDTO
@@ -1335,10 +1335,8 @@ func convertAttributeProfileMapArrToDTOs(idp *api.IdentityProviderDTO, attrs int
 	return nil, fmt.Errorf("invalid profile type %s\n", profile)
 }
 
-func convertAttributeProfileDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
+func convertAttributeProfileDTOToMapArr(ap *api.AttributeProfileDTO) ([]map[string]interface{}, error) {
 	var r []map[string]interface{}
-
-	ap := idp.GetAttributeProfile()
 
 	apMap := make(map[string]interface{})
 	apMap["profile"] = ap.GetProfileType()

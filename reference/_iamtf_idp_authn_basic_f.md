@@ -15,7 +15,7 @@
     priority          = 0         
     pwd_hash          = "SHA-256"
     pwd_encoding      = "BASE64"
-    crypt_salt_lenght = 0
+    crypt_salt_length = 0
     salt_prefix       = "sp1235"
     salt_suffix       = "sf5432"
 
