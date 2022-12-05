@@ -24,22 +24,13 @@ resource "iamtf_idp" "test" {
   saml2 {                         // Min 0, Max 1
     want_authn_req_signed = false // Optional, default false
     want_req_signed       = false // Optional, default false
+    sign_reqs             = true  // Optional, default true
     message_ttl           = 301   // Optional, computed (server will provide)
     message_ttl_tolerance = 302   // Optional , computed (server will provide)
 
     signature_hash    = "SHA256" // Optional, default SHA256, valid vlaues SHA1, SHA256, SHA384, SHA512
     encrypt_algorithm = "NONE"   // Optional, default NONE, valid values AES-128, AES-256, AES-3DES
   }
-
-  sp {
-    name = "idp-replace_with_uuid"
-    saml2 {
-      message_ttl           = 303
-      want_authn_req_signed = false
-      encrypt_algorithm = "AES-128" 
-    }
-  }
-
   authn_basic {
     priority          = 0         // Required, default 0 (should be unique)
     pwd_hash          = "SHA-256" // Optional, default SHA-256, valid values: NONE, CRYPT, BCRYPT, SHA-512, SHA-256, SHA-1, MD5
@@ -47,6 +38,30 @@ resource "iamtf_idp" "test" {
   }
 
   id_sources = [iamtf_idvault.test1.name] // Required, no default min 1, max unbounded
+
+}
+
+
+resource "iamtf_vp" "vp-test" {
+
+  ida  = iamtf_identity_appliance.test.name // Required, no default
+  name = "vp-test-replace_with_uuid"        // Required, no default
+
+  idp {
+    name = iamtf_idp.test.name
+  }
+
+  //sp {
+  //  name = "partnerapp-replace_with_uuid-sp"    
+  //}
+
+  // Relative to the test running folder!
+  keystore {
+    resource = filebase64("../../acctest-data/idp.p12")
+    password = "changeme"
+  }
+
+  //id_sources = [iamtf_idvault.test1.name] // Required, no default min 1, max unbounded
 
 }
 
@@ -69,15 +84,12 @@ resource "iamtf_app_agent" "partnerapp1" {
   }
 
   idp {
-    name         = iamtf_idp.test.name
+    name         = iamtf_vp.vp-test.name
     is_preferred = true
   }
 
   exec_env = iamtf_execenv_tomcat.tc85.name
 
-  depends_on = [
-    iamtf_idp.test, iamtf_execenv_tomcat.tc85
-  ]
-
 }
+
 

@@ -51,9 +51,4 @@ resource "iamtf_idp" "test" {
 
   id_sources = [iamtf_idvault.test1.name] // Required, no default min 1, max unbounded
 
-  // VERY IMPORTANT TO ADD ALL DEPENDENCIES
-  depends_on = [
-    iamtf_idvault.test1
-  ]
-
 }

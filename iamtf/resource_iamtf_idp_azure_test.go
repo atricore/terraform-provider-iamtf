@@ -10,15 +10,15 @@ import (
 
 func TestAccIdAzure_crud(t *testing.T) {
 	ri := acctest.RandInt()
-	mgr := newFixtureManager(azure)
+	mgr := newFixtureManager(idpAzure)
 	config := mgr.GetFixtures("idp_azure.tf", ri, t)
 	updatedConfig := mgr.GetFixtures("idp_azure_updated.tf", ri, t)
-	resourceName := fmt.Sprintf("%s.test", azure)
+	resourceName := fmt.Sprintf("%s.test", idpAzure)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
-		CheckDestroy:      createCheckResourceDestroy(azure, createDoesIdAzureExist()),
+		CheckDestroy:      createCheckResourceDestroy(idpAzure, createDoesIdAzureExist()),
 		Steps: []resource.TestStep{
 			{
 				Config: config,
