@@ -7,6 +7,7 @@ import (
 	sdk "github.com/atricore/josso-sdk-go"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/pkg/errors"
 )
 
 func ResourcedbidSource() *schema.Resource {
@@ -133,6 +134,7 @@ func ResourcedbidSource() *schema.Resource {
 				Optional:    true,
 				Description: "dbidentitysource minpoolsize",
 			},
+			"extention": customClassSchema(),
 		},
 	}
 }
@@ -228,7 +230,7 @@ func resourcedbidSourceDelete(ctx context.Context, d *schema.ResourceData, m int
 }
 
 func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, error) {
-	var err error
+	var err, errWrap error
 	dto := api.NewDbIdentitySourceDTO()
 
 	dto.Name = PtrSchemaStr(d, "name")
@@ -256,7 +258,12 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	dto.UserPropertiesQueryString = PtrSchemaStr(d, "sql_user_attrs")
 	dto.UserQueryString = PtrSchemaStr(d, "sql_username")
 
-	return *dto, err
+	cc_dto, err := convertCustomClassMapArrToDTO(d.Get("extention"))
+	if err != nil {
+		errWrap = errors.Wrap(err, "extention")
+	}
+	dto.CustomClass = cc_dto
+	return *dto, errWrap
 }
 
 func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO) error {
@@ -281,6 +288,12 @@ func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO
 	_ = d.Set("use_column_name_as_property_name", dto.GetUseColumnNamesAsPropertyNames())
 	_ = d.Set("sql_user_attrs", dto.GetUserPropertiesQueryString())
 	_ = d.Set("sql_username", dto.GetUserQueryString())
+
+	customClass, err := convertCustomClassDTOToMapArr(dto.CustomClass)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("extention", customClass)
 
 	return nil
 }

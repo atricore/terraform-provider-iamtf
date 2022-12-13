@@ -62,14 +62,14 @@ resource "iamtf_idsource_db" "test" {
   name = "dbid-replace_with_uuid"
   ida  = iamtf_identity_appliance.ida-1.name
 
-  connectionurl = "jdbc:mysql:localhost/%s?create=true"
+   connectionurl = "jdbc:mysql:localhost/%s?create=true"
   jdbc_driver    = "org.mysql.driver"
 
   description = "SSO Users (Mysql DB)"
   username    = "usr-dbid"
   password    = "pdw-dbid"
 
- # DB pool
+  # DB pool
   connection_pool             = true
   acquire_increment           = 1
   idle_connection_test_period = 1
@@ -77,7 +77,6 @@ resource "iamtf_idsource_db" "test" {
   max_idle_time               = 15
   max_pool_size               = 20
   min_pool_size               = 1
-
 
   # SQL to retrieve user information
   sql_username         = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN = ?"
@@ -88,6 +87,13 @@ resource "iamtf_idsource_db" "test" {
   dml_reset_credential = ""
 
   use_column_name_as_property_name = true
+
+
+  extension{
+    fqcn = "fqcn test"
+    extension_type="SERVICE"
+    osgi_filter="osgi_filter test"
+  }
 }
 
 resource "iamtf_app_agent" "partnerapp1" {

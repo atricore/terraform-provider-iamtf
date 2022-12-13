@@ -37,4 +37,14 @@ resource "iamtf_idsource_db" "test" {
 
   use_column_name_as_property_name = true
 
+extention{
+  fqcn = "fqcn test"
+  osgi_filter="osgi_filter test"
+  //extension_type="SERVICE"
+  properties {
+    name    = "name test"
+    value = "value test"
+    }
+  }
 }
+

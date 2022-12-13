@@ -1287,8 +1287,6 @@ func convertOAuth2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interf
 }
 
 func convertAttributeProfileMapArrToDTOs(idp *api.IdentityProviderDTO, attrs interface{}) (*api.AttributeProfileDTO, error) {
-	// TODO
-
 	attrMap, err := asTFMapSingle(attrs)
 	if err != nil {
 		return nil, err

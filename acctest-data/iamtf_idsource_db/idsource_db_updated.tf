@@ -36,4 +36,14 @@ resource "iamtf_idsource_db" "test" {
   dml_reset_credential = "1"
 
   use_column_name_as_property_name = true
+
+  extention{
+  fqcn = "fqcn change"
+  osgi_filter="osgi_filter change"
+  extension_type="INSTANCE"
+  properties {
+    name    = "name change"
+    value = "value change"
+     }
+   }
 }
