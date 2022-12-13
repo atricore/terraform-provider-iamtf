@@ -9,6 +9,35 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
+type RPRole struct {
+	rp *api.ExternalOpenIDConnectRelayingPartyDTO
+}
+
+func (r RPRole) GetName() string {
+	return r.rp.GetName()
+}
+func (r RPRole) GetSignAuthenticationRequests() bool {
+	return false
+}
+func (r RPRole) GetIdentityMappingPolicy() api.IdentityMappingPolicyDTO {
+	return r.rp.GetIdentityMappingPolicy()
+}
+func (r RPRole) GetAccountLinkagePolicy() api.AccountLinkagePolicyDTO {
+	return r.rp.GetAccountLinkagePolicy()
+}
+func (r RPRole) GetWantAssertionSigned() bool {
+	return true
+}
+func (r RPRole) GetSignatureHash() string {
+	return "SHA-256"
+}
+func (r RPRole) GetMessageTtl() int32 {
+	return 300
+}
+func (r RPRole) GetMessageTtlTolerance() int32 {
+	return 300
+}
+
 func ResourceOidcRp() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceOidcRpCreate,
@@ -141,12 +170,7 @@ func ResourceOidcRp() *schema.Resource {
 				Optional:         true,
 				Default:          "NONE",
 			},
-			"idps": {
-				Type:        schema.TypeSet,
-				Elem:        &schema.Schema{Type: schema.TypeString},
-				Optional:    true,
-				Description: "list idp resource names that are trusted by the relying party. If empty, all IdPs in the appliance will be trusted",
-			},
+			"idp": idpConnectionSchema(),
 		},
 	}
 }
@@ -272,9 +296,10 @@ func buildOidcRpDTO(d *schema.ResourceData) (api.ExternalOpenIDConnectRelayingPa
 	dto.IdTokenEncryptionAlg = PtrSchemaStr(d, "idtoken_encryption_alg")
 	dto.IdTokenEncryptionMethod = PtrSchemaStr(d, "idtoken_encryption_method")
 
-	idps := convertInterfaceToStringSetNullable(d.Get("idps"))
-	// Connetions to an IDP are always 'B'
-	dto.FederatedConnectionsB = convertStringArrToFederatedConnections(idps)
+	dto.FederatedConnectionsB, err = convertIdPFederatedConnectionsMapArrToDTOs(RPRole{rp: dto}, d, d.Get("idp"))
+	if err != nil {
+		return *dto, err
+	}
 
 	return *dto, err
 }
@@ -305,13 +330,12 @@ func buildOidcRpResource(d *schema.ResourceData, dto api.ExternalOpenIDConnectRe
 	_ = d.Set("idtoken_encryption_alg", cli.StrDeref(dto.IdTokenEncryptionAlg))
 	_ = d.Set("idtoken_encryption_method", cli.StrDeref(dto.IdTokenEncryptionMethod))
 
-	// TODO : FC A?
-	idps := convertFederatedConnectionsToStringArr(dto.FederatedConnectionsB)
-	aggMap := map[string]interface{}{
-		"idps": convertStringSetToInterface(idps),
+	// TODO : FC A? !
+	idps, err := convertIdPFederatedConnectionsToMapArr(dto.FederatedConnectionsB)
+	if err != nil {
+		return err
 	}
-
-	_ = setNonPrimitives(d, aggMap)
+	_ = d.Set("idp", idps)
 
 	return nil
 }

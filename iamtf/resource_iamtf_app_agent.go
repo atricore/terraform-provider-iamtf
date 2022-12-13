@@ -13,7 +13,7 @@ import (
 
 func ResourceJosso1Re() *schema.Resource {
 	return &schema.Resource{
-		CreateContext: createAppAgent,
+		CreateContext: resourceAppAgentCreate,
 		ReadContext:   resourceAppAgentRead,
 		UpdateContext: resourceAppAgentUpdate,
 		DeleteContext: resourceAppAgentDelete,
@@ -94,7 +94,7 @@ func ResourceJosso1Re() *schema.Resource {
 	}
 }
 
-func createAppAgent(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceAppAgentCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
 	l.Debug("createAppAgent", "ida", d.Get("ida").(string))
 

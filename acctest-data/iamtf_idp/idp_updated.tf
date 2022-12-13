@@ -69,7 +69,7 @@ resource "iamtf_idp" "test" {
     priority          = 0         // Required, default 0 (should be unique)
     pwd_hash          = "SHA-512" // Optional, default SHA-256, valid values: NONE, CRYPT, BCRYPT, SHA-512, SHA-256, SHA-1, MD5
     pwd_encoding      = "HEX"     // Otional, default BASE64, valid values: NONE, HEX, BASE64
-    crypt_salt_lenght = 8         // Optional, default 0, valid values: multiples of 8 up to 256
+    crypt_salt_length = 8         // Optional, default 0, valid values: multiples of 8 up to 256
     salt_prefix       = "sp1"     // Optional, no default
     salt_suffix       = "sf1"     // Optional, no default
 
@@ -78,10 +78,5 @@ resource "iamtf_idp" "test" {
   }
 
   id_sources = [iamtf_idvault.test1.name] // Required, no default min 1, max unbounded
-
-  // VERY IMPORTANT TO ADD ALL DEPENDENCIES
-  depends_on = [
-    iamtf_idvault.test1
-  ]
 
 }

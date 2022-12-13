@@ -10,15 +10,15 @@ import (
 
 func TestAccIdGoogle_crud(t *testing.T) {
 	ri := acctest.RandInt()
-	mgr := newFixtureManager(google)
+	mgr := newFixtureManager(idpGoogle)
 	config := mgr.GetFixtures("idp_google.tf", ri, t)
 	updatedConfig := mgr.GetFixtures("idp_google_updated.tf", ri, t)
-	resourceName := fmt.Sprintf("%s.test", google)
+	resourceName := fmt.Sprintf("%s.test", idpGoogle)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
-		CheckDestroy:      createCheckResourceDestroy(google, createDoesIdGoogleExist()),
+		CheckDestroy:      createCheckResourceDestroy(idpGoogle, createDoesIdGoogleExist()),
 		Steps: []resource.TestStep{
 			{
 				Config: config,

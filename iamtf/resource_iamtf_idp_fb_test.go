@@ -10,15 +10,15 @@ import (
 
 func TestAccIdFacebook_crud(t *testing.T) {
 	ri := acctest.RandInt()
-	mgr := newFixtureManager(idFacebook)
+	mgr := newFixtureManager(idpFacebook)
 	config := mgr.GetFixtures("idp_facebook.tf", ri, t)
 	updatedConfig := mgr.GetFixtures("idp_facebook_updated.tf", ri, t)
-	resourceName := fmt.Sprintf("%s.test", idFacebook)
+	resourceName := fmt.Sprintf("%s.test", idpFacebook)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
-		CheckDestroy:      createCheckResourceDestroy(idFacebook, createDoesIdFacebookExist()),
+		CheckDestroy:      createCheckResourceDestroy(idpFacebook, createDoesIdFacebookExist()),
 		Steps: []resource.TestStep{
 			{
 				Config: config,

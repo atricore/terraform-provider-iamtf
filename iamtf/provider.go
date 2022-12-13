@@ -13,9 +13,10 @@ import (
 const (
 	identityAppliance = "iamtf_identity_appliance"
 	idp               = "iamtf_idp"
-	idFacebook        = "iamtf_idp_facebook"
-	azure             = "iamtf_idp_azure"
-	google            = "iamtf_idp_google"
+	vp                = "iamtf_vp"
+	idpFacebook       = "iamtf_idp_facebook"
+	idpAzure          = "iamtf_idp_azure"
+	idpGoogle         = "iamtf_idp_google"
 	idVault           = "iamtf_idvault"
 	idSourceLdap      = "iamtf_idsource_ldap"
 	dbidsource        = "iamtf_idsource_db"
@@ -73,6 +74,7 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			identityAppliance: ResourceIdentityAppliance(),
 			idp:               ResourceIdP(),
+			vp:                ResourceVP(),
 			idVault:           ResourceIdVault(),
 			idSourceLdap:      ResourceIdSourceLdap(),
 			oidcRp:            ResourceOidcRp(),
@@ -84,9 +86,9 @@ func Provider() *schema.Provider {
 			php:               ResourcePhpExecenv(),
 			spoint:            ResourceSharePoint(),
 			weblogic:          ResourceWebLogicExecenv(),
-			idFacebook:        ResourceIdFacebook(),
-			azure:             ResourceidAzure(),
-			google:            ResourceidGoogle(),
+			idpFacebook:       ResourceIdFacebook(),
+			idpAzure:          ResourceidAzure(),
+			idpGoogle:         ResourceidGoogle(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			identityAppliance: dataSourceIdentityAppliance(),
