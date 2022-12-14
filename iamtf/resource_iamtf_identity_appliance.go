@@ -49,6 +49,14 @@ func ResourceIdentityAppliance() *schema.Resource {
 				Computed:    true,
 				Description: "Reserved for internal use",
 			},
+			"bundles": {
+				Type: schema.TypeSet,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Optional:    true,
+				Description: "list of additional OSGi bundles this appliance requires",
+			},
 		},
 	}
 }
@@ -151,6 +159,9 @@ func buildIdentityAppliance(d *schema.ResourceData) (api.IdentityApplianceDefini
 	a.Name = PtrSchemaStr(d, "name")
 	a.Namespace = PtrSchemaStr(d, "namespace")
 
+	ru := convertInterfaceToStringSetNullable(d.Get("bundles"))
+	a.RequiredBundles = ru
+
 	// Add '/IDBUS/APPLIANCE-NAME' to location
 	l := PtrSchemaStr(d, "location")
 	location, err := cli.StrToLocation(fmt.Sprintf("%s/IDBUS/%s", *l, strings.ToUpper(a.GetName())))
@@ -181,6 +192,8 @@ func buildIdentityApplianceResource(d *schema.ResourceData, iam *api.IdentityApp
 	_ = d.Set("name", cli.StrDeref(iam.Name))
 	_ = d.Set("namespace", cli.StrDeref(iam.Namespace))
 	_ = d.Set("description", cli.StrDeref(iam.Description))
+	_ = setNonPrimitives(d, map[string]interface{}{
+		"bundles": convertStringSetToInterface(iam.GetRequiredBundles())})
 
 	// Clear
 	iam.Location.SetContext("")

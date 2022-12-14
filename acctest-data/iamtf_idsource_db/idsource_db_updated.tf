@@ -28,7 +28,7 @@ resource "iamtf_idsource_db" "test" {
 
 
   # SQL to retrieve user information
-  sql_username             = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN1 = ?"
+  sql_username         = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN1 = ?"
   sql_user_attrs       = "LASTNAME1"
   sql_credentials      = "SELECT USERNAME FROM JOSSO_USER WHERE LOGIN1 = ?"
   sql_relay_credential = "n/a1"
@@ -37,13 +37,13 @@ resource "iamtf_idsource_db" "test" {
 
   use_column_name_as_property_name = true
 
-  extention{
-  fqcn = "fqcn change"
-  osgi_filter="osgi_filter change"
-  extension_type="INSTANCE"
-  properties {
-    name    = "name change"
-    value = "value change"
-     }
-   }
+  extension {
+    fqcn           = "fqcn change"
+    osgi_filter    = "osgi_filter change"
+    extension_type = "INSTANCE"
+    properties {
+      name  = "name change"
+      value = "value change"
+    }
+  }
 }

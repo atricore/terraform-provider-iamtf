@@ -62,13 +62,13 @@ func ResourcedbidSource() *schema.Resource {
 
 			"sql_relay_credential": {
 				Type:        schema.TypeString,
-				Required:    true,
-				Description: "dbidentitysource relaycredentialquerystring",
+				Optional:    true,
+				Description: "query string to retrieve the credential/claim used to recover a password (i.e. email)",
 			},
 			"dml_reset_credential": {
 				Type:        schema.TypeString,
-				Required:    true,
-				Description: "dbidentitysource resetcredentialdml",
+				Optional:    true,
+				Description: "query string used to update the password credential",
 			},
 			"sql_groups": {
 				Type:        schema.TypeString,
@@ -89,7 +89,7 @@ func ResourcedbidSource() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "Use sql_user_attrs resultset column names as properties names",
+				Description: "Use sql_user_attrs result-set column names as properties names",
 			},
 			"sql_username": {
 				Type:        schema.TypeString,
@@ -111,7 +111,7 @@ func ResourcedbidSource() *schema.Resource {
 			},
 			"acquire_increment": {
 				Type:        schema.TypeInt,
-				Required:    true,
+				Optional:    true,
 				Description: "number of connections to aquire when incrementing the pool",
 			},
 			"initial_pool_size": {
@@ -134,7 +134,7 @@ func ResourcedbidSource() *schema.Resource {
 				Optional:    true,
 				Description: "dbidentitysource minpoolsize",
 			},
-			"extention": customClassSchema(),
+			"extension": customClassSchema(),
 		},
 	}
 }
@@ -258,9 +258,9 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	dto.UserPropertiesQueryString = PtrSchemaStr(d, "sql_user_attrs")
 	dto.UserQueryString = PtrSchemaStr(d, "sql_username")
 
-	cc_dto, err := convertCustomClassMapArrToDTO(d.Get("extention"))
+	cc_dto, err := convertCustomClassMapArrToDTO(d.Get("extension"))
 	if err != nil {
-		errWrap = errors.Wrap(err, "extention")
+		errWrap = errors.Wrap(err, "extension")
 	}
 	dto.CustomClass = cc_dto
 	return *dto, errWrap
@@ -293,7 +293,7 @@ func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO
 	if err != nil {
 		return err
 	}
-	_ = d.Set("extention", customClass)
+	_ = d.Set("extension", customClass)
 
 	return nil
 }

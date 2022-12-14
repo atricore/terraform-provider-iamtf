@@ -37,7 +37,7 @@ resource "iamtf_idsource_db" "test" {
 
   use_column_name_as_property_name = true
 
-extention{
+extension{
   fqcn = "fqcn test"
   osgi_filter="osgi_filter test"
   //extension_type="SERVICE"

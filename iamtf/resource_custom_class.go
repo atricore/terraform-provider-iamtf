@@ -15,10 +15,10 @@ func customClassSchema() *schema.Schema {
 			Schema: map[string]*schema.Schema{
 				"fqcn": {
 					Type:        schema.TypeString,
-					Description: "Component FQCN. Refers to the OSGi component class or Java class to be instantiated",
+					Description: "component FQCN. Refers to the OSGi component class or Java class to be instantiated",
 					Required:    true,
 				},
-				"extension_type": {
+				"type": {
 					Type:             schema.TypeString,
 					Description:      "Type of extension: SERVICE or INSTANCE.",
 					ValidateDiagFunc: stringInSlice([]string{"SERVICE", "INSTANCE"}),
@@ -30,7 +30,7 @@ func customClassSchema() *schema.Schema {
 					Description: "filter to locate the OSGi component (Only when extension type is SERVICE).",
 					Optional:    true,
 				},
-				"properties": {
+				"property": {
 					Type:        schema.TypeSet,
 					Optional:    true,
 					Description: "List of configuration properties and its values (Only when extension type is INSTANCE)",
@@ -72,10 +72,10 @@ func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interfa
 	}
 
 	cc_map := map[string]interface{}{
-		"fqcn":           cc.GetFqcn(),
-		"osgi_filter":    cc.GetOsgiFilter(),
-		"extension_type": et,
-		"properties":     mapProps,
+		"fqcn":        cc.GetFqcn(),
+		"osgi_filter": cc.GetOsgiFilter(),
+		"type":        et,
+		"property":    mapProps,
 	}
 	result = append(result, cc_map)
 
@@ -95,9 +95,14 @@ func convertCustomClassMapArrToDTO(cc_arr interface{}) (*api.CustomClassDTO, err
 	ncc := api.NewCustomClassDTO()
 	ncc.SetFqcn(api.AsString(tfMapLs["fqcn"], ""))
 	ncc.SetOsgiFilter(api.AsString(tfMapLs["osgi_filter"], ""))
-	//+ncc.SetOsgiService()
 
-	nm := tfMapLs["properties"].(*schema.Set)
+	if api.AsString(tfMapLs["type"], "") == "INSTANCE" {
+		ncc.SetOsgiService(false)
+	} else {
+		ncc.SetOsgiService(true)
+	}
+
+	nm := tfMapLs["property"].(*schema.Set)
 	var props []api.CustomClassPropertyDTO
 	for _, v := range nm.List() {
 		prop := v.(map[string]interface{})

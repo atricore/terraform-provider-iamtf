@@ -36,6 +36,14 @@ func dataSourceIdentityAppliance() *schema.Resource {
 				Optional:    true,
 				Description: "Identity Appliance description",
 			},
+			"bundles": {
+				Type: schema.TypeSet,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Optional:    true,
+				Description: "list of additional OSGi bundles this appliance requires",
+			},
 		},
 	}
 }
