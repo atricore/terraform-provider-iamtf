@@ -10,30 +10,30 @@ func customClassSchema() *schema.Schema {
 	return &schema.Schema{
 		Type:        schema.TypeList,
 		Optional:    true,
-		Description: "Allows you to use a custom component for a given resource.  Componentse are installed as OSGi extensions.  You can refer to a component instance or create a new instance based on its class",
+		Description: "Allows you to use a custom component for a given resource.  Components are installed as OSGi bundles in the server.  You can refer to a component instance or create a new instance based on its class",
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"fqcn": {
 					Type:        schema.TypeString,
-					Description: "component FQCN. Refers to the OSGi component class or Java class to be instantiated",
+					Description: "component java FQCN. Refers to the OSGi component type or Java class to be instantiated",
 					Required:    true,
 				},
 				"type": {
 					Type:             schema.TypeString,
-					Description:      "Type of extension: SERVICE or INSTANCE.",
+					Description:      "extension type: SERVICE (for OSGi service references) or INSTANCE (for creating a new instance). ",
 					ValidateDiagFunc: stringInSlice([]string{"SERVICE", "INSTANCE"}),
 					Optional:         true,
 					Default:          "SERVICE",
 				},
 				"osgi_filter": {
 					Type:        schema.TypeString,
-					Description: "filter to locate the OSGi component (Only when extension type is SERVICE).",
+					Description: "filter to locate the OSGi service (Only when extension type is SERVICE).",
 					Optional:    true,
 				},
 				"property": {
 					Type:        schema.TypeSet,
 					Optional:    true,
-					Description: "List of configuration properties and its values (Only when extension type is INSTANCE)",
+					Description: "list of configuration properties and its values (only when extension type is INSTANCE)",
 					MinItems:    0,
 					Elem: &schema.Resource{
 						Schema: map[string]*schema.Schema{
