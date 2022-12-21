@@ -26,5 +26,13 @@ resource "iamtf_idsource_ldap" "test" {
         attribute = "sn"
         claim = "last_name"
     }
-    
+    extension{
+        fqcn = "fqcn test"
+        osgi_filter="osgi_filter test"
+        type="SERVICE"
+        property {
+            name    = "name test"
+            value = "value test"
+    }
+  }  
 }

@@ -9,6 +9,7 @@ import (
 	cli "github.com/atricore/josso-sdk-go"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/pkg/errors"
 )
 
 /**
@@ -252,7 +253,7 @@ func resourceIdSourceLdapDelete(ctx context.Context, d *schema.ResourceData, m i
 }
 
 func buildIdSourceLdapDTO(d *schema.ResourceData) (api.LdapIdentitySourceDTO, error) {
-	var err error
+	var err, errWrap error
 	dto := api.NewLdapIdentitySourceDTO()
 	dto.ElementId = PtrSchemaStr(d, "element_id")
 	dto.Name = PtrSchemaStr(d, "name")
@@ -282,12 +283,17 @@ func buildIdSourceLdapDTO(d *schema.ResourceData) (api.LdapIdentitySourceDTO, er
 	}
 
 	if err != nil {
-		return *dto, err
+		errWrap = errors.Wrap(err, "user_attributes")
 	}
+	cc_dto, err := convertCustomClassMapArrToDTO(d.Get("extension"))
+	if err != nil {
+		errWrap = errors.Wrap(err, "extension")
+	}
+	dto.CustomClass = cc_dto
 	dto.Referrals = PtrSchemaStr(d, "referrals")
 	dto.IncludeOperationalAttributes = PtrSchemaBool(d, "operational_attrs")
 
-	return *dto, err
+	return *dto, errWrap
 }
 
 func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourceDTO) error {
@@ -309,8 +315,6 @@ func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourc
 	d.Set("groupmember_attr", cli.StrDeref(dto.UidAttributeID))
 	d.Set("group_match_mode", cli.StrDeref(dto.RoleMatchingMode))
 
-	// d.Set("extension"), toTfEx
-
 	atrs, err := unflattenUserAttrs(cli.StrDeref(dto.UserPropertiesQueryString))
 	if err != nil {
 		return err
@@ -322,6 +326,12 @@ func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourc
 
 	d.Set("referrals", cli.StrDeref(dto.Referrals))
 	d.Set("operational_attrs", cli.BoolDeref(dto.IncludeOperationalAttributes))
+
+	customClass, err := convertCustomClassDTOToMapArr(dto.CustomClass)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("extension", customClass)
 
 	return nil
 }

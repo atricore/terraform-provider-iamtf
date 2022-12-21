@@ -40,8 +40,8 @@ resource "iamtf_idsource_db" "test" {
 extension{
   fqcn = "fqcn test"
   osgi_filter="osgi_filter test"
-  //extension_type="SERVICE"
-  properties {
+  extension_type="SERVICE"
+  property {
     name    = "name test"
     value = "value test"
     }
