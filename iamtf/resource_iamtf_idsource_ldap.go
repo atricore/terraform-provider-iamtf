@@ -384,7 +384,7 @@ func unflattenUserAttrs(attrs string) ([]interface{}, error) {
 
 }
 
-// Recives a string in the format <key>=<value> and returnsa map
+// Receives a string in the format <key>=<value> and returnsa map
 func unmarshalAttr(mapping string) (map[string]interface{}, error) {
 
 	reg := strings.SplitN(mapping, "=", 2)

@@ -56,10 +56,10 @@ github.com/apparentlymart/go-textseg/v12 v12.0.0/go.mod h1:S/4uRK2UtaQttw1GenVJE
 github.com/apparentlymart/go-textseg/v13 v13.0.0 h1:Y+KvPE1NYz0xl601PVImeQfFyEy6iT90AvPUL1NNfNw=
 github.com/apparentlymart/go-textseg/v13 v13.0.0/go.mod h1:ZK2fH7c4NqDTLtiYLvIkEghdlcqw7yxLeM89kiTRPUo=
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
-github.com/atricore/josso-api-go v0.4.1 h1:cFIdmVR2t0QSLItmwRyBgxenO1wS8Uq5SH91Jj1fJEk=
-github.com/atricore/josso-api-go v0.4.1/go.mod h1:Oys9D0y1x+bvyIsnRFl6JOYiIV7KQkuToIQa+jxeuHs=
-github.com/atricore/josso-sdk-go v0.4.1 h1:TXV6VHTj296CL8ZeRTwa0FYHBAPCRWRkuy/MJ2UlfoM=
-github.com/atricore/josso-sdk-go v0.4.1/go.mod h1:wuJAao5Vsc7BHf6lnS7yopqaZJZP3ddTBbB8ni9OUoU=
+github.com/atricore/josso-api-go v0.4.2 h1:C/+ujvh+9q6zXEKJw/o/0CSlPReVqk3edsqgG5+9d34=
+github.com/atricore/josso-api-go v0.4.2/go.mod h1:Oys9D0y1x+bvyIsnRFl6JOYiIV7KQkuToIQa+jxeuHs=
+github.com/atricore/josso-sdk-go v0.4.4 h1:mOfJ+jdqdoneYVmzQ8M/3EW6Cz5KRrrOgSJV3bSpBaY=
+github.com/atricore/josso-sdk-go v0.4.4/go.mod h1:9iWPXVArfd6h8gRUnrm9ahw0nQuMGZpeTvCLgtcak2U=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
