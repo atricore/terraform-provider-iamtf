@@ -40,7 +40,7 @@ resource "iamtf_idsource_db" "test" {
   extension {
     fqcn           = "fqcn change"
     osgi_filter    = "osgi_filter change"
-    extension_type = "INSTANCE"
+    type = "INSTANCE"
     property {
       name  = "name change"
       value = "value change"

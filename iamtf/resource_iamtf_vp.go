@@ -210,6 +210,21 @@ func ResourceVP() *schema.Resource {
 			},
 
 			"attributes": idpAttributeProfileSchema(),
+			"subject_authn_policies": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "todo add description for subject authens policies",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "Todo",
+							//ValidateDiagFunc: stringInSlice([]string{"ODO"}),
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -375,6 +390,12 @@ func buildVPDTO(d *schema.ResourceData) (api.VirtualSaml2ServiceProviderDTO, err
 	id_sources := convertInterfaceToStringSetNullable(d.Get("id_sources"))
 	vp.IdentityLookups = convertStringArrToIdLookups(id_sources)
 
+	subjectAuthen, err := convertSubjectAuthnPoliciesMapArrToDTO(d.Get("subject_authn_policies"))
+	if err != nil {
+		errWrap = errors.Wrap(err, "subject_authn_policies")
+	}
+	vp.SubjectAuthnPolicies = subjectAuthen
+
 	return *vp, errWrap
 }
 
@@ -446,6 +467,12 @@ func buildVPResource(d *schema.ResourceData, vp api.VirtualSaml2ServiceProviderD
 	}
 
 	err = setNonPrimitives(d, aggMap)
+
+	subjetAuthen, err := convertSubjectAuthnPoliciesDTOToMapArr(vp.SubjectAuthnPolicies)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("subject_authn_policies", subjetAuthen)
 
 	return err
 }

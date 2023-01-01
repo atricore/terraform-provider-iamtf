@@ -41,9 +41,9 @@ resource "iamtf_app_oidc" "test" {
   response_types = ["CODE"]
   response_modes = ["QUERY"]
 
-  idps = [
-    iamtf_idp.test1.name
-  ]
+  # idp = [
+  #   iamtf_idp.test1.name
+  # ]
 
   depends_on = [
     iamtf_idp.test1
