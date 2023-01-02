@@ -330,7 +330,6 @@ func buildOidcRpResource(d *schema.ResourceData, dto api.ExternalOpenIDConnectRe
 	_ = d.Set("idtoken_encryption_alg", cli.StrDeref(dto.IdTokenEncryptionAlg))
 	_ = d.Set("idtoken_encryption_method", cli.StrDeref(dto.IdTokenEncryptionMethod))
 
-	// TODO : FC A? !
 	idps, err := convertIdPFederatedConnectionsToMapArr(dto.FederatedConnectionsB)
 	if err != nil {
 		return err

@@ -48,9 +48,9 @@ resource "iamtf_app_oidc" "test" {
   idtoken_signature_alg     = "HS256"
   signature_alg             = "HS256"
 
-  idps = [
-    iamtf_idp.test1.name
-  ]
+  //idp = [
+  //  iamtf_idp.test1.name
+  //]
 
   depends_on = [
     iamtf_idp.test1

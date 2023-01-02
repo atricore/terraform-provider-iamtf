@@ -49,6 +49,9 @@ resource "iamtf_idp" "test" {
 
   id_sources = [iamtf_idvault.test1.name] // Required, no default min 1, max unbounded
 
+  subject_authn_policies{
+    name = "Example 1"
+  } 
 }
 
 resource "iamtf_execenv_tomcat" "tc85" {

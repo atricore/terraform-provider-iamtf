@@ -119,3 +119,34 @@ resource "iamtf_app_agent" "partnerapp1" {
   ]
 
 }
+resource "iamtf_idsource_ldap" "test" {
+    ida             = iamtf_identity_appliance.ida-1.name
+    name            = "idvault-replace_with_uuid"
+    provider_url    = "ldap://localhost:10389"
+    username        = "uid=admin,ou=system"
+    password        = "secret"
+    users_ctx_dn    = "dc=example,dc=com,ou=IAM,ou=People"
+    userid_attr     = "uid"
+    groups_ctx_dn   = "dc=example,dc=com,ou=IAM,ou=Groups"
+    groupid_attr    = "cn"
+    groupmember_attr = "uniquemember"
+    
+    user_attributes {
+        attribute = "cn"
+        claim = "first_name"
+    }
+
+    user_attributes {
+        attribute = "sn"
+        claim = "last_name"
+    }
+    extension{
+        fqcn = "fqcn test"
+        osgi_filter="osgi_filter test"
+        type="SERVICE"
+        property {
+            name    = "name test"
+            value = "value test"
+    }
+  }  
+}

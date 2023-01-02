@@ -243,6 +243,7 @@ func ResourceIdP() *schema.Resource {
 								"urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"}),
 							Default: "urn:oasis:names:tc:SAML:2.0:ac:classes:Password",
 						},
+						"extension": customClassSchema(),
 					},
 				},
 			},
@@ -339,6 +340,7 @@ func ResourceIdP() *schema.Resource {
 							Default:     false,
 							Description: "Require LDAP operational attributes (useful for LDAP password policy management)",
 						},
+						"extension": customClassSchema(),
 					},
 				},
 			},
@@ -397,6 +399,7 @@ func ResourceIdP() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 						},
+						"extension": customClassSchema(),
 					},
 				},
 			},
@@ -457,6 +460,7 @@ func ResourceIdP() *schema.Resource {
 							Description: "Kerberos keytab file",
 							Required:    true,
 						},
+						"extension": customClassSchema(),
 					},
 				},
 			},
@@ -490,6 +494,7 @@ func ResourceIdP() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 						},
+						"extension": customClassSchema(),
 					},
 				},
 			},
@@ -503,6 +508,21 @@ func ResourceIdP() *schema.Resource {
 			},
 
 			"attributes": idpAttributeProfileSchema(),
+			"subject_authn_policies": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "todo add description for subject authens policies",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "Todo",
+							//ValidateDiagFunc: stringInSlice([]string{"ODO"}),
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -749,6 +769,12 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 	id_sources := convertInterfaceToStringSetNullable(d.Get("id_sources"))
 	idp.IdentityLookups = convertStringArrToIdLookups(id_sources)
 
+	subjectAuthen, err := convertSubjectAuthnPoliciesMapArrToDTO(d.Get("subject_authn_policies"))
+	if err != nil {
+		errWrap = errors.Wrap(err, "subject_authn_policies")
+	}
+	idp.SubjectAuthnPolicies = subjectAuthen
+
 	return *idp, errWrap
 }
 
@@ -840,13 +866,17 @@ func buildIdPResource(d *schema.ResourceData, idp api.IdentityProviderDTO) error
 	}
 	_ = d.Set("attributes", attributes)
 
-	// TODO : Get from additional properties !?
 	ids := convertIdLookupsToStringArr(idp.IdentityLookups)
 	aggMap := map[string]interface{}{
 		"id_sources": convertStringSetToInterface(ids),
 	}
-
 	err = setNonPrimitives(d, aggMap)
+
+	subjetAuthen, err := convertSubjectAuthnPoliciesDTOToMapArr(idp.SubjectAuthnPolicies)
+	if err != nil {
+		return err
+	}
+	_ = d.Set("subject_authn_policies", subjetAuthen)
 
 	return err
 }
@@ -878,6 +908,13 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 		ba.SetSaltSuffix(api.AsString(tfMap["salt_suffix"], ""))
 		ba.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(tfMap["saml_authn_ctx"], "urn:oasis:names:tc:SAML:2.0:ac:classes:Password"))
 		ba.SetEnabled(true)
+
+		// cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
+		// if err != nil {
+		// 	err = errors.Wrap(err, "extension")
+		// }
+		// ba.SetCustomClass(*cc_dto)
+
 		idp.AddBasicAuthn(ba)
 	}
 
@@ -897,6 +934,11 @@ func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]in
 
 	result := make([]map[string]interface{}, 0)
 	for _, ba := range bas {
+
+		//customClass, err := convertCustomClassDTOToMapArr(bas.CustomClass)
+		// if err != nil {
+		// 	return nil, err
+		// }
 		authn_basic_map := map[string]interface{}{
 			"priority":          ba.GetPriority(),
 			"pwd_hash":          ba.GetHashAlgorithm(),
@@ -905,6 +947,7 @@ func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]in
 			"salt_prefix":       ba.GetSaltPrefix(),
 			"salt_suffix":       ba.GetSaltSuffix(),
 			"saml_authn_ctx":    ba.GetSimpleAuthnSaml2AuthnCtxClass(),
+			//"extension":         customClass,
 		}
 		result = append(result, authn_basic_map)
 	}
@@ -943,6 +986,12 @@ func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.Identi
 		das.SetReferrals(api.AsString(tfMap["referrals"], "follow"))
 		das.SetIncludeOperationalAttributes(api.AsBool(tfMap["operational_attrs"], false))
 
+		cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
+		if err != nil {
+			err = errors.Wrap(err, "extension")
+		}
+		das.SetCustomClass(*cc_dto)
+
 		idp.AddDirectoryAuthnSvc(das, api.AsInt32(tfMap["priority"], 0))
 	}
 
@@ -967,6 +1016,10 @@ func convertAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string
 			if err != nil {
 				return nil, err
 			}
+			customClass, err := convertCustomClassDTOToMapArr(dirAuthnSvc.CustomClass)
+			if err != nil {
+				return nil, err
+			}
 			authnTfMap := map[string]interface{}{
 				"priority":            am.GetPriority(),
 				"initial_ctx_factory": dirAuthnSvc.GetInitialContextFactory(),
@@ -982,6 +1035,7 @@ func convertAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string
 				"saml_authn_ctx":      dirAuthnSvc.GetSimpleAuthnSaml2AuthnCtxClass(),
 				"referrals":           dirAuthnSvc.GetReferrals(),
 				"operational_attrs":   dirAuthnSvc.GetIncludeOperationalAttributes(),
+				"extension":           customClass,
 			}
 			authnTfMapLs = append(authnTfMapLs, authnTfMap)
 		}
@@ -1019,6 +1073,13 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 		cas.SetOcspServer(api.AsString(tfMap["ocsp_server"], ""))
 		cas.SetOcspserver(api.AsString(tfMap["ocspserver"], ""))
 		cas.SetUid(api.AsString(tfMap["uid"], ""))
+
+		cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
+		if err != nil {
+			err = errors.Wrap(err, "extension")
+		}
+		cas.SetCustomClass(*cc_dto)
+
 		idp.AddClientCertAuthnSvs(cas, api.AsInt32(tfMap["priority"], 0))
 	}
 
@@ -1041,6 +1102,10 @@ func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[s
 			if err != nil {
 				return nil, err
 			}
+			customClass, err := convertCustomClassDTOToMapArr(clientCertAuthnSvc.CustomClass)
+			if err != nil {
+				return nil, err
+			}
 			authnTfMap := map[string]interface{}{
 				"priority":            am.GetPriority(),
 				"clr_enabled":         clientCertAuthnSvc.GetClrEnabled(),
@@ -1050,6 +1115,7 @@ func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[s
 				"ocsp_server":         clientCertAuthnSvc.GetOcspServer(),
 				"ocspserver":          clientCertAuthnSvc.GetOcspserver(),
 				"uid":                 clientCertAuthnSvc.GetUid(),
+				"extension":           customClass,
 			}
 			authnTfMapLs = append(authnTfMapLs, authnTfMap)
 		}
@@ -1094,6 +1160,12 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 		kt.SetValue(api.AsString(tfMap["keytab"], ""))
 		wia.SetKeyTab(*kt)
 
+		// cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
+		// if err != nil {
+		// 	err = errors.Wrap(err, "extension")
+		// }
+		// wia.SetCustomClass(*cc_dto)
+
 		idp.AddWindowsIntegratedAuthn(wia, api.AsInt32(tfMap["priority"], 0))
 	}
 
@@ -1116,6 +1188,11 @@ func convertWindowsIntegratedAuthnDTOToMapArr(idp *api.IdentityProviderDTO) ([]m
 			if err != nil {
 				return nil, err
 			}
+			// customClass, err := convertCustomClassDTOToMapArr(wiaAuthnSvc.CustomClass)
+			// if err != nil {
+			// 	return nil, err
+			// }
+
 			authnTfMap := map[string]interface{}{
 				"priority":                 am.GetPriority(),
 				"domain":                   wiaAuthnSvc.GetDomain(),
@@ -1127,6 +1204,7 @@ func convertWindowsIntegratedAuthnDTOToMapArr(idp *api.IdentityProviderDTO) ([]m
 				"service_class":            wiaAuthnSvc.GetServiceClass(),
 				"service_name":             wiaAuthnSvc.GetServiceName(),
 				"keytab":                   wiaAuthnSvc.GetKeyTab().Value,
+				// "extension":                customClass,
 			}
 			authnTfMapLs = append(authnTfMapLs, authnTfMap)
 		}
@@ -1161,6 +1239,13 @@ func convertAuthnOAuth2PreMapArrToDTO(authn_oauth2_pre interface{}, idp *api.Ide
 		oauth2.SetAuthnService(api.AsString(tfMap["authn_service"], ""))
 		oauth2.SetExternalAuth(api.AsBool(tfMap["external_auth"], false))
 		oauth2.SetRememberMe(api.AsBool(tfMap["remember_me"], false))
+
+		// cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
+		// if err != nil {
+		// 	err = errors.Wrap(err, "extension")
+		// }
+		// oauth2.SetCustomClass(*cc_dto)
+
 		idp.AddOauth2PreAuthnSvs(oauth2, api.AsInt32(tfMap["priority"], 0))
 	}
 
@@ -1191,11 +1276,16 @@ func convertAuthnOAuth2PreDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[strin
 			if err != nil {
 				return nil, err
 			}
+			// customClass, err := convertCustomClassDTOToMapArr(oauth2svc.CustomClass)
+			// if err != nil {
+			// 	return nil, err
+			// }
 			authnTfMap := map[string]interface{}{
 				"priority":      am.GetPriority(),
 				"authn_service": oauth2svc.GetAuthnService(),
 				"external_auth": oauth2svc.GetExternalAuth(),
 				"remember_me":   oauth2svc.GetRememberMe(),
+				// "extension":     customClass,
 			}
 			authnTfMapLs = append(authnTfMapLs, authnTfMap)
 		}
@@ -1361,4 +1451,33 @@ func convertAttributeProfileDTOToMapArr(ap *api.AttributeProfileDTO) ([]map[stri
 	r = append(r, apMap)
 
 	return r, nil
+}
+
+func convertSubjectAuthnPoliciesDTOToMapArr(ap []api.SubjectAuthenticationPolicyDTO) ([]map[string]interface{}, error) {
+	result := make([]map[string]interface{}, 0)
+
+	for _, sa := range ap {
+		subjetMap := map[string]interface{}{
+			"name": sa.GetName(),
+		}
+
+		result = append(result, subjetMap)
+	}
+	return result, nil
+}
+
+func convertSubjectAuthnPoliciesMapArrToDTO(ap_arr interface{}) ([]api.SubjectAuthenticationPolicyDTO, error) {
+	var ap []api.SubjectAuthenticationPolicyDTO
+	tfMapLs, err := asTFMapSingle(ap_arr)
+	if err != nil {
+		return ap, err
+	}
+	if tfMapLs == nil {
+		return ap, err
+	}
+
+	nsap := api.NewSubjectAuthenticationPolicyDTO()
+	nsap.SetName(api.AsString(tfMapLs["name"], ""))
+	ap = append(ap, *nsap)
+	return ap, nil
 }
