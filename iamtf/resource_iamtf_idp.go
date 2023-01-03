@@ -1452,32 +1452,3 @@ func convertAttributeProfileDTOToMapArr(ap *api.AttributeProfileDTO) ([]map[stri
 
 	return r, nil
 }
-
-func convertSubjectAuthnPoliciesDTOToMapArr(ap []api.SubjectAuthenticationPolicyDTO) ([]map[string]interface{}, error) {
-	result := make([]map[string]interface{}, 0)
-
-	for _, sa := range ap {
-		subjetMap := map[string]interface{}{
-			"name": sa.GetName(),
-		}
-
-		result = append(result, subjetMap)
-	}
-	return result, nil
-}
-
-func convertSubjectAuthnPoliciesMapArrToDTO(ap_arr interface{}) ([]api.SubjectAuthenticationPolicyDTO, error) {
-	var ap []api.SubjectAuthenticationPolicyDTO
-	tfMapLs, err := asTFMapSingle(ap_arr)
-	if err != nil {
-		return ap, err
-	}
-	if tfMapLs == nil {
-		return ap, err
-	}
-
-	nsap := api.NewSubjectAuthenticationPolicyDTO()
-	nsap.SetName(api.AsString(tfMapLs["name"], ""))
-	ap = append(ap, *nsap)
-	return ap, nil
-}
