@@ -327,3 +327,32 @@ func GetAsIface(d *schema.ResourceData, k string, v interface{}) interface{} {
 	}
 	return r
 }
+
+func convertSubjectAuthnPoliciesDTOToMapArr(ap []api.SubjectAuthenticationPolicyDTO) ([]map[string]interface{}, error) {
+	result := make([]map[string]interface{}, 0)
+
+	for _, sa := range ap {
+		subjetMap := map[string]interface{}{
+			"name": sa.GetName(),
+		}
+
+		result = append(result, subjetMap)
+	}
+	return result, nil
+}
+
+func convertSubjectAuthnPoliciesMapArrToDTO(ap_arr interface{}) ([]api.SubjectAuthenticationPolicyDTO, error) {
+	var sap []api.SubjectAuthenticationPolicyDTO
+	tfMapLs, err := asTFMapSingle(ap_arr)
+	if err != nil {
+		return sap, err
+	}
+	if tfMapLs == nil {
+		return sap, err
+	}
+
+	nsap := api.NewSubjectAuthenticationPolicyDTO()
+	nsap.SetName(api.AsString(tfMapLs["name"], ""))
+	sap = append(sap, *nsap)
+	return sap, nil
+}
