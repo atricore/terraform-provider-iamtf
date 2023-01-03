@@ -86,6 +86,48 @@ func spSamlSchema() *schema.Schema {
 					Computed:    true,
 					Description: "require signed assertions from IdPs",
 				},
+				"bindings": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					Computed:    true,
+					MaxItems:    1,
+					MinItems:    0,
+					Description: "enabled SAML bindings",
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"http_post": {
+								Type:        schema.TypeBool,
+								Description: "use HTTP POST binding",
+								Optional:    true,
+								Default:     false,
+							},
+							"http_redirect": {
+								Type:        schema.TypeBool,
+								Description: "use HTTP REDIRECT binding",
+								Optional:    true,
+								Default:     true,
+							},
+							"artifact": {
+								Type:        schema.TypeBool,
+								Description: "use Artifact binding",
+								Optional:    true,
+								Default:     true,
+							},
+							"soap": {
+								Type:        schema.TypeBool,
+								Description: "use SOAP binding",
+								Optional:    true,
+								Default:     true,
+							},
+							"local": {
+								Type:        schema.TypeBool,
+								Description: "use LOCAL binding",
+								Optional:    true,
+								Default:     true,
+							},
+						},
+					},
+				},
 			},
 		},
 	}
@@ -291,13 +333,51 @@ func idpSamlSchema() *schema.Schema {
 					Default:          "NONE",
 				},
 				/*
-					"metadata_endpoint": {
-						Type:        schema.TypeBool,
-						Description: "enable metadata endpoint",
-						Optional:    true,
-						Default:     true,
+
+				 */
+				"bindings": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					Computed:    true,
+					MaxItems:    1,
+					MinItems:    0,
+					Description: "enabled SAML bindings",
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"http_post": {
+								Type:        schema.TypeBool,
+								Description: "use HTTP POST binding",
+								Optional:    true,
+								Default:     true,
+							},
+							"http_redirect": {
+								Type:        schema.TypeBool,
+								Description: "use HTTP REDIRECT binding",
+								Optional:    true,
+								Default:     true,
+							},
+							"artifact": {
+								Type:        schema.TypeBool,
+								Description: "use Artifact binding",
+								Optional:    true,
+								Default:     true,
+							},
+							"soap": {
+								Type:        schema.TypeBool,
+								Description: "use SOAP binding",
+								Optional:    true,
+								Default:     true,
+							},
+							"local": {
+								Type:        schema.TypeBool,
+								Description: "use LOCAL binding",
+								Optional:    true,
+								Default:     true,
+							},
+						},
 					},
-				*/
+				},
+
 				"message_ttl": {
 					Type:        schema.TypeInt,
 					Description: "message ttl (sec)",
@@ -381,6 +461,8 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 	idp.SetEnableMetadataEndpoint(true)
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
+
+	
 
 	return nil
 }
