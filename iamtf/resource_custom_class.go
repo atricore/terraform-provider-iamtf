@@ -58,6 +58,11 @@ func customClassSchema() *schema.Schema {
 func convertCustomClassDTOToMapArr(cc *api.CustomClassDTO) ([]map[string]interface{}, error) {
 	var result []map[string]interface{}
 
+	// If cc is null, return an empty map
+	if cc == nil {
+		return result, nil
+	}
+
 	et := "SERVICE"
 	if !cc.GetOsgiService() {
 		et = "INSTANCE"
@@ -88,7 +93,8 @@ func convertCustomClassMapArrToDTO(cc_arr interface{}) (*api.CustomClassDTO, err
 	if err != nil {
 		return cc, err
 	}
-	if tfMapLs == nil {
+	// If map is empty, return nil
+	if tfMapLs == nil || len(tfMapLs) == 0 {
 		return cc, nil
 	}
 
