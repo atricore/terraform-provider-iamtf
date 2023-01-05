@@ -187,6 +187,12 @@ func ResourceIdP() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 						},
+						"user_claims_in_access_token": {
+							Type:        schema.TypeBool,
+							Description: "include user claims in access token",
+							Optional:    true,
+							Default:     false,
+						},
 					},
 				},
 			},
@@ -913,7 +919,9 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 		// if err != nil {
 		// 	err = errors.Wrap(err, "extension")
 		// }
+		// if cc_dto != nil {
 		// ba.SetCustomClass(*cc_dto)
+		// }3
 
 		idp.AddBasicAuthn(ba)
 	}
@@ -990,7 +998,9 @@ func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.Identi
 		if err != nil {
 			err = errors.Wrap(err, "extension")
 		}
-		das.SetCustomClass(*cc_dto)
+		if cc_dto != nil {
+			das.SetCustomClass(*cc_dto)
+		}
 
 		idp.AddDirectoryAuthnSvc(das, api.AsInt32(tfMap["priority"], 0))
 	}
@@ -1078,7 +1088,9 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 		if err != nil {
 			err = errors.Wrap(err, "extension")
 		}
-		cas.SetCustomClass(*cc_dto)
+		if cc_dto == nil {
+			cas.SetCustomClass(*cc_dto)
+		}
 
 		idp.AddClientCertAuthnSvs(cas, api.AsInt32(tfMap["priority"], 0))
 	}
@@ -1164,7 +1176,9 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 		// if err != nil {
 		// 	err = errors.Wrap(err, "extension")
 		// }
-		// wia.SetCustomClass(*cc_dto)
+		// if (cc_dto == nil) {
+		// 	wia.SetCustomClass(*cc_dto)
+		// }
 
 		idp.AddWindowsIntegratedAuthn(wia, api.AsInt32(tfMap["priority"], 0))
 	}
@@ -1244,7 +1258,9 @@ func convertAuthnOAuth2PreMapArrToDTO(authn_oauth2_pre interface{}, idp *api.Ide
 		// if err != nil {
 		// 	err = errors.Wrap(err, "extension")
 		// }
+		// if (cc_dto == nil) {
 		// oauth2.SetCustomClass(*cc_dto)
+		// }
 
 		idp.AddOauth2PreAuthnSvs(oauth2, api.AsInt32(tfMap["priority"], 0))
 	}
@@ -1312,6 +1328,7 @@ func convertOidcMapArrToDTO(oidc_arr interface{}, idp *api.IdentityProviderDTO) 
 	idp.SetOidcAccessTokenTimeToLive(int32(oidc_map["access_token_ttl"].(int)))
 	idp.SetOidcAuthzCodeTimeToLive(int32(oidc_map["authz_code_ttl"].(int)))
 	idp.SetOidcIdTokenTimeToLive(int32(oidc_map["id_token_ttl"].(int)))
+	idp.SetOidcIncludeUserClaimsInAccessToken(bool(oidc_map["user_claims_in_access_token"].(bool)))
 
 	return nil
 }
@@ -1320,10 +1337,11 @@ func convertOidcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interfac
 	result := make([]map[string]interface{}, 0)
 
 	oidc_map := map[string]interface{}{
-		"enabled":          idp.GetOpenIdEnabled(),
-		"access_token_ttl": int(idp.GetOidcAccessTokenTimeToLive()),
-		"authz_code_ttl":   int(idp.GetOidcAuthzCodeTimeToLive()),
-		"id_token_ttl":     int(idp.GetOidcIdTokenTimeToLive()),
+		"enabled":                     idp.GetOpenIdEnabled(),
+		"access_token_ttl":            int(idp.GetOidcAccessTokenTimeToLive()),
+		"authz_code_ttl":              int(idp.GetOidcAuthzCodeTimeToLive()),
+		"id_token_ttl":                int(idp.GetOidcIdTokenTimeToLive()),
+		"user_claims_in_access_token": bool(idp.GetOidcIncludeUserClaimsInAccessToken()),
 	}
 	result = append(result, oidc_map)
 

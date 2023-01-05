@@ -196,6 +196,12 @@ func ResourceVP() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 						},
+						"user_claims_in_access_token": {
+							Type:        schema.TypeBool,
+							Description: "include user claims in access token",
+							Optional:    true,
+							Default:     false,
+						},
 					},
 				},
 			},
@@ -525,6 +531,7 @@ func convertVPOidcMapArrToDTO(oidc_arr interface{}, idp *api.VirtualSaml2Service
 	idp.SetOidcAccessTokenTimeToLive(int32(oidc_map["access_token_ttl"].(int)))
 	idp.SetOidcAuthzCodeTimeToLive(int32(oidc_map["authz_code_ttl"].(int)))
 	idp.SetOidcIdTokenTimeToLive(int32(oidc_map["id_token_ttl"].(int)))
+	idp.SetOidcIncludeUserClaimsInAccessToken(bool(oidc_map["user_claims_in_access_token"].(bool)))
 
 	return nil
 }
@@ -533,10 +540,11 @@ func convertVPOidcDTOToMapArr(idp *api.VirtualSaml2ServiceProviderDTO) ([]map[st
 	result := make([]map[string]interface{}, 0)
 
 	oidc_map := map[string]interface{}{
-		"enabled":          idp.GetOpenIdEnabled(),
-		"access_token_ttl": int(idp.GetOidcAccessTokenTimeToLive()),
-		"authz_code_ttl":   int(idp.GetOidcAuthzCodeTimeToLive()),
-		"id_token_ttl":     int(idp.GetOidcIdTokenTimeToLive()),
+		"enabled":                     idp.GetOpenIdEnabled(),
+		"access_token_ttl":            int(idp.GetOidcAccessTokenTimeToLive()),
+		"authz_code_ttl":              int(idp.GetOidcAuthzCodeTimeToLive()),
+		"id_token_ttl":                int(idp.GetOidcIdTokenTimeToLive()),
+		"user_claims_in_access_token": bool(idp.GetOidcIncludeUserClaimsInAccessToken()),
 	}
 	result = append(result, oidc_map)
 
