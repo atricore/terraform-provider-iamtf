@@ -28,6 +28,7 @@ const (
 	iss               = "iamtf_execenv_iss"
 	php               = "iamtf_execenv_php"
 	weblogic          = "iamtf_execenv_weblogic"
+	selfService       = "iamtf_self_service"
 )
 
 // comment
@@ -89,6 +90,7 @@ func Provider() *schema.Provider {
 			idpFacebook:       ResourceIdFacebook(),
 			idpAzure:          ResourceidAzure(),
 			idpGoogle:         ResourceidGoogle(),
+			selfService:       ResourceselfService(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			identityAppliance: dataSourceIdentityAppliance(),
