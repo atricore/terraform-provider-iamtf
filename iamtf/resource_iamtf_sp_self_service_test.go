@@ -23,13 +23,13 @@ func TestAccSelfService_crud(t *testing.T) {
 			{
 				Config: config,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("selfService name", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("self-svc-rs", ri)),
 				),
 			},
 			{
 				Config: updatedConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("selfService name", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("self-svc-rs", ri)),
 				),
 			},
 		},

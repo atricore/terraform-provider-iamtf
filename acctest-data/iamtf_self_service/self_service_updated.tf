@@ -6,17 +6,7 @@ resource "iamtf_identity_appliance" "test" {
 }
 
 resource "iamtf_self_service" "test" {
-  description = "My idGoogle updated"
-  element_id  = "element id updated"
-  location    = "http://localhost:8081"
-  name        = "idp-google-replace_with_uuid"
-  secret      = "top secret"
-
-  #  not soported by server
-  #   service_connection {
-  #     description = "description updated sc"
-  #     element_id  = "element id updated sc"
-  #     name        = "name updated sc"
-  #   }
-  ida = iamtf_identity_appliance.test.name
+  description = "My self-services updated"
+  name        = "self-svc-rs-replace_with_uuid"
+  ida         = iamtf_identity_appliance.test.name
 }

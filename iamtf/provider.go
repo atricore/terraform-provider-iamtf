@@ -90,7 +90,7 @@ func Provider() *schema.Provider {
 			idpFacebook:       ResourceIdFacebook(),
 			idpAzure:          ResourceidAzure(),
 			idpGoogle:         ResourceidGoogle(),
-			selfService:       ResourceselfService(),
+			selfService:       ResourceSelfService(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			identityAppliance: dataSourceIdentityAppliance(),
