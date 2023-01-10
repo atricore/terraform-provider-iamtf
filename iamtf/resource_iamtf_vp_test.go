@@ -40,8 +40,8 @@ func TestAccVP_crud0(t *testing.T) {
 func TestAccVP_crud1(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(vp)
-	config := mgr.GetFixtures("vp_1.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("vp_1_updated.tf", ri, t)
+	config := mgr.GetFixtures("vp-1.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("vp_updated-1.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", vp)
 
 	// TODO : Validate other fields ?
@@ -53,13 +53,13 @@ func TestAccVP_crud1(t *testing.T) {
 			{
 				Config: config,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("vp_1", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("vp-test", ri)),
 				),
 			},
 			{
 				Config: updatedConfig,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("vp_1", ri)),
+					resource.TestCheckResourceAttr(resourceName, "name", buildResourceNameForPrefix("vp-test", ri)),
 				),
 			},
 		},
@@ -69,8 +69,8 @@ func TestAccVP_crud1(t *testing.T) {
 func TestAccVP_Attrs1_crud(t *testing.T) {
 	ri := acctest.RandInt()
 	mgr := newFixtureManager(vp)
-	config := mgr.GetFixtures("vp_attrs_1.tf", ri, t)
-	updatedConfig := mgr.GetFixtures("vp_attrs_1_updated.tf", ri, t)
+	config := mgr.GetFixtures("vp.tf", ri, t)
+	updatedConfig := mgr.GetFixtures("vp_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", vp)
 
 	// TODO : Validate other fields ?

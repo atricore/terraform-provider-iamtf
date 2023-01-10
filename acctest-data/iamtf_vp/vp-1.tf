@@ -41,8 +41,7 @@ resource "iamtf_idp" "test" {
 
 }
 
-
-resource "iamtf_vp" "vp-test" {
+resource "iamtf_vp" "test" {
 
   ida  = iamtf_identity_appliance.test.name // Required, no default
   name = "vp-test-replace_with_uuid"        // Required, no default
@@ -84,7 +83,7 @@ resource "iamtf_app_agent" "partnerapp1" {
   }
 
   idp {
-    name         = iamtf_vp.vp-test.name
+    name         = iamtf_vp.test.name
     is_preferred = true
   }
 

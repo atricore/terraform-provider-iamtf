@@ -67,6 +67,22 @@ resource "iamtf_vp" "test" {
     name = "Example 1"
   }
 
+  attributes {
+    profile                 = "CUSTOM"
+    include_unmapped_claims = true
+    map {
+      name    = "first_name"
+      mapping = "fname"
+    }
+    map {
+      type    = "const"
+      name    = "my-const"
+      mapping = "my-const-value"
+      format  = "BASIC"
+    }
+  }
+
+
 }
 
 resource "iamtf_execenv_tomcat" "tc85" {

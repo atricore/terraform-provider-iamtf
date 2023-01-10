@@ -41,11 +41,10 @@ resource "iamtf_idp" "test" {
 
 }
 
-
 resource "iamtf_vp" "test" {
 
   ida  = iamtf_identity_appliance.test.name // Required, no default
-  name = "vp-replace_with_uuid"        // Required, no default
+  name = "vp-test-replace_with_uuid"        // Required, no default
 
   idp {
     name = iamtf_idp.test.name
