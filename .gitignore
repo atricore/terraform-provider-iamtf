@@ -32,6 +32,7 @@ terraform-provider-okta*
 .vscode
 
 .env
+.envrc
 dist
 
 bin/
