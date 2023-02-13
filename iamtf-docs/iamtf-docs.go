@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/atricore/terraform-provider-iamtf/docs"
+	"github.com/atricore/terraform-provider-iamtf/tools"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 	out := args[0]
 	src := args[1]
 
-	err := docs.GenerateDocs(out, src)
+	err := tools.GenerateDocs(out, src)
 	if err != nil {
 		fmt.Printf("%v", err)
 	}

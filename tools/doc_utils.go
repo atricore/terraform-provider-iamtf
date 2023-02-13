@@ -1,4 +1,4 @@
-package docs
+package tools
 
 import (
 	"bufio"
@@ -132,7 +132,33 @@ func genProvider(name string, p *schema.Provider) error {
 }
 
 func genResource(name string, r *schema.Resource) error {
+
+	err := genTFDocs(name)
+	if err != nil {
+		return err
+	}
 	return genDocs(name, r.Description, r.Schema)
+}
+
+func genTFDocs(name string) error {
+
+	fmt.Printf("Generating TF docs for %s\n", fmt.Sprintf("%s/_%s_h.md", CTX.src, name))
+	h, err := readContent(fmt.Sprintf("%s/_%s_h.md", CTX.src, name))
+
+	// if error is no such file or directory, ignore
+	if err != nil && os.IsNotExist(err) {
+		return nil
+	}
+
+	if err != nil {
+		return err
+	}
+
+	// create a var sName, removing the prefix "iamtf_" from name
+	sName := strings.Replace(name, "iamtf_", "", 1)
+	// remove the suffix ".md"
+	//	sName = strings.Replace(sName, ".md", "", 1)
+	return TFAddDescToResource(sName, h)
 }
 
 func genDocs(name string, description string, m map[string]*schema.Schema) error {
@@ -367,4 +393,13 @@ func copyContent(fname string, w *bufio.Writer) error {
 	_, err = w.Write(src)
 
 	return err
+}
+
+func readContent(fname string) (string, error) {
+	src, err := ioutil.ReadFile(fname)
+	if err != nil {
+		return "", err
+	}
+	// convert src to string
+	return string(src), nil
 }
