@@ -23,7 +23,7 @@ func main() {
 	opts := &plugin.ServeOpts{ProviderFunc: iamtf.Provider}
 
 	if version {
-		fmt.Printf("pluginn version: %s\n", Version)
+		fmt.Printf("plugin version: %s\n", Version)
 	}
 
 	if debugMode {
