@@ -40,4 +40,3 @@ bin/
 .terraform.lock.hcl
 .terraform
 terraform-provider-iamtf
-.goreleaser.yml
