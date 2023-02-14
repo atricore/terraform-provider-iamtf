@@ -1,0 +1,20 @@
+@@ -6767,6 +6768,9 @@
+             "type" : "integer",
+             "format" : "int32"
+           },
++          "oidcIncludeUserClaimsInAccessToken" : {
++            "type" : "boolean"
++          },
+           "openIdEnabled" : {
+             "type" : "boolean"
+           },
+@@ -9013,6 +9025,9 @@
+             "type" : "integer",
+             "format" : "int32"
+           },
++          "oidcIncludeUserClaimsInAccessToken" : {
++            "type" : "boolean"
++          },
+           "openIdEnabled" : {
+             "type" : "boolean"
+           },
