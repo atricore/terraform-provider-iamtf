@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     josso = {
-      version = "~> 0.1.8"
-      source  = "atricore.com/iam/josso"
+      version = "~> 0.6.0"
+      source  = "atricore/iamtf"
     }
   }
 }
