@@ -36,7 +36,6 @@ terraform-provider-okta*
 dist
 
 bin/
-vendor/
 
 .terraform.lock.hcl
 .terraform
