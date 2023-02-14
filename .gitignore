@@ -32,11 +32,12 @@ terraform-provider-okta*
 .vscode
 
 .env
+.envrc
 dist
 
 bin/
-vendor/
 
 .terraform.lock.hcl
 .terraform
 terraform-provider-iamtf
+.goreleaser.yml

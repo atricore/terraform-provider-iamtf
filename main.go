@@ -12,6 +12,9 @@ import (
 
 var Version string
 
+// Generate the Terraform provider documentation using `tfplugindocs`:
+//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+
 func main() {
 
 	var debugMode, version bool
@@ -23,7 +26,7 @@ func main() {
 	opts := &plugin.ServeOpts{ProviderFunc: iamtf.Provider}
 
 	if version {
-		fmt.Printf("pluginn version: %s\n", Version)
+		fmt.Printf("plugin version: %s\n", Version)
 	}
 
 	if debugMode {
