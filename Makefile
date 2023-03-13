@@ -8,14 +8,13 @@ GOFMT:=gofumpt
 #TFPROVIDERLINT=/home/sgonzalez/wa/git/go/bin/tfproviderlint
 TF_ACC_TEMP_DIR=.tmp
 
-#GO_SRC?=..
-OS_ARCH?=$(shell go env GOOS)_$(shell go env GOARCH)
-HOSTNAME=atricore.com
-NAMESPACE=iam
-#VERSION=0.1.8
+NAMESPACE=atricore.com/atricore
+NAME=iamtf
 VERSION=$(shell git describe --tags --always --dirty)
 
-NAME=iamtf
+#GO_SRC?=..
+OS_ARCH?=$(shell go env GOOS)_$(shell go env GOARCH)
+
 OUT_DIR=./.tmp/$(GOOS)/$(GOARCH)/$(VERSION)
 BINARY=terraform-provider-${NAME}
 
@@ -74,7 +73,7 @@ sweep:
 
 test: fmtcheck
 	go test $(TEST) || exit 1
-	echo $(TEST) | \
+	echo $(TEST) | \NAMESPACE
 		xargs -t -n4 go test $(TESTARGS) $(TEST_FILTER) -timeout=30s -parallel=4
 
 testacc: fmtcheck
@@ -115,8 +114,8 @@ test-compile:
 	go test -c $(TEST) $(TESTARGS)
 
 install-provider: build
-	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/$(OS_ARCH)
-	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/$(OS_ARCH)
+	mkdir -p ~/.terraform.d/plugins/${NAMESPACE}/${NAME}/${VERSION}/$(OS_ARCH)
+	mv ${BINARY} ~/.terraform.d/plugins/${NAMESPACE}/${NAME}/${VERSION}/$(OS_ARCH)
 
 lint: tools
 	@echo "==> Checking source code against linters..."
