@@ -8,6 +8,7 @@ GOFMT:=gofumpt
 #TFPROVIDERLINT=/home/sgonzalez/wa/git/go/bin/tfproviderlint
 TF_ACC_TEMP_DIR=.tmp
 
+
 NAMESPACE=atricore.com/atricore
 NAME=iamtf
 VERSION=$(shell git describe --tags --always --dirty)
