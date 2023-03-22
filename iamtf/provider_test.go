@@ -54,9 +54,10 @@ func accPreCheck() error {
 
 func jossoConfigEnv() *Config {
 	return &Config{
-		endpoint: os.Getenv("JOSSO_API_ENDPOINT"),
-		clientId: os.Getenv("JOSSO_API_CLIENT_ID"),
-		secret:   os.Getenv("JOSSO_API_SECRET"),
+		endpoint:  os.Getenv("JOSSO_API_ENDPOINT"),
+		clientId:  os.Getenv("JOSSO_API_CLIENT_ID"),
+		secret:    os.Getenv("JOSSO_API_SECRET"),
+		appliance: os.Getenv("JOSSO_API_APPLIANCE"),
 	}
 }
 

@@ -179,7 +179,7 @@ func resourceIdSourceLdapCreate(ctx context.Context, d *schema.ResourceData, m i
 		return diag.Errorf("failed to create idSourceLdap: %v", err)
 	}
 
-	if err = buildIdSourceLdapResource(d, a); err != nil {
+	if err = buildIdSourceLdapResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIdSourceLdapCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -190,8 +190,15 @@ func resourceIdSourceLdapCreate(ctx context.Context, d *schema.ResourceData, m i
 }
 func resourceIdSourceLdapRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceIdSourceLdapRead", "ida", d.Get("ida").(string), "name", d.Id())
-	idSourceLdap, err := getJossoClient(m).GetIdSourceLdap(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	// if idaName is empty, it means that the resource is being imported
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceIdSourceLdapRead", "ida", idaName, "name", d.Id())
+	idSourceLdap, err := getJossoClient(m).GetIdSourceLdap(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceIdSourceLdapRead %v", err)
 		return diag.Errorf("resourceIdSourceLdapRead: %v", err)
@@ -201,7 +208,7 @@ func resourceIdSourceLdapRead(ctx context.Context, d *schema.ResourceData, m int
 		d.SetId("")
 		return nil
 	}
-	if err = buildIdSourceLdapResource(d, idSourceLdap); err != nil {
+	if err = buildIdSourceLdapResource(idaName, d, idSourceLdap); err != nil {
 		l.Debug("resourceIdSourceLdapRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -226,7 +233,7 @@ func resourceIdSourceLdapUpdate(ctx context.Context, d *schema.ResourceData, m i
 		return diag.Errorf("failed to update idSourceLdap: %v", err)
 	}
 
-	if err = buildIdSourceLdapResource(d, a); err != nil {
+	if err = buildIdSourceLdapResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIdSourceLdapUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -296,8 +303,14 @@ func buildIdSourceLdapDTO(d *schema.ResourceData) (api.LdapIdentitySourceDTO, er
 	return *dto, errWrap
 }
 
-func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourceDTO) error {
+/*func buildIdSourceLdapResource(d *schema.ResourceData, dto api.LdapIdentitySourceDTO) error {
+	return buildIdSourceLdapResourceForIda("", d, dto)
+}*/
+
+func buildIdSourceLdapResource(idaName string, d *schema.ResourceData, dto api.LdapIdentitySourceDTO) error {
+	// if idaName is not empty store it in d struct
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("element_id", cli.StrDeref(dto.ElementId))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

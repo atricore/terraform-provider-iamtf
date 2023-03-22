@@ -14,6 +14,7 @@ type (
 		clientId  string
 		secret    string
 		endpoint  string
+		appliance string
 		logLevel  int32
 		logger    hclog.Logger
 		trace     bool

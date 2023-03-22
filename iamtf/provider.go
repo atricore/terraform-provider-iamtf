@@ -71,6 +71,12 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("JOSSO_API_TRACE", nil),
 				Description: "Trace API traffic (See also TF_LOG and TF_PROVIDER_LOG).  Supports configuration from environment variable **JOSSO_API_TRACE**",
 			},
+			"import_ida": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("JOSSO_API_APPLIANCE", nil),
+				Description: "Name of the identity appliance used when importing resources. Supports configuration from environment variable **JOSSO_API_APPLIANCE**",
+			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			identityAppliance: ResourceIdentityAppliance(),
@@ -115,12 +121,13 @@ func providerConfigure(_ context.Context, d *schema.ResourceData) (interface{}, 
 	}
 
 	config := Config{
-		orgName:  d.Get("org_name").(string),
-		clientId: d.Get("client_id").(string),
-		secret:   d.Get("client_secret").(string),
-		endpoint: d.Get("endpoint").(string),
-		trace:    d.Get("trace").(bool),
-		logLevel: int32(logLevel),
+		orgName:   d.Get("org_name").(string),
+		clientId:  d.Get("client_id").(string),
+		secret:    d.Get("client_secret").(string),
+		endpoint:  d.Get("endpoint").(string),
+		trace:     d.Get("trace").(bool),
+		appliance: d.Get("import_ida").(string),
+		logLevel:  int32(logLevel),
 	}
 
 	if err := config.loadAndValidate(); err != nil {
