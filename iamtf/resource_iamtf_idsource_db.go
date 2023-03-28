@@ -155,7 +155,7 @@ func resourcedbidSourceCreate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to create dbidentitySource: %v", err)
 	}
 
-	if err = buildDbIdSourceResource(d, a); err != nil {
+	if err = buildDbIdSourceResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourcedbidentitySourceCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -178,7 +178,7 @@ func resourcedbidSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	if err = buildDbIdSourceResource(d, dbidentitySource); err != nil {
+	if err = buildDbIdSourceResource(d.getd, dbidentitySource); err != nil {
 		l.Debug("resourcedbidentitySourceRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -189,6 +189,12 @@ func resourcedbidSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 
 func resourcedbidSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
 	l.Trace("resourcedbidentitySourceUpdate", "ida", d.Get("ida").(string), "name", d.Id())
 
 	dbidentitySource, err := builddbidentitySourceDTO(d)
@@ -203,7 +209,7 @@ func resourcedbidSourceUpdate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to update dbidentitySource: %v", err)
 	}
 
-	if err = buildDbIdSourceResource(d, a); err != nil {
+	if err = buildDbIdSourceResource(idaName, d, a); err != nil {
 		l.Debug("resourcedbidentitySourceUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -266,8 +272,9 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	return *dto, errWrap
 }
 
-func buildDbIdSourceResource(d *schema.ResourceData, dto api.DbIdentitySourceDTO) error {
+func buildDbIdSourceResource(idaName string, m, d *schema.ResourceData, dto api.DbIdentitySourceDTO) error {
 	d.SetId(sdk.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("acquire_increment", dto.GetAcquireIncrement())
 	_ = d.Set("username", dto.GetAdmin())
 	_ = d.Set("connectionurl", dto.GetConnectionUrl())

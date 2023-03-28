@@ -80,7 +80,7 @@ func resourceIdentityApplianceCreate(ctx context.Context, d *schema.ResourceData
 	}
 
 	// Reade new resource
-	if err = buildIdentityApplianceResource(d, &a); err != nil {
+	if err = buildIdentityApplianceResource(d.Get("ida").(string), d, &a); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -90,8 +90,11 @@ func resourceIdentityApplianceCreate(ctx context.Context, d *schema.ResourceData
 }
 
 func resourceIdentityApplianceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	// d.Id() contains the resource ID
-	ida, err := getJossoClient(m).GetAppliance(d.Id())
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+	ida, err := getJossoClient(m).GetAppliance(idaName, d.Id())
 	if err != nil {
 		return diag.Errorf("failed to get identity appliance: %v", err)
 	}
@@ -99,7 +102,7 @@ func resourceIdentityApplianceRead(ctx context.Context, d *schema.ResourceData, 
 		d.SetId("")
 		return nil
 	}
-	if err = buildIdentityApplianceResource(d, &ida); err != nil {
+	if err = buildIdentityApplianceResource(idaName, d, &ida); err != nil {
 		return diag.FromErr(err)
 	}
 
@@ -183,11 +186,11 @@ func buildIdentityAppliance(d *schema.ResourceData) (api.IdentityApplianceDefini
 }
 
 // Builds a resource data from IdentiyApplianceDefinitionDTO
-func buildIdentityApplianceResource(d *schema.ResourceData, iam *api.IdentityApplianceDefinitionDTO) error {
+func buildIdentityApplianceResource(idaName string, d *schema.ResourceData, iam *api.IdentityApplianceDefinitionDTO) error {
 
 	id := strconv.FormatInt(cli.Int64Deref(iam.Id), 10)
 	d.SetId(id)
-
+	_ = d.Set("ida", idaName)
 	_ = d.Set("element_id", cli.StrDeref(iam.ElementId))
 	_ = d.Set("name", cli.StrDeref(iam.Name))
 	_ = d.Set("namespace", cli.StrDeref(iam.Namespace))

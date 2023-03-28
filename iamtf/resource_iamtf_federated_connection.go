@@ -243,6 +243,8 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceDat
 			idpChannel.SetOverrideProviderSetup(false)
 		}
 
+		// asd, err := convertMapArrToActiveBinding(m["bindings"])
+		// idpChannel.SetActiveBindings(asd)
 		c.SetIDPChannel(idpChannel)
 
 		result = append(result, *c)
@@ -268,6 +270,10 @@ func convertIdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([
 		if idpChannel.GetOverrideProviderSetup() {
 			al := idpChannel.GetAccountLinkagePolicy()
 			im := idpChannel.GetIdentityMappingPolicy()
+			ab, err := convertActiveBindingToMapArr(idpChannel.GetActiveBindings())
+			if err != nil {
+				return ab, err
+			}
 			// Array of maps
 			saml2_map :=
 				[]map[string]interface{}{{
@@ -278,6 +284,7 @@ func convertIdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([
 					"sign_authentication_requests": idpChannel.GetSignAuthenticationRequests(),
 					"signature_hash":               idpChannel.GetSignatureHash(),
 					"want_assertion_signed":        idpChannel.GetWantAssertionSigned(),
+					"bindings":                     ab,
 					//NOT SUPPORTED BY SERVER "sign_requests":                idpChannel.GetSignRequests(),
 				}}
 			idp_map["saml2"] = saml2_map
@@ -332,9 +339,6 @@ func idpSamlSchema() *schema.Schema {
 					ValidateDiagFunc: stringInSlice([]string{"NONE", "AES-128", "AES-256", "AES-3DES"}),
 					Default:          "NONE",
 				},
-				/*
-
-				 */
 				"bindings": {
 					Type:        schema.TypeList,
 					Optional:    true,
@@ -426,7 +430,10 @@ func convertIdPSaml2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]inte
 		encAlg = "NONE"
 	}
 	*/
-
+	ab, err := convertActiveBindingToMapArr(idp.GetActiveBindings())
+	if err != nil {
+		return ab, err
+	}
 	saml2_map := map[string]interface{}{
 		"want_authn_req_signed": idp.GetWantAuthnRequestsSigned(),
 		"want_req_signed":       idp.GetWantSignedRequests(),
@@ -436,6 +443,7 @@ func convertIdPSaml2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]inte
 		//		"metadata_endpoint":     idp.GetEnableMetadataEndpoint(),
 		"message_ttl":           int(idp.GetMessageTtl()),
 		"message_ttl_tolerance": int(idp.GetMessageTtlTolerance()),
+		"bindings":              ab,
 	}
 	result = append(result, saml2_map)
 
@@ -461,6 +469,7 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 	idp.SetEnableMetadataEndpoint(true)
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
+	//idp.SetActiveBindings(convertInterfaceToStringSet(""))
 
 	return nil
 }
@@ -573,3 +582,38 @@ func convertSPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]
 
 	return result, nil
 }
+
+func convertActiveBindingToMapArr(ac []string) ([]map[string]interface{}, error) {
+	var result []map[string]interface{}
+
+	if ac == nil {
+		return result, nil
+	}
+
+	ac_map := map[string]interface{}{
+		"ss":    true,
+		"sss":   true,
+		"ssss":  true,
+		"sssss": true,
+	}
+	result = append(result, ac_map)
+
+	return result, nil
+}
+
+// func convertMapArrToActiveBinding(ac_arr interface{}) ([]string, error) {
+// 	var ac []string
+// 	tfmapLs, err := asTFMapSingle(ac_arr)
+// 	if err != nil {
+// 		return ac, err
+// 	}
+
+// 	if tfmapLs == nil || len(tfmapLs) == 0 {
+// 		return ac, nil
+// 	}
+
+// 	if api.AsString(tfmapLs[""], "") == "" {
+// 		""
+// 	}
+
+// }

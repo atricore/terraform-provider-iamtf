@@ -191,7 +191,7 @@ func resourceOidcRpCreate(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.Errorf("failed to create oidcrp: %v", err)
 	}
 
-	if err = buildOidcRpResource(d, a); err != nil {
+	if err = buildOidcRpResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceOidcRpCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -203,8 +203,14 @@ func resourceOidcRpCreate(ctx context.Context, d *schema.ResourceData, m interfa
 
 func resourceOidcRpRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceOidcRpRead", "ida", d.Get("ida").(string), "name", d.Id())
-	oidcrp, err := getJossoClient(m).GetOidcRp(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceOidcRpRead", "ida", idaName, "name", d.Id())
+	oidcrp, err := getJossoClient(m).GetOidcRp(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceOidcRpRead %v", err)
 		return diag.Errorf("resourceOidcRpRead: %v", err)
@@ -214,7 +220,7 @@ func resourceOidcRpRead(ctx context.Context, d *schema.ResourceData, m interface
 		d.SetId("")
 		return nil
 	}
-	if err = buildOidcRpResource(d, oidcrp); err != nil {
+	if err = buildOidcRpResource(idaName, d, oidcrp); err != nil {
 		l.Debug("resourceOidcRpRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -239,7 +245,7 @@ func resourceOidcRpUpdate(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.Errorf("failed to update oidcrp: %v", err)
 	}
 
-	if err = buildOidcRpResource(d, a); err != nil {
+	if err = buildOidcRpResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceOidcRpUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -304,8 +310,9 @@ func buildOidcRpDTO(d *schema.ResourceData) (api.ExternalOpenIDConnectRelayingPa
 	return *dto, err
 }
 
-func buildOidcRpResource(d *schema.ResourceData, dto api.ExternalOpenIDConnectRelayingPartyDTO) error {
+func buildOidcRpResource(idaName string, d *schema.ResourceData, dto api.ExternalOpenIDConnectRelayingPartyDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("element_id", cli.StrDeref(dto.ElementId))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
