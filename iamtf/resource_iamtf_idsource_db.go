@@ -167,8 +167,14 @@ func resourcedbidSourceCreate(ctx context.Context, d *schema.ResourceData, m int
 
 func resourcedbidSourceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourcedbidentitySourceRead", "ida", d.Get("ida").(string), "name", d.Id())
-	dbidentitySource, err := getJossoClient(m).GetDbIdentitySourceDTO(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourcedbidentitySourceRead", "ida", idaName, "name", d.Id())
+	dbidentitySource, err := getJossoClient(m).GetDbIdentitySourceDTO(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourcedbidentitySourceRead %v", err)
 		return diag.Errorf("resourcedbidentitySourceRead: %v", err)
@@ -178,7 +184,7 @@ func resourcedbidSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	if err = buildDbIdSourceResource(d.getd, dbidentitySource); err != nil {
+	if err = buildDbIdSourceResource(idaName, d, dbidentitySource); err != nil {
 		l.Debug("resourcedbidentitySourceRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -189,11 +195,6 @@ func resourcedbidSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 
 func resourcedbidSourceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-
-	idaName := d.Get("ida").(string)
-	if idaName == "" {
-		idaName = m.(*Config).appliance
-	}
 
 	l.Trace("resourcedbidentitySourceUpdate", "ida", d.Get("ida").(string), "name", d.Id())
 
@@ -209,7 +210,7 @@ func resourcedbidSourceUpdate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to update dbidentitySource: %v", err)
 	}
 
-	if err = buildDbIdSourceResource(idaName, d, a); err != nil {
+	if err = buildDbIdSourceResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourcedbidentitySourceUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -272,7 +273,7 @@ func builddbidentitySourceDTO(d *schema.ResourceData) (api.DbIdentitySourceDTO, 
 	return *dto, errWrap
 }
 
-func buildDbIdSourceResource(idaName string, m, d *schema.ResourceData, dto api.DbIdentitySourceDTO) error {
+func buildDbIdSourceResource(idaName string, d *schema.ResourceData, dto api.DbIdentitySourceDTO) error {
 	d.SetId(sdk.StrDeref(dto.Name))
 	_ = d.Set("ida", idaName)
 	_ = d.Set("acquire_increment", dto.GetAcquireIncrement())
