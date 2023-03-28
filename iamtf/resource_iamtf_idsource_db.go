@@ -188,7 +188,7 @@ func resourcedbidSourceRead(ctx context.Context, d *schema.ResourceData, m inter
 		l.Debug("resourcedbidentitySourceRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourcedbidentitySourceRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourcedbidentitySourceRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }

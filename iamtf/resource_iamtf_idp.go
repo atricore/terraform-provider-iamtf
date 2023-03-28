@@ -612,7 +612,7 @@ func resourceIdPCreate(ctx context.Context, d *schema.ResourceData, m interface{
 		return diag.Errorf("failed to create idp: %v", err)
 	}
 
-	if err = buildIdPResource(d, idp); err != nil {
+	if err = buildIdPResource(d.Get("ida").(string), d, idp); err != nil {
 		l.Debug("resourceIdPCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -623,8 +623,14 @@ func resourceIdPCreate(ctx context.Context, d *schema.ResourceData, m interface{
 }
 func resourceIdPRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceIdPRead", "ida", d.Get("ida").(string), "name", d.Id())
-	idp, err := getJossoClient(m).GetIdp(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceIdPRead", "ida", idaName, "name", d.Id())
+	idp, err := getJossoClient(m).GetIdp(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceIdPRead %v", err)
 		return diag.Errorf("resourceIdPRead: %v", err)
@@ -634,11 +640,11 @@ func resourceIdPRead(ctx context.Context, d *schema.ResourceData, m interface{})
 		d.SetId("")
 		return nil
 	}
-	if err = buildIdPResource(d, idp); err != nil {
+	if err = buildIdPResource(idaName, d, idp); err != nil {
 		l.Debug("resourceIdPRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceIdPRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceIdPRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -659,7 +665,7 @@ func resourceIdPUpdate(ctx context.Context, d *schema.ResourceData, m interface{
 		return diag.Errorf("failed to update idp: %v", err)
 	}
 
-	if err = buildIdPResource(d, idp); err != nil {
+	if err = buildIdPResource(d.Get("ida").(string), d, idp); err != nil {
 		l.Debug("resourceIdPUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -784,7 +790,7 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 	return *idp, errWrap
 }
 
-func buildIdPResource(d *schema.ResourceData, idp api.IdentityProviderDTO) error {
+func buildIdPResource(idaName string, d *schema.ResourceData, idp api.IdentityProviderDTO) error {
 	d.SetId(sdk.StrDeref(idp.Name))
 	_ = d.Set("name", sdk.StrDeref(idp.Name))
 	_ = d.Set("element_id", sdk.StrDeref(idp.ElementId))

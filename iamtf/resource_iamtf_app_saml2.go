@@ -86,7 +86,7 @@ func resourceExtSaml2SpCreate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to create extsaml2sp: %v", err)
 	}
 
-	if err = buildExtSaml2SpResource(d, a); err != nil {
+	if err = buildExtSaml2SpResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceExtSaml2SpCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -99,8 +99,14 @@ func resourceExtSaml2SpCreate(ctx context.Context, d *schema.ResourceData, m int
 
 func resourceExtSaml2SpRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceExtSaml2SpRead", "ida", d.Get("ida").(string), "name", d.Id())
-	extsaml2sp, err := getJossoClient(m).GetExtSaml2Sp(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceExtSaml2SpRead", "ida", idaName, "name", d.Id())
+	extsaml2sp, err := getJossoClient(m).GetExtSaml2Sp(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceExtSaml2SpRead %v", err)
 		return diag.Errorf("resourceExtSaml2SpRead: %v", err)
@@ -110,11 +116,11 @@ func resourceExtSaml2SpRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	if err = buildExtSaml2SpResource(d, extsaml2sp); err != nil {
+	if err = buildExtSaml2SpResource(idaName, d, extsaml2sp); err != nil {
 		l.Debug("resourceExtSaml2SpRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceExtSaml2SpRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceExtSaml2SpRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -135,7 +141,7 @@ func resourceExtSaml2SpUpdate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to update extsaml2sp: %v", err)
 	}
 
-	if err = buildExtSaml2SpResource(d, a); err != nil {
+	if err = buildExtSaml2SpResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceExtSaml2SpUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -183,8 +189,9 @@ func buildExtSaml2SpDTO(d *schema.ResourceData) (api.ExternalSaml2ServiceProvide
 	return *dto, err
 }
 
-func buildExtSaml2SpResource(d *schema.ResourceData, dto api.ExternalSaml2ServiceProviderDTO) error {
+func buildExtSaml2SpResource(idaName string, d *schema.ResourceData, dto api.ExternalSaml2ServiceProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("element_id", cli.StrDeref(dto.ElementId))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

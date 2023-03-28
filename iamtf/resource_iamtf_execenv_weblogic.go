@@ -93,7 +93,7 @@ func resourceWebLogicExecenvCreate(ctx context.Context, d *schema.ResourceData, 
 		return diag.Errorf("failed to create wlexeenv: %v", err)
 	}
 
-	if err = buildWebLogicExecenvResource(d, a); err != nil {
+	if err = buildWebLogicExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceWebLogicExecenvCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -105,8 +105,14 @@ func resourceWebLogicExecenvCreate(ctx context.Context, d *schema.ResourceData, 
 
 func resourceWebLogicExecenvRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceWebLogicExecenvRead", "ida", d.Get("ida").(string), "name", d.Id())
-	wl, err := getJossoClient(m).GetWebLogic(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceWebLogicExecenvRead", "ida", idaName, "name", d.Id())
+	wl, err := getJossoClient(m).GetWebLogic(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceWebLogicExecenvRead %v", err)
 		return diag.Errorf("resourceWebLogicExecenvRead: %v", err)
@@ -116,11 +122,11 @@ func resourceWebLogicExecenvRead(ctx context.Context, d *schema.ResourceData, m 
 		d.SetId("")
 		return nil
 	}
-	if err = buildWebLogicExecenvResource(d, wl); err != nil {
+	if err = buildWebLogicExecenvResource(idaName, d, wl); err != nil {
 		l.Debug("resourceWebLogicExecenvRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceWebLogicExecenvRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceWebLogicExecenvRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -141,7 +147,7 @@ func resourceWebLogicExecenvUpdate(ctx context.Context, d *schema.ResourceData, 
 		return diag.Errorf("failed to update wlexeenv: %v", err)
 	}
 
-	if err = buildWebLogicExecenvResource(d, a); err != nil {
+	if err = buildWebLogicExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceWebLogicExecenvUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -189,7 +195,7 @@ func buildWebLogicExecenvDTO(d *schema.ResourceData) (api.WeblogicExecutionEnvir
 	return *dto, err
 }
 
-func buildWebLogicExecenvResource(d *schema.ResourceData, dto api.WeblogicExecutionEnvironmentDTO) error {
+func buildWebLogicExecenvResource(idaName string, d *schema.ResourceData, dto api.WeblogicExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

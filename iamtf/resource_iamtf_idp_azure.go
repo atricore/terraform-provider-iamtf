@@ -80,7 +80,7 @@ func resourceidAzureCreate(ctx context.Context, d *schema.ResourceData, m interf
 		return diag.Errorf("failed to create idAzure: %v", err)
 	}
 
-	if err = buildidAzureResource(d, a); err != nil {
+	if err = buildidAzureResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceidAzureCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -91,8 +91,14 @@ func resourceidAzureCreate(ctx context.Context, d *schema.ResourceData, m interf
 }
 func resourceidAzureRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceidAzureRead", "ida", d.Get("ida").(string), "name", d.Id())
-	idAzure, err := getJossoClient(m).GetIdpAzure(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceidAzureRead", "ida", idaName, "name", d.Id())
+	idAzure, err := getJossoClient(m).GetIdpAzure(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceidAzureRead %v", err)
 		return diag.Errorf("resourceidAzureRead: %v", err)
@@ -102,7 +108,7 @@ func resourceidAzureRead(ctx context.Context, d *schema.ResourceData, m interfac
 		d.SetId("")
 		return nil
 	}
-	if err = buildidAzureResource(d, idAzure); err != nil {
+	if err = buildidAzureResource(idaName, d, idAzure); err != nil {
 		l.Debug("resourceidAzureRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -127,7 +133,7 @@ func resourceidAzureUpdate(ctx context.Context, d *schema.ResourceData, m interf
 		return diag.Errorf("failed to update idAzure: %v", err)
 	}
 
-	if err = buildidAzureResource(d, a); err != nil {
+	if err = buildidAzureResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceidAzureUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -172,7 +178,7 @@ func buildidAzureDTO(d *schema.ResourceData) (api.AzureOpenIDConnectIdentityProv
 	return *dto, err
 }
 
-func buildidAzureResource(d *schema.ResourceData, dto api.AzureOpenIDConnectIdentityProviderDTO) error {
+func buildidAzureResource(idaName string, d *schema.ResourceData, dto api.AzureOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

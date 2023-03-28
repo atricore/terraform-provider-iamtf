@@ -91,7 +91,7 @@ func resourceSharePointCreate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to create SharePoint: %v", err)
 	}
 
-	if err = buildSharePointResource(d, josso1re, sp); err != nil {
+	if err = buildSharePointResource(d.Get("ida").(string), d, josso1re, sp); err != nil {
 		l.Debug("resourceSharePointCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -104,8 +104,13 @@ func resourceSharePointCreate(ctx context.Context, d *schema.ResourceData, m int
 func resourceSharePointRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
 
-	l.Trace("resourceIntSaml2spRead", "ida", d.Get("ida").(string), "spname", *PtrSchemaStr(d, "sp_id"))
-	sp, err := getJossoClient(m).GetIntSaml2Sp(d.Get("ida").(string), *PtrSchemaStr(d, "sp_id"))
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceIntSaml2spRead", "ida", idaName, "spname", *PtrSchemaStr(d, "sp_id"))
+	sp, err := getJossoClient(m).GetIntSaml2Sp(idaName, *PtrSchemaStr(d, "sp_id"))
 	if err != nil {
 		l.Debug("resourceIntSaml2spRead %v", err)
 		return diag.Errorf("resourceIntSaml2spRead: %v", err)
@@ -115,10 +120,10 @@ func resourceSharePointRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	l.Debug("resourceIntSaml2spRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceIntSaml2spRead OK", "ida", idaName, "name", d.Id())
 
-	l.Trace("resourceSharePointRead", "ida", d.Get("ida").(string), "name", d.Id())
-	josso1re, err := getJossoClient(m).GetSharePointResource(d.Get("ida").(string), d.Id())
+	l.Trace("resourceSharePointRead", "ida", idaName, "name", d.Id())
+	josso1re, err := getJossoClient(m).GetSharePointResource(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceSharePointRead %v", err)
 		return diag.Errorf("resourceSharePointRead: %v", err)
@@ -128,11 +133,11 @@ func resourceSharePointRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	if err = buildSharePointResource(d, josso1re, sp); err != nil {
+	if err = buildSharePointResource(idaName, d, josso1re, sp); err != nil {
 		l.Debug("resourceSharePointRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceSharePointRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceSharePointRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -158,7 +163,7 @@ func resourceSharePointUpdate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to update josso1re: %v", err)
 	}
 
-	if err = buildSharePointResource(d, a, b); err != nil {
+	if err = buildSharePointResource(d.Get("ida").(string), d, a, b); err != nil {
 		l.Debug("resourceSharePointUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -272,8 +277,9 @@ func buildSharePointDTO(d *schema.ResourceData) (api.SharepointResourceDTO, api.
 	return *josso1re, *sp, errWrap
 }
 
-func buildSharePointResource(d *schema.ResourceData, josso1re api.SharepointResourceDTO, sp api.InternalSaml2ServiceProviderDTO) error {
+func buildSharePointResource(idaName string, d *schema.ResourceData, josso1re api.SharepointResourceDTO, sp api.InternalSaml2ServiceProviderDTO) error {
 	d.SetId(cli.StrDeref(josso1re.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("sp_id", cli.StrDeref(sp.Name))
 	_ = d.Set("name", cli.StrDeref(josso1re.Name))
 	_ = d.Set("description", cli.StrDeref(josso1re.Description))

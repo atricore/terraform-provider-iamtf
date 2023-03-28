@@ -92,7 +92,7 @@ func resourceIdFacebookCreate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to create idFacebook: %v", err)
 	}
 
-	if err = buildIdFacebookResource(d, a); err != nil {
+	if err = buildIdFacebookResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIdFacebookCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -103,8 +103,14 @@ func resourceIdFacebookCreate(ctx context.Context, d *schema.ResourceData, m int
 }
 func resourceIdFacebookRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceIdFacebookRead", "ida", d.Get("ida").(string), "name", d.Id())
-	idFacebook, err := getJossoClient(m).GetIdpFacebook(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceIdFacebookRead", "ida", idaName, "name", d.Id())
+	idFacebook, err := getJossoClient(m).GetIdpFacebook(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceIdFacebookRead %v", err)
 		return diag.Errorf("resourceIdFacebookRead: %v", err)
@@ -114,11 +120,11 @@ func resourceIdFacebookRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	if err = buildIdFacebookResource(d, idFacebook); err != nil {
+	if err = buildIdFacebookResource(idaName, d, idFacebook); err != nil {
 		l.Debug("resourceIdFacebookRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceIdFacebookRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceIdFacebookRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -139,7 +145,7 @@ func resourceIdFacebookUpdate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to update idFacebook: %v", err)
 	}
 
-	if err = buildIdFacebookResource(d, a); err != nil {
+	if err = buildIdFacebookResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIdFacebookUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -194,7 +200,7 @@ func buildIdFacebookDTO(d *schema.ResourceData) (api.FacebookOpenIDConnectIdenti
 	return *dto, err
 }
 
-func buildIdFacebookResource(d *schema.ResourceData, dto api.FacebookOpenIDConnectIdentityProviderDTO) error {
+func buildIdFacebookResource(idaName string, d *schema.ResourceData, dto api.FacebookOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

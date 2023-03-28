@@ -98,7 +98,7 @@ func resourceAppAgentCreate(ctx context.Context, d *schema.ResourceData, m inter
 	l := getLogger(m)
 	l.Debug("createAppAgent", "ida", d.Get("ida").(string))
 
-	josso1re, intsaml2sp, err := buildAppAgentDTO(d) // err
+	josso1re, intsaml2sp, err := buildAppAgentDTO(d)
 	if err != nil {
 		return diag.Errorf("failed to build IntSaml2sp: %v", err)
 	}
@@ -116,7 +116,7 @@ func resourceAppAgentCreate(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.Errorf("failed to create josso1re: %v", err)
 	}
 
-	if err = buildAppAgentResource(d, b, a); err != nil {
+	if err = buildAppAgentResource(d.Get("ida").(string), d, b, a); err != nil {
 		l.Debug("Createjosso1re %v", err)
 		return diag.FromErr(err)
 	}
@@ -126,8 +126,13 @@ func resourceAppAgentCreate(ctx context.Context, d *schema.ResourceData, m inter
 
 func resourceAppAgentRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceIntSaml2spRead", "ida", d.Get("ida").(string), "spname", *PtrSchemaStr(d, "sp_id"))
-	sp, err := getJossoClient(m).GetIntSaml2Sp(d.Get("ida").(string), *PtrSchemaStr(d, "sp_id"))
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceIntSaml2spRead", "ida", idaName, "spname", *PtrSchemaStr(d, "sp_id"))
+	sp, err := getJossoClient(m).GetIntSaml2Sp(idaName, *PtrSchemaStr(d, "sp_id"))
 	if err != nil {
 		l.Debug("resourceIntSaml2spRead %v", err)
 		return diag.Errorf("resourceIntSaml2spRead: %v", err)
@@ -137,10 +142,10 @@ func resourceAppAgentRead(ctx context.Context, d *schema.ResourceData, m interfa
 		d.SetId("")
 		return nil
 	}
-	l.Debug("resourceIntSaml2spRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceIntSaml2spRead OK", "ida", idaName, "name", d.Id())
 
-	l.Trace("resourceJosso1ReRead", "ida", d.Get("ida").(string), "name", d.Id())
-	josso1re, err := getJossoClient(m).GetJosso1Resource(d.Get("ida").(string), d.Id())
+	l.Trace("resourceJosso1ReRead", "ida", idaName, "name", d.Id())
+	josso1re, err := getJossoClient(m).GetJosso1Resource(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceJosso1ReRead %v", err)
 		return diag.Errorf("resourceJosso1ReRead: %v", err)
@@ -150,7 +155,7 @@ func resourceAppAgentRead(ctx context.Context, d *schema.ResourceData, m interfa
 		d.SetId("")
 		return nil
 	}
-	if err = buildAppAgentResource(d, josso1re, sp); err != nil {
+	if err = buildAppAgentResource(idaName, d, josso1re, sp); err != nil {
 		l.Debug("resourceAppAgentRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -179,7 +184,7 @@ func resourceAppAgentUpdate(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.Errorf("failed to update josso1re: %v", err)
 	}
 
-	if err = buildAppAgentResource(d, a, b); err != nil {
+	if err = buildAppAgentResource(d.Get("ida").(string), d, a, b); err != nil {
 		l.Debug("resourceAppAgentUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -302,10 +307,11 @@ func buildAppAgentDTO(d *schema.ResourceData) (api.JOSSO1ResourceDTO, api.Intern
 	return *josso1re, *sp, errWrap
 }
 
-func buildAppAgentResource(d *schema.ResourceData, josso1 api.JOSSO1ResourceDTO, sp api.InternalSaml2ServiceProviderDTO) error {
+func buildAppAgentResource(idaName string, d *schema.ResourceData, josso1 api.JOSSO1ResourceDTO, sp api.InternalSaml2ServiceProviderDTO) error {
 	d.SetId(cli.StrDeref(josso1.Name))
 	_ = d.Set("sp_id", cli.StrDeref(sp.Name))
 
+	_ = d.Set("ida", idaName)
 	// JOSSO 1 Res
 	_ = d.Set("app_slo_location", cli.LocationToStr(josso1.SloLocation))
 	_ = d.Set("app_location", cli.LocationToStr(josso1.PartnerAppLocation))

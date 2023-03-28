@@ -89,7 +89,7 @@ func resourceidGoogleCreate(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.Errorf("failed to create idGoogle: %v", err)
 	}
 
-	if err = buildidGoogleResource(d, a); err != nil {
+	if err = buildidGoogleResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceidGoogleCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -100,8 +100,14 @@ func resourceidGoogleCreate(ctx context.Context, d *schema.ResourceData, m inter
 }
 func resourceidGoogleRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceidGoogleRead", "ida", d.Get("ida").(string), "name", d.Id())
-	idGoogle, err := getJossoClient(m).GetIdpGoogle(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceidGoogleRead", "ida", idaName, "name", d.Id())
+	idGoogle, err := getJossoClient(m).GetIdpGoogle(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceidGoogleRead %v", err)
 		return diag.Errorf("resourceidGoogleRead: %v", err)
@@ -111,7 +117,7 @@ func resourceidGoogleRead(ctx context.Context, d *schema.ResourceData, m interfa
 		d.SetId("")
 		return nil
 	}
-	if err = buildidGoogleResource(d, idGoogle); err != nil {
+	if err = buildidGoogleResource(idaName, d, idGoogle); err != nil {
 		l.Debug("resourceidGoogleRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -136,7 +142,7 @@ func resourceidGoogleUpdate(ctx context.Context, d *schema.ResourceData, m inter
 		return diag.Errorf("failed to update idGoogle: %v", err)
 	}
 
-	if err = buildidGoogleResource(d, a); err != nil {
+	if err = buildidGoogleResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceidGoogleUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -188,7 +194,7 @@ func buildidGoogleDTO(d *schema.ResourceData) (api.GoogleOpenIDConnectIdentityPr
 	return *dto, err
 }
 
-func buildidGoogleResource(d *schema.ResourceData, dto api.GoogleOpenIDConnectIdentityProviderDTO) error {
+func buildidGoogleResource(idaName string, d *schema.ResourceData, dto api.GoogleOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

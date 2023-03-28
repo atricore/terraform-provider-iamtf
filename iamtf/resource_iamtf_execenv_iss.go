@@ -81,7 +81,7 @@ func resourceIssExecenvCreate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to create issexeenv: %v", err)
 	}
 
-	if err = buildIssExecenvResource(d, a); err != nil {
+	if err = buildIssExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIssExecenvCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -93,8 +93,14 @@ func resourceIssExecenvCreate(ctx context.Context, d *schema.ResourceData, m int
 
 func resourceIssExecenvRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceIssExecenvRead", "ida", d.Get("ida").(string), "name", d.Id())
-	iss, err := getJossoClient(m).GetIssExeEnv(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceIssExecenvRead", "ida", idaName, "name", d.Id())
+	iss, err := getJossoClient(m).GetIssExeEnv(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceIssExecenvRead %v", err)
 		return diag.Errorf("resourceIssExecenvRead: %v", err)
@@ -104,11 +110,11 @@ func resourceIssExecenvRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	if err = buildIssExecenvResource(d, iss); err != nil {
+	if err = buildIssExecenvResource(d.Get("ida").(string), d, iss); err != nil {
 		l.Debug("resourceIssExecenvRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceIssExecenvRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceIssExecenvRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -129,7 +135,7 @@ func resourceIssExecenvUpdate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to update issexeenv: %v", err)
 	}
 
-	if err = buildIssExecenvResource(d, a); err != nil {
+	if err = buildIssExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIssExecenvUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -174,7 +180,7 @@ func buildIssExecenvDTO(d *schema.ResourceData) (api.WindowsIISExecutionEnvironm
 	return *dto, err
 }
 
-func buildIssExecenvResource(d *schema.ResourceData, dto api.WindowsIISExecutionEnvironmentDTO) error {
+func buildIssExecenvResource(idaName string, d *schema.ResourceData, dto api.WindowsIISExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

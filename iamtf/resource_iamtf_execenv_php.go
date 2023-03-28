@@ -81,7 +81,7 @@ func resourcePhpExecenvCreate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to create phpexeenv: %v", err)
 	}
 
-	if err = buildPhpExecenvResource(d, a); err != nil {
+	if err = buildPhpExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourcePhpExecenvCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -93,8 +93,14 @@ func resourcePhpExecenvCreate(ctx context.Context, d *schema.ResourceData, m int
 
 func resourcePhpExecenvRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourcePhpExecenvRead", "ida", d.Get("ida").(string), "name", d.Id())
-	php, err := getJossoClient(m).GetPhpExeEnv(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourcePhpExecenvRead", "ida", idaName, "name", d.Id())
+	php, err := getJossoClient(m).GetPhpExeEnv(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourcePhpExecenvRead %v", err)
 		return diag.Errorf("resourcePhpExecenvRead: %v", err)
@@ -104,11 +110,11 @@ func resourcePhpExecenvRead(ctx context.Context, d *schema.ResourceData, m inter
 		d.SetId("")
 		return nil
 	}
-	if err = buildPhpExecenvResource(d, php); err != nil {
+	if err = buildPhpExecenvResource(idaName, d, php); err != nil {
 		l.Debug("resourcePhpExecenvRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourcePhpExecenvRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourcePhpExecenvRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -129,7 +135,7 @@ func resourcePhpExecenvUpdate(ctx context.Context, d *schema.ResourceData, m int
 		return diag.Errorf("failed to update phpexeenv: %v", err)
 	}
 
-	if err = buildPhpExecenvResource(d, a); err != nil {
+	if err = buildPhpExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourcePhpExecenvUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -168,7 +174,7 @@ func buildPhpExecenvDTO(d *schema.ResourceData) (api.PHPExecutionEnvironmentDTO,
 	return *dto, err
 }
 
-func buildPhpExecenvResource(d *schema.ResourceData, dto api.PHPExecutionEnvironmentDTO) error {
+func buildPhpExecenvResource(idaName string, d *schema.ResourceData, dto api.PHPExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))

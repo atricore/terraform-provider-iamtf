@@ -82,7 +82,7 @@ func resourceTomcatExecenvCreate(ctx context.Context, d *schema.ResourceData, m 
 		return diag.Errorf("failed to create tomcatexeenv: %v", err)
 	}
 
-	if err = buildTomcatExecenvResource(d, a); err != nil {
+	if err = buildTomcatExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceTomcatExecenvCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -94,8 +94,14 @@ func resourceTomcatExecenvCreate(ctx context.Context, d *schema.ResourceData, m 
 
 func resourceTomcatExecenvRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceTomcatExecenvRead", "ida", d.Get("ida").(string), "name", d.Id())
-	tomcat, err := getJossoClient(m).GetTomcatExeEnv(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceTomcatExecenvRead", "ida", idaName, "name", d.Id())
+	tomcat, err := getJossoClient(m).GetTomcatExeEnv(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceTomcatExecenvRead %v", err)
 		return diag.Errorf("resourceTomcatExecenvRead: %v", err)
@@ -105,11 +111,11 @@ func resourceTomcatExecenvRead(ctx context.Context, d *schema.ResourceData, m in
 		d.SetId("")
 		return nil
 	}
-	if err = buildTomcatExecenvResource(d, tomcat); err != nil {
+	if err = buildTomcatExecenvResource(idaName, d, tomcat); err != nil {
 		l.Debug("resourceTomcatExecenvRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceTomcatExecenvRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceTomcatExecenvRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -130,7 +136,7 @@ func resourceTomcatExecenvUpdate(ctx context.Context, d *schema.ResourceData, m 
 		return diag.Errorf("failed to update tomcatexeenv: %v", err)
 	}
 
-	if err = buildTomcatExecenvResource(d, a); err != nil {
+	if err = buildTomcatExecenvResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceTomcatExecenvUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -177,7 +183,7 @@ func buildTomcatExecenvDTO(d *schema.ResourceData) (api.TomcatExecutionEnvironme
 	return *dto, err
 }
 
-func buildTomcatExecenvResource(d *schema.ResourceData, dto api.TomcatExecutionEnvironmentDTO) error {
+func buildTomcatExecenvResource(idaName string, d *schema.ResourceData, dto api.TomcatExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
