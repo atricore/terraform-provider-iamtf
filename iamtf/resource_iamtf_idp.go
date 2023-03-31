@@ -792,6 +792,7 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 
 func buildIdPResource(idaName string, d *schema.ResourceData, idp api.IdentityProviderDTO) error {
 	d.SetId(sdk.StrDeref(idp.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("name", sdk.StrDeref(idp.Name))
 	_ = d.Set("element_id", sdk.StrDeref(idp.ElementId))
 	_ = d.Set("description", sdk.StrDeref(idp.Description))

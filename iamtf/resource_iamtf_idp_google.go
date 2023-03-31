@@ -196,6 +196,7 @@ func buildidGoogleDTO(d *schema.ResourceData) (api.GoogleOpenIDConnectIdentityPr
 
 func buildidGoogleResource(idaName string, d *schema.ResourceData, dto api.GoogleOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
 	_ = d.Set("client_id", cli.StrDeref(dto.ClientId))

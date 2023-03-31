@@ -176,6 +176,7 @@ func buildPhpExecenvDTO(d *schema.ResourceData) (api.PHPExecutionEnvironmentDTO,
 
 func buildPhpExecenvResource(idaName string, d *schema.ResourceData, dto api.PHPExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
 	_ = d.Set("activation_install_samples", cli.BoolDeref(dto.InstallDemoApps))

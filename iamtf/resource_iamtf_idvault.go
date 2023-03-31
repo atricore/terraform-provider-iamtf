@@ -66,7 +66,7 @@ func resourceIdVaultCreate(ctx context.Context, d *schema.ResourceData, m interf
 		return diag.Errorf("failed to create idVault: %v", err)
 	}
 
-	if err = buildIdVaultResource(d, a); err != nil {
+	if err = buildIdVaultResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIdVaultCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -77,8 +77,14 @@ func resourceIdVaultCreate(ctx context.Context, d *schema.ResourceData, m interf
 }
 func resourceIdVaultRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceIdVaultRead", "ida", d.Get("ida").(string), "name", d.Id())
-	idVault, err := getJossoClient(m).GetIdVault(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceIdVaultRead", "ida", idaName, "name", d.Id())
+	idVault, err := getJossoClient(m).GetIdVault(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceIdVaultRead %v", err)
 		return diag.Errorf("resourceIdVaultRead: %v", err)
@@ -88,11 +94,11 @@ func resourceIdVaultRead(ctx context.Context, d *schema.ResourceData, m interfac
 		d.SetId("")
 		return nil
 	}
-	if err = buildIdVaultResource(d, idVault); err != nil {
+	if err = buildIdVaultResource(idaName, d, idVault); err != nil {
 		l.Debug("resourceIdVaultRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceIdVaultRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceIdVaultRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -113,7 +119,7 @@ func resourceIdVaultUpdate(ctx context.Context, d *schema.ResourceData, m interf
 		return diag.Errorf("failed to update idVault: %v", err)
 	}
 
-	if err = buildIdVaultResource(d, a); err != nil {
+	if err = buildIdVaultResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceIdVaultUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -150,8 +156,9 @@ func buildIdVaultDTO(d *schema.ResourceData) (api.EmbeddedIdentityVaultDTO, erro
 	return *a, err
 }
 
-func buildIdVaultResource(d *schema.ResourceData, idVault api.EmbeddedIdentityVaultDTO) error {
+func buildIdVaultResource(idaName string, d *schema.ResourceData, idVault api.EmbeddedIdentityVaultDTO) error {
 	d.SetId(cli.StrDeref(idVault.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("element_id", cli.StrDeref(idVault.ElementId))
 	_ = d.Set("name", cli.StrDeref(idVault.Name))
 	_ = d.Set("description", cli.StrDeref(idVault.Description))

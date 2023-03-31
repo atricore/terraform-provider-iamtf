@@ -54,7 +54,7 @@ func resourceSelfServiceCreate(ctx context.Context, d *schema.ResourceData, m in
 		return diag.Errorf("failed to create selfService: %v", err)
 	}
 
-	if err = buildSelfServiceResource(d, a); err != nil {
+	if err = buildSelfServiceResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceSelfServiceCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -76,7 +76,7 @@ func resourceSelfServiceRead(ctx context.Context, d *schema.ResourceData, m inte
 		d.SetId("")
 		return nil
 	}
-	if err = buildSelfServiceResource(d, selfService); err != nil {
+	if err = buildSelfServiceResource(d.Get("ida").(string), d, selfService); err != nil {
 		l.Debug("resourceSelfServiceRead %v", err)
 		return diag.FromErr(err)
 	}
@@ -101,7 +101,7 @@ func resourceSelfServiceUpdate(ctx context.Context, d *schema.ResourceData, m in
 		return diag.Errorf("failed to update selfService: %v", err)
 	}
 
-	if err = buildSelfServiceResource(d, a); err != nil {
+	if err = buildSelfServiceResource(d.Get("ida").(string), d, a); err != nil {
 		l.Debug("resourceSelfServiceUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -114,15 +114,20 @@ func resourceSelfServiceUpdate(ctx context.Context, d *schema.ResourceData, m in
 func resourceSelfServiceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
 
-	l.Trace("resourceSelfServiceDelete", "ida", d.Get("ida").(string), "name", d.Id())
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
 
-	_, err := getJossoClient(m).DeleteSelfServiceResource(d.Get("ida").(string), d.Id())
+	l.Trace("resourceSelfServiceDelete", "ida", idaName, "name", d.Id())
+
+	_, err := getJossoClient(m).DeleteSelfServiceResource(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceSelfServiceDelete %v", err)
 		return diag.Errorf("failed to delete selfService: %v", err)
 	}
 
-	l.Debug("resourceSelfServiceDelete OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceSelfServiceDelete OK", "ida", d.Get(idaName), "name", d.Id())
 
 	return nil
 }
@@ -136,8 +141,9 @@ func buildSelfServiceDTO(d *schema.ResourceData) (api.SelfServicesResourceDTO, e
 	return *dto, err
 }
 
-func buildSelfServiceResource(d *schema.ResourceData, dto api.SelfServicesResourceDTO) error {
+func buildSelfServiceResource(idaName string, d *schema.ResourceData, dto api.SelfServicesResourceDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("description", cli.StrDeref(dto.Description))
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	return nil

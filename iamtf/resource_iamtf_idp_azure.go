@@ -180,6 +180,7 @@ func buildidAzureDTO(d *schema.ResourceData) (api.AzureOpenIDConnectIdentityProv
 
 func buildidAzureResource(idaName string, d *schema.ResourceData, dto api.AzureOpenIDConnectIdentityProviderDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
 	_ = d.Set("client_id", cli.StrDeref(dto.ClientId))

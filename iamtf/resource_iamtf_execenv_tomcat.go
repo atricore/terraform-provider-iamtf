@@ -185,6 +185,7 @@ func buildTomcatExecenvDTO(d *schema.ResourceData) (api.TomcatExecutionEnvironme
 
 func buildTomcatExecenvResource(idaName string, d *schema.ResourceData, dto api.TomcatExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
 

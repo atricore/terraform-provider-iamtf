@@ -251,7 +251,7 @@ func resourceVPCreate(ctx context.Context, d *schema.ResourceData, m interface{}
 		return diag.Errorf("failed to create vp: %v", err)
 	}
 
-	if err = buildVPResource(d, vp); err != nil {
+	if err = buildVPResource(d.Get("ida").(string), d, vp); err != nil {
 		l.Debug("resourceVPCreate %v", err)
 		return diag.FromErr(err)
 	}
@@ -262,8 +262,14 @@ func resourceVPCreate(ctx context.Context, d *schema.ResourceData, m interface{}
 }
 func resourceVPRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceVPRead", "ida", d.Get("ida").(string), "name", d.Id())
-	vp, err := getJossoClient(m).GetVirtSaml2Sp(d.Get("ida").(string), d.Id())
+
+	idaName := d.Get("ida").(string)
+	if idaName == "" {
+		idaName = m.(*Config).appliance
+	}
+
+	l.Trace("resourceVPRead", "ida", d.Get(idaName), "name", d.Id())
+	vp, err := getJossoClient(m).GetVirtSaml2Sp(idaName, d.Id())
 	if err != nil {
 		l.Debug("resourceVPRead %v", err)
 		return diag.Errorf("resourceVPRead: %v", err)
@@ -273,11 +279,11 @@ func resourceVPRead(ctx context.Context, d *schema.ResourceData, m interface{}) 
 		d.SetId("")
 		return nil
 	}
-	if err = buildVPResource(d, vp); err != nil {
+	if err = buildVPResource(idaName, d, vp); err != nil {
 		l.Debug("resourceVPRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceVPRead OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceVPRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
@@ -298,7 +304,7 @@ func resourceVPUpdate(ctx context.Context, d *schema.ResourceData, m interface{}
 		return diag.Errorf("failed to update vp: %v", err)
 	}
 
-	if err = buildVPResource(d, vp); err != nil {
+	if err = buildVPResource(d.Get("ida").(string), d, vp); err != nil {
 		l.Debug("resourceVPUpdate %v", err)
 		return diag.FromErr(err)
 	}
@@ -405,8 +411,9 @@ func buildVPDTO(d *schema.ResourceData) (api.VirtualSaml2ServiceProviderDTO, err
 	return *vp, errWrap
 }
 
-func buildVPResource(d *schema.ResourceData, vp api.VirtualSaml2ServiceProviderDTO) error {
+func buildVPResource(idaName string, d *schema.ResourceData, vp api.VirtualSaml2ServiceProviderDTO) error {
 	d.SetId(sdk.StrDeref(vp.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("name", sdk.StrDeref(vp.Name))
 	_ = d.Set("element_id", sdk.StrDeref(vp.ElementId))
 	_ = d.Set("description", sdk.StrDeref(vp.Description))

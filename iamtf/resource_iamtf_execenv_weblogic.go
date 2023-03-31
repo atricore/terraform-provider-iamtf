@@ -197,6 +197,7 @@ func buildWebLogicExecenvDTO(d *schema.ResourceData) (api.WeblogicExecutionEnvir
 
 func buildWebLogicExecenvResource(idaName string, d *schema.ResourceData, dto api.WeblogicExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
+	_ = d.Set("ida", idaName)
 	_ = d.Set("name", cli.StrDeref(dto.Name))
 	_ = d.Set("description", cli.StrDeref(dto.Description))
 	ver, err := platformIdVersion(cli.StrDeref(dto.PlatformId))
