@@ -167,7 +167,7 @@ func (c *IdbusApiClient) GetAppliances() ([]api.IdentityApplianceDefinitionDTO, 
 
 }
 
-func (c *IdbusApiClient) GetAppliance(ida string, idOrName string) (api.IdentityApplianceDefinitionDTO, error) {
+func (c *IdbusApiClient) GetAppliance(idOrName string) (api.IdentityApplianceDefinitionDTO, error) {
 
 	var result api.IdentityApplianceDefinitionDTO
 

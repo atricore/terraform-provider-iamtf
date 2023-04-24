@@ -59,7 +59,7 @@ func dataSourceIdentityApplianceRead(ctx context.Context, d *schema.ResourceData
 		d.SetId("")
 		return nil
 	}
-	if err = buildIdentityApplianceResource(d, &iam); err != nil {
+	if err = buildIdentityApplianceResource(idOrName, d, &iam); err != nil {
 		return diag.FromErr(err)
 	}
 

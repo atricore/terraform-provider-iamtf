@@ -504,6 +504,53 @@ func ResourceIdP() *schema.Resource {
 					},
 				},
 			},
+			"authn_custom": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Custom authentication mechanism",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"type": {
+							Type:             schema.TypeString,
+							Description:      "Authentication type: BASIC, 2FA, PRE_AUTHN",
+							Required:         true,
+							ValidateDiagFunc: stringInSlice([]string{"BASIC", "2FA", "PRE_AUTHN"}),
+						},
+						"saml_authn_ctx": {
+							Type: schema.TypeString,
+							// TODO : Add valid values to doc
+							Description: "SAML authentication context",
+							Required:    true,
+							// TODO : Add validate Func
+						},
+						"claim_type": {
+							Type: schema.TypeString,
+							// TODO : Add valid values to doc
+							Description: "Claim type",
+							Required:    true,
+							// TODO : Add validate Func
+						},
+						"claim_names": {
+							Type: schema.TypeString,
+							// Todo : space or comman  sperated list?
+							Description: "name of the claim to be used, depends on claim type",
+							Required:    true,
+						},
+						"external_service": {
+							Type:        schema.TypeString,
+							Description: "URL to external authentication service to collect claims",
+							Optional:    true,
+						},
+						"inject_id_source": {
+							Type:        schema.TypeBool,
+							Description: "Inject identity source into custom authenticator (must have proper setter)",
+							Optional:    true,
+							Default:     false,
+						},
+						"extension": customClassSchema(),
+					},
+				},
+			},
 			"id_sources": {
 				Type: schema.TypeSet,
 				Elem: &schema.Schema{
