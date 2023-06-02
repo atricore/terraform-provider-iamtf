@@ -10,12 +10,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func ResourceIssExecenv() *schema.Resource {
+func ResourceIISExecenv() *schema.Resource {
 	return &schema.Resource{
-		CreateContext: resourceIssExecenvCreate,
-		ReadContext:   resourceIssExecenvRead,
-		UpdateContext: resourceIssExecenvUpdate,
-		DeleteContext: resourceIssExecenvDelete,
+		CreateContext: resourceIISExecenvCreate,
+		ReadContext:   resourceIISExecenvRead,
+		UpdateContext: resourceIISExecenvUpdate,
+		DeleteContext: resourceIISExecenvDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
@@ -39,7 +39,7 @@ func ResourceIssExecenv() *schema.Resource {
 			"activation_path": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "(activation) Iss path",
+				Description: "(activation) IIS path",
 			},
 			"activation_remote_target": {
 				Type:        schema.TypeString,
@@ -65,33 +65,33 @@ func ResourceIssExecenv() *schema.Resource {
 		},
 	}
 }
-func resourceIssExecenvCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIISExecenvCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Debug("resourceIssExecenvCreate", "ida", d.Get("ida").(string))
+	l.Debug("resourceIISExecenvCreate", "ida", d.Get("ida").(string))
 
-	iss, err := buildIssExecenvDTO(d)
+	iis, err := buildIISExecenvDTO(d)
 	if err != nil {
-		return diag.Errorf("failed to build issexeenv: %v", err)
+		return diag.Errorf("failed to build IIS exeenv: %v", err)
 	}
-	l.Trace("resourceIssExecenvCreate", "ida", d.Get("ida").(string), "name", *iss.Name)
+	l.Trace("resourceIISExecenvCreate", "ida", d.Get("ida").(string), "name", *iis.Name)
 
-	a, err := getJossoClient(m).CreateIssExeEnv(d.Get("ida").(string), iss)
+	a, err := getJossoClient(m).CreateIISExeEnv(d.Get("ida").(string), iis)
 	if err != nil {
-		l.Debug("resourceIssExecenvCreate %v", err)
-		return diag.Errorf("failed to create issexeenv: %v", err)
+		l.Debug("resourceIISExecenvCreate %v", err)
+		return diag.Errorf("failed to create IIS exeenv: %v", err)
 	}
 
-	if err = buildIssExecenvResource(d.Get("ida").(string), d, a); err != nil {
-		l.Debug("resourceIssExecenvCreate %v", err)
+	if err = buildIISExecenvResource(d.Get("ida").(string), d, a); err != nil {
+		l.Debug("resourceIISExecenvCreate %v", err)
 		return diag.FromErr(err)
 	}
 
-	l.Debug("resourceIssExecenvCreate OK", "ida", d.Get("ida").(string), "name", *iss.Name)
+	l.Debug("resourceIISExecenvCreate OK", "ida", d.Get("ida").(string), "name", *iis.Name)
 
 	return nil
 }
 
-func resourceIssExecenvRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIISExecenvRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
 
 	idaName := d.Get("ida").(string)
@@ -99,68 +99,68 @@ func resourceIssExecenvRead(ctx context.Context, d *schema.ResourceData, m inter
 		idaName = m.(*Config).appliance
 	}
 
-	l.Trace("resourceIssExecenvRead", "ida", idaName, "name", d.Id())
-	iss, err := getJossoClient(m).GetIssExeEnv(idaName, d.Id())
+	l.Trace("resourceIISExecenvRead", "ida", idaName, "name", d.Id())
+	iis, err := getJossoClient(m).GetIISExeEnv(idaName, d.Id())
 	if err != nil {
-		l.Debug("resourceIssExecenvRead %v", err)
-		return diag.Errorf("resourceIssExecenvRead: %v", err)
+		l.Debug("resourceIISExecenvRead %v", err)
+		return diag.Errorf("resourceIISExecenvRead: %v", err)
 	}
-	if iss.Name == nil || *iss.Name == "" {
-		l.Debug("resourceIssExecenvRead NOT FOUND")
+	if iis.Name == nil || *iis.Name == "" {
+		l.Debug("resourceIISExecenvRead NOT FOUND")
 		d.SetId("")
 		return nil
 	}
-	if err = buildIssExecenvResource(d.Get("ida").(string), d, iss); err != nil {
-		l.Debug("resourceIssExecenvRead %v", err)
+	if err = buildIISExecenvResource(d.Get("ida").(string), d, iis); err != nil {
+		l.Debug("resourceIISExecenvRead %v", err)
 		return diag.FromErr(err)
 	}
-	l.Debug("resourceIssExecenvRead OK", "ida", idaName, "name", d.Id())
+	l.Debug("resourceIISExecenvRead OK", "ida", idaName, "name", d.Id())
 
 	return nil
 }
 
-func resourceIssExecenvUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIISExecenvUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Trace("resourceIssExecenvUpdate", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Trace("resourceIISExecenvUpdate", "ida", d.Get("ida").(string), "name", d.Id())
 
-	iss, err := buildIssExecenvDTO(d)
+	iis, err := buildIISExecenvDTO(d)
 	if err != nil {
-		l.Debug("resourceIssExecenvUpdate %v", err)
-		return diag.Errorf("failed to build issexeenv: %v", err)
+		l.Debug("resourceIISExecenvUpdate %v", err)
+		return diag.Errorf("failed to build IIS exeenv: %v", err)
 	}
 
-	a, err := getJossoClient(m).UpdateIssExeEnv(d.Get("ida").(string), iss)
+	a, err := getJossoClient(m).UpdateIISExeEnv(d.Get("ida").(string), iis)
 	if err != nil {
-		l.Debug("resourceIssExecenvUpdate %v", err)
-		return diag.Errorf("failed to update issexeenv: %v", err)
+		l.Debug("resourceIISExecenvUpdate %v", err)
+		return diag.Errorf("failed to update IIS exeenv: %v", err)
 	}
 
-	if err = buildIssExecenvResource(d.Get("ida").(string), d, a); err != nil {
-		l.Debug("resourceIssExecenvUpdate %v", err)
+	if err = buildIISExecenvResource(d.Get("ida").(string), d, a); err != nil {
+		l.Debug("resourceIISExecenvUpdate %v", err)
 		return diag.FromErr(err)
 	}
 
-	l.Trace("resourceIssExecenvUpdate OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Trace("resourceIISExecenvUpdate OK", "ida", d.Get("ida").(string), "name", d.Id())
 
 	return nil
 }
 
-func resourceIssExecenvDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIISExecenvDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
 
-	l.Trace("resourceIssExecenvDelete", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Trace("resourceIISExecenvDelete", "ida", d.Get("ida").(string), "name", d.Id())
 
-	_, err := getJossoClient(m).DeleteIssExeEnv(d.Get("ida").(string), d.Id())
+	_, err := getJossoClient(m).DeleteIISExeEnv(d.Get("ida").(string), d.Id())
 	if err != nil {
-		l.Debug("resourceIssExecenvDelete %v", err)
-		return diag.Errorf("failed to delete issexeenv: %v", err)
+		l.Debug("resourceIISExecenvDelete %v", err)
+		return diag.Errorf("failed to delete IIS exeenv: %v", err)
 	}
 
-	l.Debug("resourceIssExecenvDelete OK", "ida", d.Get("ida").(string), "name", d.Id())
+	l.Debug("resourceIISExecenvDelete OK", "ida", d.Get("ida").(string), "name", d.Id())
 
 	return nil
 }
-func buildIssExecenvDTO(d *schema.ResourceData) (api.WindowsIISExecutionEnvironmentDTO, error) {
+func buildIISExecenvDTO(d *schema.ResourceData) (api.WindowsIISExecutionEnvironmentDTO, error) {
 	var err error
 	dto := api.NewWindowsIISExecutionEnvironmentDTO()
 	dto.Name = PtrSchemaStr(d, "name")
@@ -180,7 +180,7 @@ func buildIssExecenvDTO(d *schema.ResourceData) (api.WindowsIISExecutionEnvironm
 	return *dto, err
 }
 
-func buildIssExecenvResource(idaName string, d *schema.ResourceData, dto api.WindowsIISExecutionEnvironmentDTO) error {
+func buildIISExecenvResource(idaName string, d *schema.ResourceData, dto api.WindowsIISExecutionEnvironmentDTO) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("ida", idaName)
 	_ = d.Set("name", cli.StrDeref(dto.Name))
@@ -202,9 +202,9 @@ func buildIssExecenvResource(idaName string, d *schema.ResourceData, dto api.Win
 
 func platformIdToArchitecture(ver string) (string, error) {
 	switch ver {
-	case "iss-32":
+	case "iis-32":
 		return "32", nil
-	case "iss-64":
+	case "iis-64":
 		return "64", nil
 	}
 	return "", fmt.Errorf("unknown architecture %s", ver)
@@ -213,9 +213,9 @@ func platformIdToArchitecture(ver string) (string, error) {
 func architectureToPlatformId(pid string) (string, error) {
 	switch pid {
 	case "32":
-		return "iss-32", nil
+		return "iis-32", nil
 	case "64":
-		return "iss-64", nil
+		return "iis-64", nil
 	}
 	return "", fmt.Errorf("unknown architecture %s", pid)
 }

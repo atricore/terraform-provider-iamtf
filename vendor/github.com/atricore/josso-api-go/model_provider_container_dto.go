@@ -20,6 +20,8 @@ type ProviderContainerDTO struct {
 	FederatedProvider *FederatedProviderDTO `json:"federatedProvider,omitempty"`
 	Location *string `json:"location,omitempty"`
 	Name *string `json:"name,omitempty"`
+	ServiceResource *ServiceResourceDTO `json:"serviceResource,omitempty"`
+	ServiceResourceType *string `json:"serviceResourceType,omitempty"`
 	Type *string `json:"type,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -139,6 +141,70 @@ func (o *ProviderContainerDTO) SetName(v string) {
 	o.Name = &v
 }
 
+// GetServiceResource returns the ServiceResource field value if set, zero value otherwise.
+func (o *ProviderContainerDTO) GetServiceResource() ServiceResourceDTO {
+	if o == nil || isNil(o.ServiceResource) {
+		var ret ServiceResourceDTO
+		return ret
+	}
+	return *o.ServiceResource
+}
+
+// GetServiceResourceOk returns a tuple with the ServiceResource field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProviderContainerDTO) GetServiceResourceOk() (*ServiceResourceDTO, bool) {
+	if o == nil || isNil(o.ServiceResource) {
+    return nil, false
+	}
+	return o.ServiceResource, true
+}
+
+// HasServiceResource returns a boolean if a field has been set.
+func (o *ProviderContainerDTO) HasServiceResource() bool {
+	if o != nil && !isNil(o.ServiceResource) {
+		return true
+	}
+
+	return false
+}
+
+// SetServiceResource gets a reference to the given ServiceResourceDTO and assigns it to the ServiceResource field.
+func (o *ProviderContainerDTO) SetServiceResource(v ServiceResourceDTO) {
+	o.ServiceResource = &v
+}
+
+// GetServiceResourceType returns the ServiceResourceType field value if set, zero value otherwise.
+func (o *ProviderContainerDTO) GetServiceResourceType() string {
+	if o == nil || isNil(o.ServiceResourceType) {
+		var ret string
+		return ret
+	}
+	return *o.ServiceResourceType
+}
+
+// GetServiceResourceTypeOk returns a tuple with the ServiceResourceType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ProviderContainerDTO) GetServiceResourceTypeOk() (*string, bool) {
+	if o == nil || isNil(o.ServiceResourceType) {
+    return nil, false
+	}
+	return o.ServiceResourceType, true
+}
+
+// HasServiceResourceType returns a boolean if a field has been set.
+func (o *ProviderContainerDTO) HasServiceResourceType() bool {
+	if o != nil && !isNil(o.ServiceResourceType) {
+		return true
+	}
+
+	return false
+}
+
+// SetServiceResourceType gets a reference to the given string and assigns it to the ServiceResourceType field.
+func (o *ProviderContainerDTO) SetServiceResourceType(v string) {
+	o.ServiceResourceType = &v
+}
+
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *ProviderContainerDTO) GetType() string {
 	if o == nil || isNil(o.Type) {
@@ -182,6 +248,12 @@ func (o ProviderContainerDTO) MarshalJSON() ([]byte, error) {
 	if !isNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
+	if !isNil(o.ServiceResource) {
+		toSerialize["serviceResource"] = o.ServiceResource
+	}
+	if !isNil(o.ServiceResourceType) {
+		toSerialize["serviceResourceType"] = o.ServiceResourceType
+	}
 	if !isNil(o.Type) {
 		toSerialize["type"] = o.Type
 	}
@@ -206,6 +278,8 @@ func (o *ProviderContainerDTO) UnmarshalJSON(bytes []byte) (err error) {
 		delete(additionalProperties, "federatedProvider")
 		delete(additionalProperties, "location")
 		delete(additionalProperties, "name")
+		delete(additionalProperties, "serviceResource")
+		delete(additionalProperties, "serviceResourceType")
 		delete(additionalProperties, "type")
 		o.AdditionalProperties = additionalProperties
 	}

@@ -21,6 +21,7 @@ type GetTypesRes struct {
 	BasicAuthnMechanism *BasicAuthenticationDTO `json:"basicAuthnMechanism,omitempty"`
 	BindAuthn *BindAuthenticationDTO `json:"bindAuthn,omitempty"`
 	BuiltInAttributeProfile *BuiltInAttributeProfileDTO `json:"builtInAttributeProfile,omitempty"`
+	CustomAuthSvc *CustomAuthnServiceDTO `json:"customAuthSvc,omitempty"`
 	DirectoryAuthnSvc *DirectoryAuthenticationServiceDTO `json:"directoryAuthnSvc,omitempty"`
 	Idpc *IdentityProviderChannelDTO `json:"idpc,omitempty"`
 	Spc *InternalSaml2ServiceProviderChannelDTO `json:"spc,omitempty"`
@@ -175,6 +176,38 @@ func (o *GetTypesRes) SetBuiltInAttributeProfile(v BuiltInAttributeProfileDTO) {
 	o.BuiltInAttributeProfile = &v
 }
 
+// GetCustomAuthSvc returns the CustomAuthSvc field value if set, zero value otherwise.
+func (o *GetTypesRes) GetCustomAuthSvc() CustomAuthnServiceDTO {
+	if o == nil || isNil(o.CustomAuthSvc) {
+		var ret CustomAuthnServiceDTO
+		return ret
+	}
+	return *o.CustomAuthSvc
+}
+
+// GetCustomAuthSvcOk returns a tuple with the CustomAuthSvc field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetTypesRes) GetCustomAuthSvcOk() (*CustomAuthnServiceDTO, bool) {
+	if o == nil || isNil(o.CustomAuthSvc) {
+    return nil, false
+	}
+	return o.CustomAuthSvc, true
+}
+
+// HasCustomAuthSvc returns a boolean if a field has been set.
+func (o *GetTypesRes) HasCustomAuthSvc() bool {
+	if o != nil && !isNil(o.CustomAuthSvc) {
+		return true
+	}
+
+	return false
+}
+
+// SetCustomAuthSvc gets a reference to the given CustomAuthnServiceDTO and assigns it to the CustomAuthSvc field.
+func (o *GetTypesRes) SetCustomAuthSvc(v CustomAuthnServiceDTO) {
+	o.CustomAuthSvc = &v
+}
+
 // GetDirectoryAuthnSvc returns the DirectoryAuthnSvc field value if set, zero value otherwise.
 func (o *GetTypesRes) GetDirectoryAuthnSvc() DirectoryAuthenticationServiceDTO {
 	if o == nil || isNil(o.DirectoryAuthnSvc) {
@@ -317,6 +350,9 @@ func (o GetTypesRes) MarshalJSON() ([]byte, error) {
 	if !isNil(o.BuiltInAttributeProfile) {
 		toSerialize["builtInAttributeProfile"] = o.BuiltInAttributeProfile
 	}
+	if !isNil(o.CustomAuthSvc) {
+		toSerialize["customAuthSvc"] = o.CustomAuthSvc
+	}
 	if !isNil(o.DirectoryAuthnSvc) {
 		toSerialize["directoryAuthnSvc"] = o.DirectoryAuthnSvc
 	}
@@ -351,6 +387,7 @@ func (o *GetTypesRes) UnmarshalJSON(bytes []byte) (err error) {
 		delete(additionalProperties, "basicAuthnMechanism")
 		delete(additionalProperties, "bindAuthn")
 		delete(additionalProperties, "builtInAttributeProfile")
+		delete(additionalProperties, "customAuthSvc")
 		delete(additionalProperties, "directoryAuthnSvc")
 		delete(additionalProperties, "idpc")
 		delete(additionalProperties, "spc")

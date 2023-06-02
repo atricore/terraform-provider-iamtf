@@ -96,28 +96,36 @@ func ResourceJosso1Re() *schema.Resource {
 
 func resourceAppAgentCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
-	l.Debug("createAppAgent", "ida", d.Get("ida").(string))
+	l.Debug("createAppAgent ", "ida", d.Get("ida").(string))
 
+	// Create app elements: josso1resource and intsaml2sp
 	josso1re, intsaml2sp, err := buildAppAgentDTO(d)
 	if err != nil {
 		return diag.Errorf("failed to build IntSaml2sp: %v", err)
 	}
-	l.Trace("createIntSaml2sp", "ida", d.Get("ida").(string), "name", *intsaml2sp.Name)
+
+	// Store intsaml2sp in JOSSO server
+	l.Trace("createIntSaml2sp ", "ida", d.Get("ida").(string), "name", *intsaml2sp.Name)
 	a, err := getJossoClient(m).CreateIntSaml2Sp(d.Get("ida").(string), intsaml2sp)
 	if err != nil {
 		l.Debug("createIntSaml2sp %v", err)
 		return diag.Errorf("failed to create IntSaml2sp: %v", err)
 	}
 
+	// Create a service connection between app and sp, no need to handle error
 	josso1re.NewServiceConnection(intsaml2sp.GetName())
+
+	// Store josso1resource in JOSSO server
+	l.Trace("createJossoresource ", "ida", d.Get("ida").(string), "name", *intsaml2sp.Name)
 	b, err := getJossoClient(m).CreateJossoresource(d.Get("ida").(string), josso1re)
 	if err != nil {
-		l.Debug("Createjosso1re %v", err)
+		l.Debug("createJossoresource %v", err)
 		return diag.Errorf("failed to create josso1re: %v", err)
 	}
 
+	// populate TF with received data
 	if err = buildAppAgentResource(d.Get("ida").(string), d, b, a); err != nil {
-		l.Debug("Createjosso1re %v", err)
+		l.Debug("createAppAgent %v", err)
 		return diag.FromErr(err)
 	}
 

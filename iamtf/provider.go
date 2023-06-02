@@ -25,7 +25,7 @@ const (
 	josso1Rs          = "iamtf_app_agent"
 	spoint            = "iamtf_app_sharepoint"
 	tomcat            = "iamtf_execenv_tomcat"
-	iss               = "iamtf_execenv_iss"
+	iis               = "iamtf_execenv_iis"
 	php               = "iamtf_execenv_php"
 	weblogic          = "iamtf_execenv_weblogic"
 	selfService       = "iamtf_self_service"
@@ -89,7 +89,7 @@ func Provider() *schema.Provider {
 			tomcat:            ResourceTomcatExecenv(),
 			josso1Rs:          ResourceJosso1Re(),
 			dbidsource:        ResourcedbidSource(),
-			iss:               ResourceIssExecenv(),
+			iis:               ResourceIISExecenv(),
 			php:               ResourcePhpExecenv(),
 			spoint:            ResourceSharePoint(),
 			weblogic:          ResourceWebLogicExecenv(),

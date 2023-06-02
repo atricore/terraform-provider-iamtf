@@ -145,9 +145,9 @@ func (c *IdbusApiClient) DeleteCustomBrandingDefinitionDTO(name string) (bool, e
 }
 
 // Gets a custom branding definition DTO by name
-func (c *IdbusApiClient) GetBrandingDefinitionDTO(name string) (api.BrandingDefinitionDTO, error) {
+func (c *IdbusApiClient) GetBrandingDefinitionDTO(name string) (api.CustomBrandingDefinitionDTO, error) {
 	c.logger.Debugf("GetBrandingDefinitionDTO. %s", name)
-	var result api.BrandingDefinitionDTO
+	var result api.CustomBrandingDefinitionDTO
 
 	sc, err := c.IdbusServerForOperation("DefaultApiService.GetBrandingDefinitionDTO") // Also hard-coded in generated client
 	if err != nil {
@@ -183,9 +183,9 @@ func (c *IdbusApiClient) GetBrandingDefinitionDTO(name string) (api.BrandingDefi
 
 }
 
-func (c *IdbusApiClient) GetBrandingDefinitionDTOs() ([]api.BrandingDefinitionDTO, error) {
+func (c *IdbusApiClient) GetBrandingDefinitionDTOs() ([]api.CustomBrandingDefinitionDTO, error) {
 	c.logger.Debugf("getBrandingDefinitionDTOs: all ")
-	var result []api.BrandingDefinitionDTO
+	var result []api.CustomBrandingDefinitionDTO
 
 	sc, err := c.IdbusServerForOperation("DefaultApiService.GetBrandingDefinitionDTOs") // Also hard-coded in generated client
 	if err != nil {

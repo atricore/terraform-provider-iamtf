@@ -18,6 +18,7 @@ import (
 // IdentityApplianceContainerDTO struct for IdentityApplianceContainerDTO
 type IdentityApplianceContainerDTO struct {
 	Appliance *IdentityApplianceDTO `json:"appliance,omitempty"`
+	ExecEnvs []string `json:"execEnvs,omitempty"`
 	IdSources []string `json:"idSources,omitempty"`
 	Providers []string `json:"providers,omitempty"`
 	AdditionalProperties map[string]interface{}
@@ -72,6 +73,38 @@ func (o *IdentityApplianceContainerDTO) HasAppliance() bool {
 // SetAppliance gets a reference to the given IdentityApplianceDTO and assigns it to the Appliance field.
 func (o *IdentityApplianceContainerDTO) SetAppliance(v IdentityApplianceDTO) {
 	o.Appliance = &v
+}
+
+// GetExecEnvs returns the ExecEnvs field value if set, zero value otherwise.
+func (o *IdentityApplianceContainerDTO) GetExecEnvs() []string {
+	if o == nil || isNil(o.ExecEnvs) {
+		var ret []string
+		return ret
+	}
+	return o.ExecEnvs
+}
+
+// GetExecEnvsOk returns a tuple with the ExecEnvs field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityApplianceContainerDTO) GetExecEnvsOk() ([]string, bool) {
+	if o == nil || isNil(o.ExecEnvs) {
+    return nil, false
+	}
+	return o.ExecEnvs, true
+}
+
+// HasExecEnvs returns a boolean if a field has been set.
+func (o *IdentityApplianceContainerDTO) HasExecEnvs() bool {
+	if o != nil && !isNil(o.ExecEnvs) {
+		return true
+	}
+
+	return false
+}
+
+// SetExecEnvs gets a reference to the given []string and assigns it to the ExecEnvs field.
+func (o *IdentityApplianceContainerDTO) SetExecEnvs(v []string) {
+	o.ExecEnvs = v
 }
 
 // GetIdSources returns the IdSources field value if set, zero value otherwise.
@@ -143,6 +176,9 @@ func (o IdentityApplianceContainerDTO) MarshalJSON() ([]byte, error) {
 	if !isNil(o.Appliance) {
 		toSerialize["appliance"] = o.Appliance
 	}
+	if !isNil(o.ExecEnvs) {
+		toSerialize["execEnvs"] = o.ExecEnvs
+	}
 	if !isNil(o.IdSources) {
 		toSerialize["idSources"] = o.IdSources
 	}
@@ -168,6 +204,7 @@ func (o *IdentityApplianceContainerDTO) UnmarshalJSON(bytes []byte) (err error) 
 
 	if err = json.Unmarshal(bytes, &additionalProperties); err == nil {
 		delete(additionalProperties, "appliance")
+		delete(additionalProperties, "execEnvs")
 		delete(additionalProperties, "idSources")
 		delete(additionalProperties, "providers")
 		o.AdditionalProperties = additionalProperties

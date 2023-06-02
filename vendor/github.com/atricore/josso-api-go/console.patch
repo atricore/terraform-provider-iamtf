@@ -1,20 +1,15 @@
-@@ -6767,6 +6768,9 @@
-             "type" : "integer",
-             "format" : "int32"
+--- console-api-1.5.0-SNAPSHOT-swagger.json	2023-06-02 10:31:57.113717622 -0400
++++ console-api-1.5.0-SNAPSHOT-swagger.json.new	2023-06-02 12:38:00.187008182 -0400
+@@ -6330,6 +6338,12 @@
+           "appliance" : {
+             "$ref" : "#/components/schemas/IdentityApplianceDTO"
            },
-+          "oidcIncludeUserClaimsInAccessToken" : {
-+            "type" : "boolean"
++          "execEnvs" : {
++            "type" : "array",
++            "items" : {
++              "type" : "string"
++            }
 +          },
-           "openIdEnabled" : {
-             "type" : "boolean"
-           },
-@@ -9013,6 +9025,9 @@
-             "type" : "integer",
-             "format" : "int32"
-           },
-+          "oidcIncludeUserClaimsInAccessToken" : {
-+            "type" : "boolean"
-+          },
-           "openIdEnabled" : {
-             "type" : "boolean"
-           },
+           "idSources" : {
+             "type" : "array",
+             "items" : {

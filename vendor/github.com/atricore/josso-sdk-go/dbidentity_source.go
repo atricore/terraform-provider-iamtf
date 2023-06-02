@@ -20,6 +20,7 @@ func (c *IdbusApiClient) CreateDbIdentitySourceDTO(ida string, intDbSource api.D
 
 	initDbIdentitySourceDTO(&intDbSource)
 
+	//ctx := context.WithValue(context.Background(), api.ContextAccessToken, sc.Authn.AccessToken)
 	ctx := context.WithValue(context.Background(), api.ContextAccessToken, sc.Authn.AccessToken)
 	req := c.apiClient.DefaultApi.CreateIdSourceDb(ctx)
 	req = req.StoreIdSourceDbReq(api.StoreIdSourceDbReq{IdOrName: &ida, IdSourceDb: &intDbSource})

@@ -17,7 +17,7 @@ import (
 
 // GetAllBrandingsRes struct for GetAllBrandingsRes
 type GetAllBrandingsRes struct {
-	Brandings []BrandingDefinitionDTO `json:"brandings,omitempty"`
+	Brandings []CustomBrandingDefinitionDTO `json:"brandings,omitempty"`
 	Error *string `json:"error,omitempty"`
 	AdditionalProperties map[string]interface{}
 }
@@ -42,9 +42,9 @@ func NewGetAllBrandingsResWithDefaults() *GetAllBrandingsRes {
 }
 
 // GetBrandings returns the Brandings field value if set, zero value otherwise.
-func (o *GetAllBrandingsRes) GetBrandings() []BrandingDefinitionDTO {
+func (o *GetAllBrandingsRes) GetBrandings() []CustomBrandingDefinitionDTO {
 	if o == nil || isNil(o.Brandings) {
-		var ret []BrandingDefinitionDTO
+		var ret []CustomBrandingDefinitionDTO
 		return ret
 	}
 	return o.Brandings
@@ -52,7 +52,7 @@ func (o *GetAllBrandingsRes) GetBrandings() []BrandingDefinitionDTO {
 
 // GetBrandingsOk returns a tuple with the Brandings field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *GetAllBrandingsRes) GetBrandingsOk() ([]BrandingDefinitionDTO, bool) {
+func (o *GetAllBrandingsRes) GetBrandingsOk() ([]CustomBrandingDefinitionDTO, bool) {
 	if o == nil || isNil(o.Brandings) {
     return nil, false
 	}
@@ -68,8 +68,8 @@ func (o *GetAllBrandingsRes) HasBrandings() bool {
 	return false
 }
 
-// SetBrandings gets a reference to the given []BrandingDefinitionDTO and assigns it to the Brandings field.
-func (o *GetAllBrandingsRes) SetBrandings(v []BrandingDefinitionDTO) {
+// SetBrandings gets a reference to the given []CustomBrandingDefinitionDTO and assigns it to the Brandings field.
+func (o *GetAllBrandingsRes) SetBrandings(v []CustomBrandingDefinitionDTO) {
 	o.Brandings = v
 }
 

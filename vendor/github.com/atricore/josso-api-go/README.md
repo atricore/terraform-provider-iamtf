@@ -134,6 +134,8 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**GetBranding**](docs/DefaultApi.md#getbranding) | **Get** /iam-branding/branding | 
 *DefaultApi* | [**GetDbIdVault**](docs/DefaultApi.md#getdbidvault) | **Get** /iam-deploy/dbidvault | 
 *DefaultApi* | [**GetDbIdVaults**](docs/DefaultApi.md#getdbidvaults) | **Get** /iam-deploy/dbidvaults | 
+*DefaultApi* | [**GetExecEnv**](docs/DefaultApi.md#getexecenv) | **Get** /iam-deploy/execenv | 
+*DefaultApi* | [**GetExecEnvs**](docs/DefaultApi.md#getexecenvs) | **Get** /iam-deploy/execenvs | 
 *DefaultApi* | [**GetExtSaml2Sp**](docs/DefaultApi.md#getextsaml2sp) | **Get** /iam-deploy/extsaml2sp | 
 *DefaultApi* | [**GetExtSaml2Sps**](docs/DefaultApi.md#getextsaml2sps) | **Get** /iam-deploy/extsaml2sps | 
 *DefaultApi* | [**GetIdP**](docs/DefaultApi.md#getidp) | **Get** /iam-deploy/idp | 
@@ -223,10 +225,10 @@ Class | Method | HTTP request | Description
  - [AzureOpenIDConnectIdentityProviderDTO](docs/AzureOpenIDConnectIdentityProviderDTO.md)
  - [BasicAuthenticationDTO](docs/BasicAuthenticationDTO.md)
  - [BindAuthenticationDTO](docs/BindAuthenticationDTO.md)
- - [BrandingDefinitionDTO](docs/BrandingDefinitionDTO.md)
  - [BuiltInAttributeProfileDTO](docs/BuiltInAttributeProfileDTO.md)
  - [CalcLayoutReq](docs/CalcLayoutReq.md)
  - [CalcLayoutRes](docs/CalcLayoutRes.md)
+ - [CustomAuthnServiceDTO](docs/CustomAuthnServiceDTO.md)
  - [CustomBrandingDefinitionDTO](docs/CustomBrandingDefinitionDTO.md)
  - [CustomClassDTO](docs/CustomClassDTO.md)
  - [CustomClassPropertyDTO](docs/CustomClassPropertyDTO.md)
@@ -240,6 +242,7 @@ Class | Method | HTTP request | Description
  - [DirectoryAuthenticationServiceDTO](docs/DirectoryAuthenticationServiceDTO.md)
  - [EmbeddedIdentityVaultDTO](docs/EmbeddedIdentityVaultDTO.md)
  - [EntitySelectionStrategyDTO](docs/EntitySelectionStrategyDTO.md)
+ - [ExecEnvContainerDTO](docs/ExecEnvContainerDTO.md)
  - [ExecutionEnvironmentDTO](docs/ExecutionEnvironmentDTO.md)
  - [ExportApplianceReq](docs/ExportApplianceReq.md)
  - [ExportApplianceRes](docs/ExportApplianceRes.md)
@@ -265,6 +268,9 @@ Class | Method | HTTP request | Description
  - [GetDbIdVaultReq](docs/GetDbIdVaultReq.md)
  - [GetDbIdVaultRes](docs/GetDbIdVaultRes.md)
  - [GetDbIdVaultsRes](docs/GetDbIdVaultsRes.md)
+ - [GetExecEnvReq](docs/GetExecEnvReq.md)
+ - [GetExecEnvRes](docs/GetExecEnvRes.md)
+ - [GetExecEnvsRes](docs/GetExecEnvsRes.md)
  - [GetExtSaml2SpReq](docs/GetExtSaml2SpReq.md)
  - [GetExtSaml2SpRes](docs/GetExtSaml2SpRes.md)
  - [GetExtSaml2SpsRes](docs/GetExtSaml2SpsRes.md)

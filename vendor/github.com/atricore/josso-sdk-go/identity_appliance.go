@@ -185,6 +185,7 @@ func (c *IdbusApiClient) GetAppliance(idOrName string) (api.IdentityApplianceDef
 
 	if err != nil {
 		c.logger.Errorf("getAppliance. Error %v", err)
+		return result, err
 	}
 
 	if res.Error != nil {
