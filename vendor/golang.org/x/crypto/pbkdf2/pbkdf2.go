@@ -29,7 +29,7 @@ import (
 // the supplied hash function.
 //
 // For example, to use a HMAC-SHA-1 based PBKDF2 key derivation function, you
-// can get a derived key for e.g. AES-256 (which needs a 32-byte key) by
+// can get a derived key for e.g. AES256 (which needs a 32-byte key) by
 // doing:
 //
 //	dk := pbkdf2.Key([]byte("some password"), salt, 4096, 32, sha1.New)

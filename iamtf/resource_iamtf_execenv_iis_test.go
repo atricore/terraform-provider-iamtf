@@ -37,7 +37,7 @@ func TestAccIIS_crud(t *testing.T) {
 }
 
 func createDoesIISExist() func(string) (bool, error) {
-	// TODO : infer appliance name and lookup for resource
+
 	return func(id string) (bool, error) {
 		return false, nil
 	}

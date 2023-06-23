@@ -339,7 +339,7 @@ func idpSamlSchema() *schema.Schema {
 					Type:             schema.TypeString,
 					Description:      "encrypt assertion algorithm",
 					Optional:         true,
-					ValidateDiagFunc: stringInSlice([]string{"NONE", "AES-128", "AES-256", "AES-3DES"}),
+					ValidateDiagFunc: stringInSlice([]string{"NONE", "AES128", "AES256", "AES3DES"}),
 					Default:          "NONE",
 				},
 				"bindings": {
@@ -436,12 +436,18 @@ func convertIdPSaml2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]inte
 	if err != nil {
 		return ab, err
 	}
+
+	enc, err := mapSaml2EncryptionToTF(idp.GetEncryptAssertionAlgorithm())
+	if err != nil {
+		return result, err
+	}
+
 	saml2_map := map[string]interface{}{
 		"want_authn_req_signed": idp.GetWantAuthnRequestsSigned(),
 		"want_req_signed":       idp.GetWantSignedRequests(),
 		"sign_reqs":             idp.GetSignRequests(),
 		"signature_hash":        idp.GetSignatureHash(),
-		"encrypt_algorithm":     idp.GetEncryptAssertionAlgorithm(),
+		"encrypt_algorithm":     enc,
 		//		"metadata_endpoint":     idp.GetEnableMetadataEndpoint(),
 		"message_ttl":           int(idp.GetMessageTtl()),
 		"message_ttl_tolerance": int(idp.GetMessageTtlTolerance()),
@@ -522,7 +528,7 @@ func convertSPFederatedConnectionsMapArrToDTOs(idp IdPRole, d *schema.ResourceDa
 			spChannel.SetMessageTtl(GetAsInt32(d, fmt.Sprintf("sp.%d.saml2.0.message_ttl", spIdx), idp.GetMessageTtl()))
 			spChannel.SetMessageTtlTolerance(GetAsInt32(d, fmt.Sprintf("sp.%d.saml2.0.message_ttl_tolerance", spIdx), idp.GetMessageTtlTolerance()))
 
-			// TODO : spChannel.SetAttributeProfile()
+			// TODO : support attribute profile specific for SPChannel
 
 		} else {
 			spChannel.SetOverrideProviderSetup(false)
@@ -568,6 +574,11 @@ func convertSPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]
 			"name": fc.GetName(),
 		}
 
+		enc, err := mapSaml2EncryptionToTF(spChannel.GetEncryptAssertionAlgorithm())
+		if err != nil {
+			return result, err
+		}
+
 		if spChannel.GetOverrideProviderSetup() {
 
 			saml2_map := map[string]interface{}{
@@ -576,7 +587,7 @@ func convertSPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]
 				// NOT SUPPORETD BY SERVER "sign_reqs":           spChannel.GetSignRequests(),
 				"sign_reqs":             true,
 				"signature_hash":        spChannel.GetSignatureHash(),
-				"encrypt_algorithm":     spChannel.GetEncryptAssertionAlgorithm(),
+				"encrypt_algorithm":     enc,
 				"message_ttl":           spChannel.GetMessageTtl(),
 				"message_ttl_tolerance": spChannel.GetMessageTtlTolerance(),
 			}

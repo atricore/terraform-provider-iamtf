@@ -29,7 +29,7 @@ resource "iamtf_idp" "test" {
     message_ttl_tolerance = 302   // Optional , computed (server will provide)
 
     signature_hash    = "SHA256" // Optional, default SHA256, valid vlaues SHA1, SHA256, SHA384, SHA512
-    encrypt_algorithm = "NONE"   // Optional, default NONE, valid values AES-128, AES-256, AES-3DES
+    encrypt_algorithm = "NONE"   // Optional, default NONE, valid values AES128, AES256, AES3DES
 
     bindings {
       artifact = false
@@ -42,7 +42,7 @@ resource "iamtf_idp" "test" {
     saml2 {
       message_ttl           = 303
       want_authn_req_signed = false
-      encrypt_algorithm = "AES-256" 
+      encrypt_algorithm = "AES256" 
     }
   }
 

@@ -12,19 +12,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-/**
-    includeOperationalAttributes;
+// TODO : credentialQueryString;
+// TODO : updateableCredentialAttribute;
+// TODO : updatePasswordEnabled;
 
-	TODO :
-
-	credentialQueryString;
-	updateableCredentialAttribute;
-	updatePasswordEnabled;
-
-	Use base schema for this
-    CustomClass customClass;
-
-**/
 func ResourceIdSourceLdap() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceIdSourceLdapCreate,

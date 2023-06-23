@@ -57,6 +57,12 @@ func ResourceIdentityAppliance() *schema.Resource {
 				Optional:    true,
 				Description: "list of additional OSGi bundles this appliance requires",
 			},
+			"branding": {
+				Type:        schema.TypeString,
+				Description: "the name of the UI branding plugin installed in JOSSO",
+				Default:     "josso25-branding",
+				Optional:    true,
+			},
 		},
 	}
 }
@@ -172,15 +178,17 @@ func buildIdentityAppliance(d *schema.ResourceData) (api.IdentityApplianceDefini
 		return *a, err
 	}
 	a.Location = location
-
 	a.Description = PtrSchemaStr(d, "description")
-	// TODO : More attributes
 
 	// IDP Selector
+	// TODO : support idp selector
 
 	// Branding
+	a.UserDashboardBranding = &api.UserDashboardBrandingDTO{
+		Name: PtrSchemaStr(d, "branding"),
+	}
 
-	// Configuration ?! (i.e. configuration file?!)
+	// TODO : support properties/security external configuration
 
 	return *a, err
 }
@@ -195,6 +203,7 @@ func buildIdentityApplianceResource(idaName string, d *schema.ResourceData, iam 
 	_ = d.Set("name", cli.StrDeref(iam.Name))
 	_ = d.Set("namespace", cli.StrDeref(iam.Namespace))
 	_ = d.Set("description", cli.StrDeref(iam.Description))
+	_ = d.Set("branding", cli.StrDeref(iam.UserDashboardBranding.Name))
 	_ = setNonPrimitives(d, map[string]interface{}{
 		"bundles": convertStringSetToInterface(iam.GetRequiredBundles())})
 
@@ -202,7 +211,6 @@ func buildIdentityApplianceResource(idaName string, d *schema.ResourceData, iam 
 	iam.Location.SetContext("")
 	iam.Location.SetUri("")
 	_ = d.Set("location", cli.LocationToStr(iam.Location))
-	// TODO : More attributes
 
 	return nil
 }

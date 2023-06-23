@@ -17,7 +17,6 @@ func runAccTest(t *testing.T, n string) {
 	mgr := newFixtureManager(fmt.Sprintf("appliances/%s", n))
 	identityApplianceConfig := mgr.GetFixtures(fmt.Sprintf("%s.tf", n), ri, t)
 
-	// TODO : Validate other fields ?
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,

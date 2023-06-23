@@ -190,7 +190,7 @@ func buildWebLogicExecenvDTO(d *schema.ResourceData) (api.WeblogicExecutionEnvir
 	dto.OverwriteOriginalSetup = PtrSchemaBool(d, "activation_override_setup")
 	dto.Location = PtrSchemaStr(d, "activation_remote_target")
 
-	// TODO : dto.SetBindingLocation
+	// TODO : support binding location for exec env : dto.SetBindingLocation
 
 	return *dto, err
 }

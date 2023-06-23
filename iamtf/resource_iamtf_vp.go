@@ -473,7 +473,6 @@ func buildVPResource(idaName string, d *schema.ResourceData, vp api.VirtualSaml2
 	}
 	_ = d.Set("attributes", attributes)
 
-	// TODO : Get from additional properties !?
 	ids := convertIdLookupsToStringArr(vp.IdentityLookups)
 	aggMap := map[string]interface{}{
 		"id_sources": convertStringSetToInterface(ids),
@@ -577,8 +576,6 @@ func convertVPIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.VirtualSaml2Se
 	idp.SetEnableMetadataEndpoint(true)
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
-
-	// TODO : Bindings!
 
 	return nil
 }

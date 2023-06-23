@@ -88,9 +88,9 @@ type function uint8
 
 const (
 	// KM{,A,C,CTR} function codes
-	aes128 function = 18 // AES-128
-	aes192 function = 19 // AES-192
-	aes256 function = 20 // AES-256
+	aes128 function = 18 // AES128
+	aes192 function = 19 // AES192
+	aes256 function = 20 // AES256
 
 	// K{I,L}MD function codes
 	sha1     function = 1  // SHA-1

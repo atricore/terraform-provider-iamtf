@@ -205,10 +205,6 @@ func convertStringArrToFederatedConnections(idps []string) []api.FederatedConnec
 		arr[i].Name = &name
 		arr[i].AdditionalProperties = make(map[string]interface{})
 		arr[i].AdditionalProperties["@c"] = ".FederatedConnectionDTO"
-
-		// TODO IdP Channel
-
-		// IdP Channel arr[i].ChannelA convertIdPChannelToFederatedChannel ...
 	}
 	return arr
 }

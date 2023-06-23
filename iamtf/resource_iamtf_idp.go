@@ -512,22 +512,17 @@ func ResourceIdP() *schema.Resource {
 							ValidateDiagFunc: stringInSlice([]string{"BASIC", "2FA", "PRE_AUTHN"}),
 						},
 						"saml_authn_ctx": {
-							Type: schema.TypeString,
-							// TODO : Add valid values to doc
+							Type:        schema.TypeString,
 							Description: "SAML authentication context",
 							Required:    true,
-							// TODO : Add validate Func
 						},
 						"claim_type": {
-							Type: schema.TypeString,
-							// TODO : Add valid values to doc
+							Type:        schema.TypeString,
 							Description: "Claim type",
 							Required:    true,
-							// TODO : Add validate Func
 						},
 						"claim_names": {
-							Type: schema.TypeString,
-							// Todo : space or comman  sperated list?
+							Type:        schema.TypeString,
 							Description: "name of the claim to be used, depends on claim type",
 							Required:    true,
 						},
@@ -1517,4 +1512,27 @@ func convertAttributeProfileDTOToMapArr(ap *api.AttributeProfileDTO) ([]map[stri
 	r = append(r, apMap)
 
 	return r, nil
+}
+
+func mapSaml2EncryptionToTF(encryption string) (string, error) {
+
+	// "NONE", "AES-128", "AES-256", "AES-3DES"
+
+	// disabled
+	// "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
+	// "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
+	// "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
+
+	switch encryption {
+	case "disabled":
+		return "NONE", nil
+	case "http://www.w3.org/2001/04/xmlenc#aes128-cbc":
+		return "AES128", nil
+	case "http://www.w3.org/2001/04/xmlenc#aes256-cbc":
+		return "AES256", nil
+	case "http://www.w3.org/2001/04/xmlenc#tripledes-cbc":
+		return "AES3DES", nil
+	default:
+		return "", fmt.Errorf("invalid encryption type %s", encryption)
+	}
 }

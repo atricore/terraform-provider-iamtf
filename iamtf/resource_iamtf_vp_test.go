@@ -15,7 +15,6 @@ func TestAccVP_crud0(t *testing.T) {
 	updatedConfig := mgr.GetFixtures("vp_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", vp)
 
-	// TODO : Validate other fields ?
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
@@ -44,7 +43,6 @@ func TestAccVP_crud1(t *testing.T) {
 	updatedConfig := mgr.GetFixtures("vp_updated-1.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", vp)
 
-	// TODO : Validate other fields ?
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
@@ -73,7 +71,6 @@ func TestAccVP_Attrs1_crud(t *testing.T) {
 	updatedConfig := mgr.GetFixtures("vp_updated.tf", ri, t)
 	resourceName := fmt.Sprintf("%s.test", vp)
 
-	// TODO : Validate other fields ?
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testaccPreCheck(t) },
 		ProviderFactories: testaccProvidersFactories,
@@ -96,7 +93,7 @@ func TestAccVP_Attrs1_crud(t *testing.T) {
 }
 
 func createDoesVPExist() func(string) (bool, error) {
-	// TODO : infer appliance name and lookup for resource
+
 	return func(id string) (bool, error) {
 		return false, nil
 	}
