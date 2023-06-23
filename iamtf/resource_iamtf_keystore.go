@@ -84,7 +84,7 @@ func keystoreSchema() *schema.Schema {
 				"alias": {
 					Type:        schema.TypeString,
 					Optional:    true,
-					Description: "Ceertificate and private key alias (optional)",
+					Description: "Certificate and private key alias (optional)",
 				},
 				"key_password": {
 					Description: "PKCS12 private key password (optional, the store password is used if not present)",

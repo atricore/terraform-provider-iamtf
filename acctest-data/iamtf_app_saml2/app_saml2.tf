@@ -39,9 +39,5 @@ resource "iamtf_app_saml2" "test" {
     is_preferred = true
   }
 
-  depends_on = [
-    iamtf_idp.test
-  ]
-
 }
 

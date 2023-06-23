@@ -89,6 +89,11 @@ resource "iamtf_app_agent" "test" {
 
       // Use validation function to restrict possible values
       identity_mapping      = "REMOTE"        // LOCAL, REMOTE, MERGED, CUSTOM, Optinal, Default REMOTE
+
+      bindings {
+        http_post = true
+        http_redirect = false
+      }
   }
 
   idp {

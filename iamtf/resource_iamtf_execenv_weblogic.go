@@ -39,7 +39,7 @@ func ResourceWebLogicExecenv() *schema.Resource {
 			"domain": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "weblogic domain",
+				Description: "weblogic domain path (relative to the activation path: i.e. ../../../../wldomain/base_domain/)",
 			},
 			"target_jdk": {
 				Type:        schema.TypeString,

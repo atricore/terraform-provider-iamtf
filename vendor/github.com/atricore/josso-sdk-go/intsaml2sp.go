@@ -140,6 +140,10 @@ func (c *IdbusApiClient) GetIntSaml2Sp(ida string, sp string) (api.InternalSaml2
 
 	if res.Sp != nil {
 		result = *res.Sp
+
+		if res.Sp.Name == nil {
+			return result, errors.New("no name received for IntSaml2Sp (unmarshalling error?)")
+		}
 		c.logger.Debugf("GetIntSaml2Sp. %s found for ID/name %s", *result.Name, sp)
 	} else {
 		c.logger.Debugf("GetIntSaml2Sp. not found for ID/name %s", sp)

@@ -578,6 +578,8 @@ func convertVPIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.VirtualSaml2Se
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
 
+	// TODO : Bindings!
+
 	return nil
 }
 

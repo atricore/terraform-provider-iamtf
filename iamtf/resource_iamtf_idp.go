@@ -387,12 +387,6 @@ func ResourceIdP() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 						},
-						"ocspserver": {
-							Type:        schema.TypeString,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
-							Optional:    true,
-							Computed:    true,
-						},
 						"priority": {
 							Type:        schema.TypeInt,
 							Description: "authentiacation priority compared to other mechanisms (ascening order)",
@@ -464,6 +458,7 @@ func ResourceIdP() *schema.Resource {
 						"keytab": {
 							Type:        schema.TypeString,
 							Description: "Kerberos keytab file",
+							Sensitive:   true,
 							Required:    true,
 						},
 						"extension": customClassSchema(),
@@ -564,13 +559,13 @@ func ResourceIdP() *schema.Resource {
 			"subject_authn_policies": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				Description: "todo add description for subject authens policies",
+				Description: "subject authentication policies",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"name": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: "Todo",
+							Description: "Name of the authentication policy",
 							//ValidateDiagFunc: stringInSlice([]string{"ODO"}),
 						},
 					},
@@ -1135,7 +1130,7 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 		cas.SetCrlUrl(api.AsString(tfMap["crl_url"], ""))
 		cas.SetOcspEnabled(api.AsBool(tfMap["ocsp_enabled"], false))
 		cas.SetOcspServer(api.AsString(tfMap["ocsp_server"], ""))
-		cas.SetOcspserver(api.AsString(tfMap["ocspserver"], ""))
+
 		cas.SetUid(api.AsString(tfMap["uid"], ""))
 
 		cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
@@ -1179,7 +1174,6 @@ func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[s
 				"crl_url":             clientCertAuthnSvc.GetCrlUrl(),
 				"ocsp_enabled":        clientCertAuthnSvc.GetOcspEnabled(),
 				"ocsp_server":         clientCertAuthnSvc.GetOcspServer(),
-				"ocspserver":          clientCertAuthnSvc.GetOcspserver(),
 				"uid":                 clientCertAuthnSvc.GetUid(),
 				"extension":           customClass,
 			}

@@ -229,6 +229,8 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceDat
 
 			idpChannel.SetOverrideProviderSetup(true)
 
+			//idpChannel.SetActiveBindings()
+
 			idpChannel.SetMessageTtl(GetAsInt32(d, fmt.Sprintf("idp.%d.saml2.0.message_ttl", idpIdx), sp.GetMessageTtl()))
 			idpChannel.SetMessageTtlTolerance(GetAsInt32(d, fmt.Sprintf("idp.%d.saml2.0.message_ttl_tolerance", idpIdx), sp.GetMessageTtlTolerance()))
 			// NOT SUPPORTED BY SERVER :idpChannel.SetSignRequests(api.AsBool(saml2_m["sign_requests"], true))
@@ -286,6 +288,7 @@ func convertIdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([
 					"want_assertion_signed":        idpChannel.GetWantAssertionSigned(),
 					"bindings":                     ab,
 					//NOT SUPPORTED BY SERVER "sign_requests":                idpChannel.GetSignRequests(),
+
 				}}
 			idp_map["saml2"] = saml2_map
 		}
@@ -404,7 +407,7 @@ func spConnectionSchema() *schema.Schema {
 		Type:        schema.TypeList,
 		Optional:    true,
 		Computed:    true,
-		Description: "IDP to SP SAML 2 settings",
+		Description: "IDP to SP SAML 2 settings. Optional, only required is specific SAML IdP settings are required by the SP",
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"name": {
@@ -424,12 +427,11 @@ func convertIdPSaml2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]inte
 
 	result := make([]map[string]interface{}, 0)
 
-	/** TODO : Add this logic to the server
 	encAlg := idp.GetEncryptAssertionAlgorithm()
 	if encAlg == "" {
 		encAlg = "NONE"
 	}
-	*/
+
 	ab, err := convertActiveBindingToMapArr(idp.GetActiveBindings())
 	if err != nil {
 		return ab, err
@@ -590,30 +592,52 @@ func convertActiveBindingToMapArr(ac []string) ([]map[string]interface{}, error)
 		return result, nil
 	}
 
-	ac_map := map[string]interface{}{
-		"ss":    true,
-		"sss":   true,
-		"ssss":  true,
-		"sssss": true,
+	resultMap := map[string]interface{}{
+		"http_post":     contains(ac, "SAMLR2_HTTP_POST"),
+		"http_redirect": contains(ac, "SAMLR2_HTTP_REDIRECT"),
+		"soap":          contains(ac, "SAMLR2_SOAP"),
+		"artifact":      contains(ac, "SAMLR2_ARTIFACT"),
+		"local":         contains(ac, "SAMLR2_LOCAL"),
 	}
-	result = append(result, ac_map)
+
+	result = append(result, resultMap)
 
 	return result, nil
 }
 
-// func convertMapArrToActiveBinding(ac_arr interface{}) ([]string, error) {
-// 	var ac []string
-// 	tfmapLs, err := asTFMapSingle(ac_arr)
-// 	if err != nil {
-// 		return ac, err
-// 	}
+func contains(slice []string, s string) bool {
+	for _, v := range slice {
+		if v == s {
+			return true
+		}
+	}
+	return false
+}
 
-// 	if tfmapLs == nil || len(tfmapLs) == 0 {
-// 		return ac, nil
-// 	}
+func convertMapArrToActiveBinding(ac_arr interface{}) ([]string, error) {
+	var ac []string
+	tfmapLs, err := asTFMapSingle(ac_arr)
+	if err != nil {
+		return ac, err
+	}
+	if tfmapLs == nil || len(tfmapLs) == 0 {
+		return ac, nil
+	}
 
-// 	if api.AsString(tfmapLs[""], "") == "" {
-// 		""
-// 	}
-
-// }
+	if tfmapLs["http_post"].(bool) {
+		ac = append(ac, "SAMLR2_HTTP_POST")
+	}
+	if tfmapLs["http_redirect"].(bool) {
+		ac = append(ac, "SAMLR2_HTTP_REDIRECT")
+	}
+	if tfmapLs["soap"].(bool) {
+		ac = append(ac, "SAMLR2_SOAP")
+	}
+	if tfmapLs["artifact"].(bool) {
+		ac = append(ac, "SAMLR2_ARTIFACT")
+	}
+	if tfmapLs["local"].(bool) {
+		ac = append(ac, "SAMLR2_LOCAL")
+	}
+	return ac, nil
+}

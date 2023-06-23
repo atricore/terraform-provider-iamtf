@@ -13,3 +13,5 @@ require (
 	golang.org/x/oauth2 v0.0.0-20210427180440-81ed05c6b58c // indirect
 	google.golang.org/genproto v0.0.0-20200904004341-0bd0a958aa1d // indirect
 )
+
+replace github.com/atricore/josso-sdk-go => ../josso-sdk-go

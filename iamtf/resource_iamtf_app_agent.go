@@ -401,6 +401,13 @@ func convertSPSaml2MapArrToDTO(saml2_arr interface{}, sp *api.InternalSaml2Servi
 	sp.SetSignatureHash(api.AsString(m["signature_hash"], "SHA-256"))
 	sp.SetWantAssertionSigned(api.AsBool(m["want_assertion_signed"], false))
 
+	b, err := convertMapArrToActiveBinding(m["bindings"])
+	if err != nil {
+		return err
+	}
+
+	sp.SetActiveBindings(b)
+
 	return nil
 }
 
@@ -410,6 +417,12 @@ func convertSPSaml2DTOToMapArr(sp *api.InternalSaml2ServiceProviderDTO) ([]map[s
 
 	al := sp.GetAccountLinkagePolicy()
 	im := sp.GetIdentityMappingPolicy()
+
+	bindings, err := convertActiveBindingToMapArr(sp.GetActiveBindings())
+	if err != nil {
+		return nil, err
+	}
+
 	saml2_map := map[string]interface{}{
 		"account_linkage":              al.GetLinkEmitterType(),
 		"message_ttl":                  int(sp.GetMessageTtl()),
@@ -419,6 +432,7 @@ func convertSPSaml2DTOToMapArr(sp *api.InternalSaml2ServiceProviderDTO) ([]map[s
 		"sign_requests":                sp.GetSignRequests(),
 		"signature_hash":               sp.GetSignatureHash(),
 		"want_assertion_signed":        sp.GetWantAssertionSigned(),
+		"bindings":                     bindings,
 	}
 	result = append(result, saml2_map)
 

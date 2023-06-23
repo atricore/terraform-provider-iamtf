@@ -202,9 +202,9 @@ func buildIISExecenvResource(idaName string, d *schema.ResourceData, dto api.Win
 
 func platformIdToArchitecture(ver string) (string, error) {
 	switch ver {
-	case "iis-32":
+	case "iis-32", "iis32":
 		return "32", nil
-	case "iis-64":
+	case "iis-64", "iis64":
 		return "64", nil
 	}
 	return "", fmt.Errorf("unknown architecture %s", ver)
@@ -213,9 +213,9 @@ func platformIdToArchitecture(ver string) (string, error) {
 func architectureToPlatformId(pid string) (string, error) {
 	switch pid {
 	case "32":
-		return "iis-32", nil
+		return "iis32", nil
 	case "64":
-		return "iis-64", nil
+		return "iis64", nil
 	}
 	return "", fmt.Errorf("unknown architecture %s", pid)
 }
