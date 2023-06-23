@@ -30,6 +30,11 @@ resource "iamtf_idp" "test" {
 
     signature_hash    = "SHA256" // Optional, default SHA256, valid vlaues SHA1, SHA256, SHA384, SHA512
     encrypt_algorithm = "NONE"   // Optional, default NONE, valid values AES-128, AES-256, AES-3DES
+
+    bindings {
+      artifact = false
+      http_post = false
+    }
   }
 
   sp {

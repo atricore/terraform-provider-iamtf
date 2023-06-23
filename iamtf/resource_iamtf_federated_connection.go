@@ -473,6 +473,12 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
 	//idp.SetActiveBindings(convertInterfaceToStringSet(""))
 
+	b, err := convertMapArrToActiveBinding(saml2_map["bindings"])
+	if err != nil {
+		return err
+	}
+	idp.SetActiveBindings(b)
+
 	return nil
 }
 
