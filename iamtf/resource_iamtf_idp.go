@@ -585,7 +585,7 @@ func idpAttributeProfileSchema() *schema.Schema {
 					Type:             schema.TypeString,
 					Description:      "Attribute profile to use",
 					Optional:         true,
-					ValidateDiagFunc: stringInSlice([]string{"JOSSO", "BASIC", "ONE_TO_ONE", "CUSTOM"}),
+					ValidateDiagFunc: stringInSlice([]string{"JOSSO", "BASIC", "ONE_TO_ONE", "CUSTOM", "EXTENSION"}),
 					Default:          "JOSSO",
 				},
 				"include_unmapped_claims": {

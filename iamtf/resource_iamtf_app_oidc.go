@@ -110,6 +110,7 @@ func ResourceOidcRp() *schema.Resource {
 				Required:    true,
 				Description: "list of OIDC response type strings. Valid values: TOKEN, CODE, ID_TOKEN.",
 			},
+			// TODO : support response_mode (not supported by server)
 			"response_modes": {
 				Type: schema.TypeSet,
 				Elem: &schema.Schema{
