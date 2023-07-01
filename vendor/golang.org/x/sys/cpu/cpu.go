@@ -60,7 +60,7 @@ var X86 struct {
 	HasERMS             bool // Enhanced REP for MOVSB and STOSB
 	HasFMA              bool // Fused-multiply-add instructions
 	HasOSXSAVE          bool // OS supports XSAVE/XRESTOR for saving/restoring XMM registers.
-	HasPCLMULQDQ        bool // PCLMULQDQ instruction - most often used for AESGCM
+	HasPCLMULQDQ        bool // PCLMULQDQ instruction - most often used for AES-GCM
 	HasPOPCNT           bool // Hamming weight instruction POPCNT.
 	HasRDRAND           bool // RDRAND instruction (on-chip random number generator)
 	HasRDSEED           bool // RDSEED instruction (on-chip random number generator)

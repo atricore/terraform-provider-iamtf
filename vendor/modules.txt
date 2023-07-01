@@ -12,7 +12,7 @@ github.com/apparentlymart/go-cidr/cidr
 github.com/apparentlymart/go-textseg/v13/textseg
 # github.com/armon/go-radix v1.0.0
 github.com/armon/go-radix
-# github.com/atricore/josso-api-go v0.4.4
+# github.com/atricore/josso-api-go v0.4.4 => ../josso-api-go
 ## explicit
 github.com/atricore/josso-api-go
 # github.com/atricore/josso-sdk-go v0.4.6 => ../josso-sdk-go
@@ -349,3 +349,4 @@ google.golang.org/protobuf/types/known/durationpb
 google.golang.org/protobuf/types/known/emptypb
 google.golang.org/protobuf/types/known/timestamppb
 # github.com/atricore/josso-sdk-go => ../josso-sdk-go
+# github.com/atricore/josso-api-go => ../josso-api-go

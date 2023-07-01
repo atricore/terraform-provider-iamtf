@@ -183,7 +183,7 @@ func smix(b []byte, r, N int, v, xy []uint32) {
 // r and p must satisfy r * p < 2³⁰. If the parameters do not satisfy the
 // limits, the function returns a nil byte slice and an error.
 //
-// For example, you can get a derived key for e.g. AES256 (which needs a
+// For example, you can get a derived key for e.g. AES-256 (which needs a
 // 32-byte key) by doing:
 //
 //	dk, err := scrypt.Key([]byte("some password"), salt, 32768, 8, 1, 32)

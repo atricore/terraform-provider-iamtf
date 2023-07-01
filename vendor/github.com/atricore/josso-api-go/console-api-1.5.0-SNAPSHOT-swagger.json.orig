@@ -46,6 +46,32 @@
         }
       }
     },
+    "/iam-authn/version" : {
+      "get" : {
+        "operationId" : "version",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ServerVersionRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ServerVersionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/iam-branding/branding" : {
       "get" : {
         "operationId" : "getBranding",
@@ -704,6 +730,32 @@
         }
       }
     },
+    "/iam-deploy/execenv" : {
+      "get" : {
+        "operationId" : "getExecEnv",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GetExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/iam-deploy/execenv/activate" : {
       "get" : {
         "operationId" : "activateExecEnv",
@@ -749,6 +801,32 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ExportExecEnvCfgRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/execenvs" : {
+      "get" : {
+        "operationId" : "getExecEnvs",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GetApplianceReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetExecEnvsRes"
                 }
               }
             }
@@ -2489,6 +2567,130 @@
         }
       }
     },
+    "/iam-deploy/selfsvc" : {
+      "get" : {
+        "operationId" : "getSelfSvcs",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GetSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetSelfSvcRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "operationId" : "updateSelfSvcs",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StoreSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StoreSelfSvcRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "operationId" : "createSelfSvcs",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StoreSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StoreSelfSvcRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "operationId" : "deleteSelfSvcs",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeleteRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/selfsvcs" : {
+      "get" : {
+        "operationId" : "getSelfSvcss",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GetSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetSelfSvcRssRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/iam-deploy/sharepointrs" : {
       "get" : {
         "operationId" : "getSharepointRs",
@@ -3465,31 +3667,6 @@
           }
         }
       },
-      "BrandingDefinitionDTO" : {
-        "type" : "object",
-        "properties" : {
-          "defaultLocale" : {
-            "type" : "string"
-          },
-          "description" : {
-            "type" : "string"
-          },
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string",
-            "enum" : [ "BUILT_IN", "CUSTOM" ]
-          },
-          "webBrandingId" : {
-            "type" : "string"
-          }
-        }
-      },
       "BuiltInAttributeProfileDTO" : {
         "type" : "object",
         "properties" : {
@@ -3534,6 +3711,63 @@
             "items" : {
               "type" : "string"
             }
+          }
+        }
+      },
+      "CustomAuthnServiceDTO" : {
+        "type" : "object",
+        "properties" : {
+          "authnCtxClass" : {
+            "type" : "string"
+          },
+          "authnMechanismType" : {
+            "type" : "string"
+          },
+          "customClass" : {
+            "$ref" : "#/components/schemas/CustomClassDTO"
+          },
+          "delegatedAuthentications" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DelegatedAuthenticationDTO"
+            }
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "displayName" : {
+            "type" : "string"
+          },
+          "elementId" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "preAuthnClaimCollectorConfig" : {
+            "type" : "string"
+          },
+          "preAuthnClaimCollectorType" : {
+            "type" : "string"
+          },
+          "preAuthnServiceURL" : {
+            "type" : "string"
+          },
+          "useCredentialStore" : {
+            "type" : "boolean"
+          },
+          "x" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "y" : {
+            "type" : "number",
+            "format" : "double"
           }
         }
       },
@@ -3987,6 +4221,26 @@
             "type" : "string"
           },
           "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ExecEnvContainerDTO" : {
+        "type" : "object",
+        "properties" : {
+          "captive" : {
+            "type" : "boolean"
+          },
+          "execEnv" : {
+            "$ref" : "#/components/schemas/ExecutionEnvironmentDTO"
+          },
+          "location" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "type" : {
             "type" : "string"
           }
         }
@@ -4653,7 +4907,7 @@
           "brandings" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/BrandingDefinitionDTO"
+              "$ref" : "#/components/schemas/CustomBrandingDefinitionDTO"
             }
           },
           "error" : {
@@ -4849,6 +5103,54 @@
           },
           "error" : {
             "type" : "string"
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "GetExecEnvReq" : {
+        "type" : "object",
+        "properties" : {
+          "idOrName" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GetExecEnvRes" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : "string"
+          },
+          "execEnv" : {
+            "$ref" : "#/components/schemas/ExecEnvContainerDTO"
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "GetExecEnvsRes" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : "string"
+          },
+          "execEnvs" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ExecEnvContainerDTO"
+            }
           },
           "validationErrors" : {
             "type" : "array",
@@ -5598,6 +5900,54 @@
           }
         }
       },
+      "GetSelfSvcRsReq" : {
+        "type" : "object",
+        "properties" : {
+          "idOrName" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GetSelfSvcRsRes" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : "string"
+          },
+          "resource" : {
+            "$ref" : "#/components/schemas/SelfServicesResourceDTO"
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "GetSelfSvcRssRes" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : "string"
+          },
+          "resources" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SelfServicesResourceDTO"
+            }
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
       "GetSharepointRsReq" : {
         "type" : "object",
         "properties" : {
@@ -5708,6 +6058,9 @@
           },
           "builtInAttributeProfile" : {
             "$ref" : "#/components/schemas/BuiltInAttributeProfileDTO"
+          },
+          "customAuthSvc" : {
+            "$ref" : "#/components/schemas/CustomAuthnServiceDTO"
           },
           "directoryAuthnSvc" : {
             "$ref" : "#/components/schemas/DirectoryAuthenticationServiceDTO"
@@ -5976,6 +6329,12 @@
         "properties" : {
           "appliance" : {
             "$ref" : "#/components/schemas/IdentityApplianceDTO"
+          },
+          "execEnvs" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
           },
           "idSources" : {
             "type" : "array",
@@ -6568,6 +6927,9 @@
           "oidcIdTokenTimeToLive" : {
             "type" : "integer",
             "format" : "int32"
+          },
+          "oidcIncludeUserClaimsInAccessToken" : {
+            "type" : "boolean"
           },
           "openIdEnabled" : {
             "type" : "boolean"
@@ -7360,6 +7722,12 @@
           "name" : {
             "type" : "string"
           },
+          "serviceResource" : {
+            "$ref" : "#/components/schemas/ServiceResourceDTO"
+          },
+          "serviceResourceType" : {
+            "type" : "string"
+          },
           "type" : {
             "type" : "string"
           }
@@ -7533,6 +7901,44 @@
           }
         }
       },
+      "SelfServicesResourceDTO" : {
+        "type" : "object",
+        "properties" : {
+          "activation" : {
+            "$ref" : "#/components/schemas/ActivationDTO"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "elementId" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/LocationDTO"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "secret" : {
+            "type" : "string"
+          },
+          "serviceConnection" : {
+            "$ref" : "#/components/schemas/ServiceConnectionDTO"
+          },
+          "x" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "y" : {
+            "type" : "number",
+            "format" : "double"
+          }
+        }
+      },
       "ServerContext" : {
         "type" : "object",
         "properties" : {
@@ -7543,6 +7949,31 @@
             "type" : "string"
           },
           "serverId" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ServerVersionRequest" : {
+        "type" : "object",
+        "properties" : {
+          "server" : {
+            "$ref" : "#/components/schemas/ServerContext"
+          }
+        }
+      },
+      "ServerVersionResponse" : {
+        "type" : "object",
+        "properties" : {
+          "server" : {
+            "$ref" : "#/components/schemas/ServerContext"
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "version" : {
             "type" : "string"
           }
         }
@@ -8162,6 +8593,34 @@
           }
         }
       },
+      "StoreSelfSvcRsReq" : {
+        "type" : "object",
+        "properties" : {
+          "idOrName" : {
+            "type" : "string"
+          },
+          "resource" : {
+            "$ref" : "#/components/schemas/SelfServicesResourceDTO"
+          }
+        }
+      },
+      "StoreSelfSvcRsRes" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : "string"
+          },
+          "resource" : {
+            "$ref" : "#/components/schemas/SelfServicesResourceDTO"
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
       "StoreSharepointRsReq" : {
         "type" : "object",
         "properties" : {
@@ -8723,6 +9182,9 @@
           "oidcIdTokenTimeToLive" : {
             "type" : "integer",
             "format" : "int32"
+          },
+          "oidcIncludeUserClaimsInAccessToken" : {
+            "type" : "boolean"
           },
           "openIdEnabled" : {
             "type" : "boolean"

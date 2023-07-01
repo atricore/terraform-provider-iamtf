@@ -1524,7 +1524,7 @@ func mapSaml2EncryptionToTF(encryption string) (string, error) {
 	// "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
 
 	switch encryption {
-	case "disabled":
+	case "", "NONE", "disabled":
 		return "NONE", nil
 	case "http://www.w3.org/2001/04/xmlenc#aes128-cbc":
 		return "AES128", nil
@@ -1533,6 +1533,6 @@ func mapSaml2EncryptionToTF(encryption string) (string, error) {
 	case "http://www.w3.org/2001/04/xmlenc#tripledes-cbc":
 		return "AES3DES", nil
 	default:
-		return "", fmt.Errorf("invalid encryption type %s", encryption)
+		return "", fmt.Errorf("invalid encryption type [%s]", encryption)
 	}
 }

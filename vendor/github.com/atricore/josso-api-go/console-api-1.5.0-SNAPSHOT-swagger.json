@@ -2691,6 +2691,58 @@
         }
       }
     },
+    "/iam-deploy/server/bundles" : {
+      "get" : {
+        "operationId" : "getBundles",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GetBundlesReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetBundlesRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/server/info" : {
+      "get" : {
+        "operationId" : "getInfo",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GetServerInfoReq"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "default response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetServerInfoRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/iam-deploy/sharepointrs" : {
       "get" : {
         "operationId" : "getSharepointRs",
@@ -3683,6 +3735,36 @@
           "profileType" : {
             "type" : "string",
             "enum" : [ "BASIC", "JOSSO", "ONE_TO_ONE", "CUSTOM" ]
+          }
+        }
+      },
+      "BundleDescr" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "level" : {
+            "type" : "string"
+          },
+          "location" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "state" : {
+            "type" : "string"
+          },
+          "symbolicName" : {
+            "type" : "string"
+          },
+          "updateLocation" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
           }
         }
       },
@@ -5061,6 +5143,34 @@
           }
         }
       },
+      "GetBundlesReq" : {
+        "type" : "object",
+        "properties" : {
+          "idOrName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GetBundlesRes" : {
+        "type" : "object",
+        "properties" : {
+          "bundles" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/BundleDescr"
+            }
+          },
+          "error" : {
+            "type" : "string"
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
       "GetDbIdVaultReq" : {
         "type" : "object",
         "properties" : {
@@ -5945,6 +6055,34 @@
             "items" : {
               "type" : "string"
             }
+          }
+        }
+      },
+      "GetServerInfoReq" : {
+        "type" : "object",
+        "properties" : {
+          "idOrName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GetServerInfoRes" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : "string"
+          },
+          "nodeId" : {
+            "type" : "string"
+          },
+          "validationErrors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "version" : {
+            "type" : "string"
           }
         }
       },

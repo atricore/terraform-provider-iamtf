@@ -21,7 +21,7 @@ type Config struct {
 	// If zero, SHA-256 is used.
 	DefaultHash crypto.Hash
 	// DefaultCipher is the cipher to be used.
-	// If zero, AES128 is used.
+	// If zero, AES-128 is used.
 	DefaultCipher CipherFunction
 	// Time returns the current time as the number of seconds since the
 	// epoch. If Time is nil, time.Now is used.

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 
 	api "github.com/atricore/josso-api-go"
@@ -71,6 +72,16 @@ func (c *IdbusApiClient) Logger() Logger {
 * Register a new server
  */
 func (c *IdbusApiClient) RegisterServer(svr *IdbusServer, operation string) error {
+
+	// update URL
+	c.logger.Infof("registering server %s", svr.Config.URL)
+	if hasPath, err := endpointHasPath(svr.Config.URL); err == nil && !hasPath {
+		c.logger.Infof("adding path to server URL %s", svr.Config.URL)
+		svr.Config.URL = svr.Config.URL + "/atricore-rest/services"
+	} else if err != nil {
+		c.logger.Errorf("error processing server URL [%s] %s", svr.Config.URL, err)
+		return err
+	}
 
 	key := operation
 	if key == "" {
@@ -170,6 +181,21 @@ func ServerVersion(cfg *IdbusServer) (string, error) {
 
 }
 
+func endpointHasPath(s string) (bool, error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return false, err
+	}
+
+	// Ensure that the scheme is either http or https and host is not empty
+	if (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+		return false, errors.New("invalid URL or not http/https")
+	}
+
+	// Return true if Path is not empty and false otherwise
+	return u.Path != "" && u.Path != "/", nil
+}
+
 func GetServerConfigFromEnv() (*IdbusServer, error) {
 
 	clientSecret := os.Getenv("JOSSO_API_SECRET")
@@ -177,6 +203,12 @@ func GetServerConfigFromEnv() (*IdbusServer, error) {
 	endpoint := os.Getenv("JOSSO_API_ENDPOINT")
 	if clientSecret == "" || clientId == "" || endpoint == "" {
 		return nil, errors.New("JOSSO variables must be set for acceptance tests")
+	}
+
+	if hasPath, err := endpointHasPath(endpoint); !hasPath {
+		endpoint = endpoint + "/atricore-rest/services"
+	} else if err != nil {
+		return nil, err
 	}
 
 	s := IdbusServer{
@@ -200,6 +232,7 @@ func CreateClient(s *IdbusServer, authn bool) (*IdbusApiClient, error) {
 	}
 
 	l := DefaultLogger{debug: trace}
+	l.Debug("Using server URL [" + s.Config.URL + "]]")
 
 	c := NewIdbusApiClient(&l, trace)
 	err = c.RegisterServer(s, "")

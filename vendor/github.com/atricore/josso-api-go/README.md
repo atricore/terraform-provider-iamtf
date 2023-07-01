@@ -132,6 +132,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**GetApplianceState**](docs/DefaultApi.md#getappliancestate) | **Get** /iam-deploy/appliance/state | 
 *DefaultApi* | [**GetAppliances**](docs/DefaultApi.md#getappliances) | **Get** /iam-deploy/appliances | 
 *DefaultApi* | [**GetBranding**](docs/DefaultApi.md#getbranding) | **Get** /iam-branding/branding | 
+*DefaultApi* | [**GetBundles**](docs/DefaultApi.md#getbundles) | **Get** /iam-deploy/server/bundles | 
 *DefaultApi* | [**GetDbIdVault**](docs/DefaultApi.md#getdbidvault) | **Get** /iam-deploy/dbidvault | 
 *DefaultApi* | [**GetDbIdVaults**](docs/DefaultApi.md#getdbidvaults) | **Get** /iam-deploy/dbidvaults | 
 *DefaultApi* | [**GetExecEnv**](docs/DefaultApi.md#getexecenv) | **Get** /iam-deploy/execenv | 
@@ -156,6 +157,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**GetIdpGoogles**](docs/DefaultApi.md#getidpgoogles) | **Get** /iam-deploy/idp_googles | 
 *DefaultApi* | [**GetIisExecEnv**](docs/DefaultApi.md#getiisexecenv) | **Get** /iam-deploy/iisexecenv | 
 *DefaultApi* | [**GetIisExecEnvs**](docs/DefaultApi.md#getiisexecenvs) | **Get** /iam-deploy/iisexecenvs | 
+*DefaultApi* | [**GetInfo**](docs/DefaultApi.md#getinfo) | **Get** /iam-deploy/server/info | 
 *DefaultApi* | [**GetIntSaml2Sp**](docs/DefaultApi.md#getintsaml2sp) | **Get** /iam-deploy/intsaml2sp | 
 *DefaultApi* | [**GetIntSaml2Sps**](docs/DefaultApi.md#getintsaml2sps) | **Get** /iam-deploy/intsaml2sps | 
 *DefaultApi* | [**GetJossoRs**](docs/DefaultApi.md#getjossors) | **Get** /iam-deploy/jossors | 
@@ -226,6 +228,7 @@ Class | Method | HTTP request | Description
  - [BasicAuthenticationDTO](docs/BasicAuthenticationDTO.md)
  - [BindAuthenticationDTO](docs/BindAuthenticationDTO.md)
  - [BuiltInAttributeProfileDTO](docs/BuiltInAttributeProfileDTO.md)
+ - [BundleDescr](docs/BundleDescr.md)
  - [CalcLayoutReq](docs/CalcLayoutReq.md)
  - [CalcLayoutRes](docs/CalcLayoutRes.md)
  - [CustomAuthnServiceDTO](docs/CustomAuthnServiceDTO.md)
@@ -265,6 +268,8 @@ Class | Method | HTTP request | Description
  - [GetAppliancesRes](docs/GetAppliancesRes.md)
  - [GetBrandingReq](docs/GetBrandingReq.md)
  - [GetBrandingRes](docs/GetBrandingRes.md)
+ - [GetBundlesReq](docs/GetBundlesReq.md)
+ - [GetBundlesRes](docs/GetBundlesRes.md)
  - [GetDbIdVaultReq](docs/GetDbIdVaultReq.md)
  - [GetDbIdVaultRes](docs/GetDbIdVaultRes.md)
  - [GetDbIdVaultsRes](docs/GetDbIdVaultsRes.md)
@@ -320,6 +325,8 @@ Class | Method | HTTP request | Description
  - [GetSelfSvcRsReq](docs/GetSelfSvcRsReq.md)
  - [GetSelfSvcRsRes](docs/GetSelfSvcRsRes.md)
  - [GetSelfSvcRssRes](docs/GetSelfSvcRssRes.md)
+ - [GetServerInfoReq](docs/GetServerInfoReq.md)
+ - [GetServerInfoRes](docs/GetServerInfoRes.md)
  - [GetSharepointRsReq](docs/GetSharepointRsReq.md)
  - [GetSharepointRsRes](docs/GetSharepointRsRes.md)
  - [GetSharepointRssRes](docs/GetSharepointRssRes.md)
