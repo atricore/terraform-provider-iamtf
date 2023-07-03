@@ -862,7 +862,7 @@ func buildIdPResource(idaName string, d *schema.ResourceData, idp api.IdentityPr
 	_ = d.Set("saml2", saml2_m)
 
 	// "sp" list
-	sps, err := convertSPFederatedConnectionsToMapArr(idp.FederatedConnectionsA)
+	sps, err := convertSPFederatedConnectionDTOsToMapArr(idp.FederatedConnectionsA)
 	if err != nil {
 		return err
 	}
@@ -1533,6 +1533,29 @@ func mapSaml2EncryptionToTF(encryption string) (string, error) {
 	case "http://www.w3.org/2001/04/xmlenc#tripledes-cbc":
 		return "AES3DES", nil
 	default:
-		return "", fmt.Errorf("invalid encryption type [%s]", encryption)
+		return "", fmt.Errorf("invalid SAML2 encryption type [%s]", encryption)
+	}
+}
+
+func mapTFEncryptionToSaml2(encryption string) (string, error) {
+
+	// "NONE", "AES-128", "AES-256", "AES-3DES"
+
+	// disabled
+	// "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
+	// "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
+	// "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
+
+	switch encryption {
+	case "NONE":
+		return "NONE", nil
+	case "AES128":
+		return "http://www.w3.org/2001/04/xmlenc#aes128-cbc", nil
+	case "AES256":
+		return "http://www.w3.org/2001/04/xmlenc#aes256-cbc", nil
+	case "AES3DES":
+		return "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", nil
+	default:
+		return "", fmt.Errorf("invalid TF encryption type [%s]", encryption)
 	}
 }

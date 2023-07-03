@@ -203,7 +203,11 @@ func buildIdentityApplianceResource(idaName string, d *schema.ResourceData, iam 
 	_ = d.Set("name", cli.StrDeref(iam.Name))
 	_ = d.Set("namespace", cli.StrDeref(iam.Namespace))
 	_ = d.Set("description", cli.StrDeref(iam.Description))
-	_ = d.Set("branding", cli.StrDeref(iam.UserDashboardBranding.Name))
+
+	if iam.GetUserDashboardBranding().Name != nil {
+		b := cli.StrDeref(iam.GetUserDashboardBranding().Name)
+		_ = d.Set("branding", b)
+	}
 	_ = setNonPrimitives(d, map[string]interface{}{
 		"bundles": convertStringSetToInterface(iam.GetRequiredBundles())})
 

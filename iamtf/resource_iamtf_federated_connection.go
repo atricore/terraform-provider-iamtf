@@ -468,11 +468,16 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 		return nil
 	}
 
+	enc, err := mapTFEncryptionToSaml2(saml2_map["encrypt_algorithm"].(string))
+	if err != nil {
+		return err
+	}
+
 	idp.SetWantAuthnRequestsSigned(saml2_map["want_authn_req_signed"].(bool))
 	idp.SetWantSignedRequests(saml2_map["want_req_signed"].(bool))
 	idp.SetSignRequests(saml2_map["sign_reqs"].(bool))
 	idp.SetSignatureHash(saml2_map["signature_hash"].(string))
-	idp.SetEncryptAssertionAlgorithm(saml2_map["encrypt_algorithm"].(string))
+	idp.SetEncryptAssertionAlgorithm(enc)
 	//idp.SetEnableMetadataEndpoint(saml2_map["metadata_endpoint"].(bool))
 	idp.SetEnableMetadataEndpoint(true)
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
@@ -523,8 +528,13 @@ func convertSPFederatedConnectionsMapArrToDTOs(idp IdPRole, d *schema.ResourceDa
 			spChannel.SetWantAuthnRequestsSigned(GetAsBool(d, fmt.Sprintf("%d", spIdx), idp.GetWantAuthnRequestsSigned()))
 			// NOT SUPPORETD BY SERVER :spChannel.SetWantSignedRequests(api.AsBool(saml2_m["want_req_signed"], true))
 			// NOT SUPPORETD BY SERVER :spChannel.SetSignRequests(api.AsBool(saml2_m["sign_reqs"], true))
+
+			enc, err := mapTFEncryptionToSaml2(GetAsString(d, fmt.Sprintf("sp.%d.saml2.0.encrypt_algorithm", spIdx), idp.GetEncryptAssertionAlgorithm()))
+			if err != nil {
+				return result, err
+			}
 			spChannel.SetSignatureHash(GetAsString(d, fmt.Sprintf("sp.%d.saml2.0.signature_hash", spIdx), idp.GetSignatureHash()))
-			spChannel.SetEncryptAssertionAlgorithm(GetAsString(d, fmt.Sprintf("sp.%d.saml2.0.encrypt_algorithm", spIdx), idp.GetEncryptAssertionAlgorithm()))
+			spChannel.SetEncryptAssertionAlgorithm(enc)
 			spChannel.SetMessageTtl(GetAsInt32(d, fmt.Sprintf("sp.%d.saml2.0.message_ttl", spIdx), idp.GetMessageTtl()))
 			spChannel.SetMessageTtlTolerance(GetAsInt32(d, fmt.Sprintf("sp.%d.saml2.0.message_ttl_tolerance", spIdx), idp.GetMessageTtlTolerance()))
 
@@ -560,7 +570,7 @@ func convertSPFederatedConnectionsMapArrToDTOs(idp IdPRole, d *schema.ResourceDa
 	return result, nil
 }
 
-func convertSPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
+func convertSPFederatedConnectionDTOsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
 
 	result := make([]map[string]interface{}, 0)
 

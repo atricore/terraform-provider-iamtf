@@ -449,7 +449,7 @@ func buildVPResource(idaName string, d *schema.ResourceData, vp api.VirtualSaml2
 	_ = d.Set("saml2_sp", saml2_sp_m)
 
 	// "sp" list
-	sps, err := convertSPFederatedConnectionsToMapArr(vp.FederatedConnectionsA)
+	sps, err := convertSPFederatedConnectionDTOsToMapArr(vp.FederatedConnectionsA)
 	if err != nil {
 		return err
 	}

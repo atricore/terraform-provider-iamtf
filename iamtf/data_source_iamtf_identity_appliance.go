@@ -44,6 +44,12 @@ func dataSourceIdentityAppliance() *schema.Resource {
 				Optional:    true,
 				Description: "list of additional OSGi bundles this appliance requires",
 			},
+			"branding": {
+				Type:        schema.TypeString,
+				Description: "the name of the UI branding plugin installed in JOSSO",
+				Default:     "josso25-branding",
+				Optional:    true,
+			},
 		},
 	}
 }
