@@ -4,7 +4,7 @@ OPENAPI_GENERATOR_VERSION=6.2.1
 #SWAGGER_FILE=~/.m2/repository/com/atricore/idbus/console/console-api/1.4.3-SNAPSHOT/console-api-1.4.3-SNAPSHOT-swagger.yaml
 #SWAGGER_FILE=./console-api-1.4.3-SNAPSHOT-swagger.yaml
 
-SWAGGER_FILE=./console-api-1.5.0-SNAPSHOT-swagger.json
+SWAGGER_FILE=./console-api-1.5.1-SNAPSHOT-swagger.json
 
 PGK_NAME=jossoappi
 

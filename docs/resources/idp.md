@@ -70,6 +70,7 @@ resource "iamtf_idp" "idp" {
 - `authn_basic` (Block List) Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source (see [below for nested schema](#nestedblock--authn_basic))
 - `authn_bind_ldap` (Block List) LDAP bind authentication settings (see [below for nested schema](#nestedblock--authn_bind_ldap))
 - `authn_client_cert` (Block List) Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source (see [below for nested schema](#nestedblock--authn_client_cert))
+- `authn_custom` (Block List) Custom authentication mechanism (see [below for nested schema](#nestedblock--authn_custom))
 - `authn_oauth2_pre` (Block List) Basic authentication settings. JOSSO will verify user provided credentials (username, password) with stored values in an identity source (see [below for nested schema](#nestedblock--authn_oauth2_pre))
 - `authn_wia` (Block List) Windows Integrated Authentication. JOSSO will verify identity by contacting a domain controller (see [below for nested schema](#nestedblock--authn_wia))
 - `branding` (String) the name of the UI branding plugin installed in JOSSO
@@ -83,8 +84,8 @@ resource "iamtf_idp" "idp" {
 - `oidc` (Block List, Max: 1) OpenID Connect protocol settings.  This is the recommended SSO protocol. You must combine this with **iamtf_app_odic** resources (Applications) (see [below for nested schema](#nestedblock--oidc))
 - `saml2` (Block List, Max: 1) IDP SAML2 protocol settings (see [below for nested schema](#nestedblock--saml2))
 - `session_timeout` (Number) SSO session timeout (minutes, default 30)
-- `sp` (Block List) IDP to SP SAML 2 settings (see [below for nested schema](#nestedblock--sp))
-- `subject_authn_policies` (Block List) todo add description for subject authens policies (see [below for nested schema](#nestedblock--subject_authn_policies))
+- `sp` (Block List) IDP to SP SAML 2 settings. Optional, only required is specific SAML IdP settings are required by the SP (see [below for nested schema](#nestedblock--sp))
+- `subject_authn_policies` (Block List) subject authentication policies (see [below for nested schema](#nestedblock--subject_authn_policies))
 
 ### Read-Only
 
@@ -101,7 +102,7 @@ Required:
 
 Optional:
 
-- `alias` (String) Ceertificate and private key alias (optional)
+- `alias` (String) Certificate and private key alias (optional)
 - `key_password` (String, Sensitive) PKCS12 private key password (optional, the store password is used if not present)
 
 
@@ -238,7 +239,6 @@ Optional:
 - `extension` (Block List) Allows you to use a custom component for a given resource.  Components are installed as OSGi bundles in the server.  You can refer to a component instance or create a new instance based on its class (see [below for nested schema](#nestedblock--authn_client_cert--extension))
 - `ocsp_enabled` (Boolean) authentiacation priority compared to other mechanisms (ascening order)
 - `ocsp_server` (String) authentiacation priority compared to other mechanisms (ascening order)
-- `ocspserver` (String) authentiacation priority compared to other mechanisms (ascening order)
 - `priority` (Number) authentiacation priority compared to other mechanisms (ascening order)
 - `uid` (String) authentiacation priority compared to other mechanisms (ascening order)
 
@@ -257,6 +257,46 @@ Optional:
 
 <a id="nestedblock--authn_client_cert--extension--property"></a>
 ### Nested Schema for `authn_client_cert.extension.property`
+
+Required:
+
+- `name` (String) Name as the property
+- `value` (String) Value as the property
+
+
+
+
+<a id="nestedblock--authn_custom"></a>
+### Nested Schema for `authn_custom`
+
+Required:
+
+- `claim_names` (String) name of the claim to be used, depends on claim type
+- `claim_type` (String) Claim type
+- `saml_authn_ctx` (String) SAML authentication context
+- `type` (String) Authentication type: BASIC, 2FA, PRE_AUTHN
+
+Optional:
+
+- `extension` (Block List) Allows you to use a custom component for a given resource.  Components are installed as OSGi bundles in the server.  You can refer to a component instance or create a new instance based on its class (see [below for nested schema](#nestedblock--authn_custom--extension))
+- `external_service` (String) URL to external authentication service to collect claims
+- `inject_id_source` (Boolean) Inject identity source into custom authenticator (must have proper setter)
+
+<a id="nestedblock--authn_custom--extension"></a>
+### Nested Schema for `authn_custom.extension`
+
+Required:
+
+- `fqcn` (String) component java FQCN. Refers to the OSGi component type or Java class to be instantiated
+
+Optional:
+
+- `osgi_filter` (String) filter to locate the OSGi service (Only when extension type is SERVICE).
+- `property` (Block Set) list of configuration properties and its values (only when extension type is INSTANCE) (see [below for nested schema](#nestedblock--authn_custom--extension--property))
+- `type` (String) extension type: SERVICE (for OSGi service references) or INSTANCE (for creating a new instance).
+
+<a id="nestedblock--authn_custom--extension--property"></a>
+### Nested Schema for `authn_custom.extension.property`
 
 Required:
 
@@ -309,7 +349,7 @@ Required:
 - `domain` (String) windows domain
 - `domain_controller` (String) domain controller server
 - `host` (String) JOSSO hostname
-- `keytab` (String) Kerberos keytab file
+- `keytab` (String, Sensitive) Kerberos keytab file
 - `port` (Number) JOSSO server port
 - `priority` (Number) authentiacation priority compared to other mechanisms (ascening order)
 - `protocol` (String) JOSSO server protocol (http/https)
@@ -447,6 +487,6 @@ Optional:
 
 Required:
 
-- `name` (String) Todo
+- `name` (String) Name of the authentication policy
 
 

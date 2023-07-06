@@ -3,7 +3,7 @@ Atricore Console :: Remote : API
 
 # Atricore Console API
 
-API version: 1.5.0-SNAPSHOT
+API version: 1.5.1-SNAPSHOT
 Contact: sgonzalez@atricore.com
 */
 
@@ -42,7 +42,7 @@ var (
 	xmlCheck  = regexp.MustCompile(`(?i:(?:application|text)/xml)`)
 )
 
-// APIClient manages communication with the Atricore Console :: Remote : API API v1.5.0-SNAPSHOT
+// APIClient manages communication with the Atricore Console :: Remote : API API v1.5.1-SNAPSHOT
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
 	cfg    *Configuration

@@ -200,7 +200,7 @@ func buildExtSaml2SpResource(idaName string, d *schema.ResourceData, dto api.Ext
 	_ = d.Set("metadata", m.GetValue())
 
 	// Federated connections / idps
-	idps, err := convertExtSaml2_IdPFederatedConnectionsToMapArr(dto.FederatedConnectionsB)
+	idps, err := convertExtSaml2SP_IdPFederatedConnectionsToMapArr(dto.FederatedConnectionsB)
 	if err != nil {
 		return err
 	}
@@ -209,7 +209,7 @@ func buildExtSaml2SpResource(idaName string, d *schema.ResourceData, dto api.Ext
 	return nil
 }
 
-func convertExtSaml2_IdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
+func convertExtSaml2SP_IdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
 
 	result := make([]map[string]interface{}, 0)
 

@@ -14,6 +14,7 @@ const (
 	identityAppliance = "iamtf_identity_appliance"
 	idp               = "iamtf_idp"
 	vp                = "iamtf_vp"
+	idpSaml2          = "iamtf_idp_saml2"
 	idpFacebook       = "iamtf_idp_facebook"
 	idpAzure          = "iamtf_idp_azure"
 	idpGoogle         = "iamtf_idp_google"
@@ -93,6 +94,7 @@ func Provider() *schema.Provider {
 			php:               ResourcePhpExecenv(),
 			spoint:            ResourceSharePoint(),
 			weblogic:          ResourceWebLogicExecenv(),
+			idpSaml2:          ResourceIdPSaml2(),
 			idpFacebook:       ResourceIdFacebook(),
 			idpAzure:          ResourceidAzure(),
 			idpGoogle:         ResourceidGoogle(),

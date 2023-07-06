@@ -45,6 +45,7 @@ You should configure your load balancer or reverse proxy to **ONLY forward reque
 
 ### Optional
 
+- `branding` (String) the name of the UI branding plugin installed in JOSSO
 - `bundles` (Set of String) list of additional OSGi bundles this appliance requires
 - `description` (String) Provide a description for your identity appliance.
 

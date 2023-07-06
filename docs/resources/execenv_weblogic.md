@@ -17,7 +17,7 @@ description: |-
 
 ### Required
 
-- `domain` (String) weblogic domain
+- `domain` (String) weblogic domain path (relative to the activation path: i.e. ../../../../wldomain/base_domain/)
 - `ida` (String) identity appliane name
 - `name` (String) execution environment
 - `version` (String) Weblogic version

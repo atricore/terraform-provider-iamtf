@@ -1,70 +1,46 @@
---- console-api-1.5.0-SNAPSHOT-swagger.json	2023-06-30 11:30:00.405422554 -0400
-+++ console-api-1.5.0-SNAPSHOT-swagger.json.new	2023-07-01 15:36:35.304120831 -0400
-@@ -2717,6 +2717,32 @@
-         }
-       }
-     },
-+    "/iam-deploy/server/info" : {
-+      "get" : {
-+        "operationId" : "getInfo",
-+        "requestBody" : {
-+          "content" : {
-+            "application/json" : {
-+              "schema" : {
-+                "$ref" : "#/components/schemas/GetServerInfoReq"
-+              }
-+            }
-+          }
-+        },
-+        "responses" : {
-+          "default" : {
-+            "description" : "default response",
-+            "content" : {
-+              "application/json" : {
-+                "schema" : {
-+                  "$ref" : "#/components/schemas/GetServerInfoRes"
-+                }
-+              }
-+            }
-+          }
-+        }
-+      }
-+    },
-     "/iam-deploy/sharepointrs" : {
-       "get" : {
-         "operationId" : "getSharepointRs",
-@@ -6032,6 +6066,34 @@
+--- console-api-1.5.1-SNAPSHOT-swagger.json	2023-07-05 19:56:20.541814416 -0400
++++ console-api-1.5.1-SNAPSHOT-swagger.json.new	2023-07-05 20:15:54.665653826 -0400
+@@ -5581,9 +5589,6 @@
+           "error" : {
+             "type" : "string"
+           },
+-          "idP" : {
+-            "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
+-          },
+           "idp" : {
+             "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
+           },
+@@ -5601,13 +5606,6 @@
+           "error" : {
+             "type" : "string"
+           },
+-          "idPs" : {
+-            "type" : "array",
+-            "writeOnly" : true,
+-            "items" : {
+-              "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
+-            }
+-          },
+           "idps" : {
+             "type" : "array",
+             "items" : {
+@@ -8696,9 +8695,6 @@
+           "idOrName" : {
+             "type" : "string"
+           },
+-          "idP" : {
+-            "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
+-          },
+           "idp" : {
+             "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
            }
-         }
-       },
-+      "GetServerInfoReq" : {
-+        "type" : "object",
-+        "properties" : {
-+          "idOrName" : {
-+            "type" : "string"
-+          }
-+        }
-+      },
-+      "GetServerInfoRes" : {
-+        "type" : "object",
-+        "properties" : {
-+          "error" : {
-+            "type" : "string"
-+          },
-+          "nodeId" : {
-+            "type" : "string"
-+          },
-+          "validationErrors" : {
-+            "type" : "array",
-+            "items" : {
-+              "type" : "string"
-+            }
-+          },
-+          "version" : {
-+            "type" : "string"
-+          }
-+        }
-+      },
-       "GetSharepointRsReq" : {
-         "type" : "object",
-         "properties" : {
+@@ -8710,9 +8706,6 @@
+           "error" : {
+             "type" : "string"
+           },
+-          "idP" : {
+-            "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
+-          },
+           "idp" : {
+             "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
+           },

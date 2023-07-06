@@ -34,7 +34,7 @@ description: |-
 - `saml2_idp` (Block List, Max: 1) IDP SAML2 protocol settings (see [below for nested schema](#nestedblock--saml2_idp))
 - `saml2_sp` (Block List) SP SAML 2 settings (see [below for nested schema](#nestedblock--saml2_sp))
 - `session_timeout` (Number) SSO session timeout (minutes, default 30)
-- `sp` (Block List) IDP to SP SAML 2 settings (see [below for nested schema](#nestedblock--sp))
+- `sp` (Block List) IDP to SP SAML 2 settings. Optional, only required is specific SAML IdP settings are required by the SP (see [below for nested schema](#nestedblock--sp))
 - `subject_authn_policies` (Block List) todo add description for subject authens policies (see [below for nested schema](#nestedblock--subject_authn_policies))
 
 ### Read-Only
@@ -52,7 +52,7 @@ Required:
 
 Optional:
 
-- `alias` (String) Ceertificate and private key alias (optional)
+- `alias` (String) Certificate and private key alias (optional)
 - `key_password` (String, Sensitive) PKCS12 private key password (optional, the store password is used if not present)
 
 

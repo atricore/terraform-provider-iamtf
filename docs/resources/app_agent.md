@@ -50,7 +50,7 @@ Required:
 
 Optional:
 
-- `alias` (String) Ceertificate and private key alias (optional)
+- `alias` (String) Certificate and private key alias (optional)
 - `key_password` (String, Sensitive) PKCS12 private key password (optional, the store password is used if not present)
 
 
