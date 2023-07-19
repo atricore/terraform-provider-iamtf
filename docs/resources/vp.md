@@ -29,8 +29,8 @@ description: |-
 - `error_binding` (String) how error information is encoded and shared with a custom user dashboard
 - `id_sources` (Set of String) list of identity sources used by the IDP.  At least one is required.
 - `idp` (Block List) SP to IDP SAML 2 settings (see [below for nested schema](#nestedblock--idp))
-- `oauth2` (Block List, Max: 1) OAuth2 protocol settings.  This is maily used by JOSSO internally, for SSO connetions OpenID Connect is the recommended protocol, which is a superset of OAuth2 (see [below for nested schema](#nestedblock--oauth2))
-- `oidc` (Block List, Max: 1) OpenID Connect protocol settings.  This is the recommended SSO protocol. You must combine this with **iamtf_app_odic** resources (Applications) (see [below for nested schema](#nestedblock--oidc))
+- `oauth2_idp` (Block List, Max: 1) OAuth2 protocol settings.  This is maily used by JOSSO internally, for SSO connetions OpenID Connect is the recommended protocol, which is a superset of OAuth2 (see [below for nested schema](#nestedblock--oauth2_idp))
+- `oidc_idp` (Block List, Max: 1) OpenID Connect protocol settings.  This is the recommended SSO protocol. You must combine this with **iamtf_app_odic** resources (Applications) (see [below for nested schema](#nestedblock--oidc_idp))
 - `saml2_idp` (Block List, Max: 1) IDP SAML2 protocol settings (see [below for nested schema](#nestedblock--saml2_idp))
 - `saml2_sp` (Block List) SP SAML 2 settings (see [below for nested schema](#nestedblock--saml2_sp))
 - `session_timeout` (Number) SSO session timeout (minutes, default 30)
@@ -98,8 +98,10 @@ Optional:
 Optional:
 
 - `account_linkage` (String) account linkage: which attribute to use as UID from the IdP.
+- `account_linkage_name` (String) account linkage name, only valid when account_linkage is set to CUSTOM
 - `bindings` (Block List, Max: 1) enabled SAML bindings (see [below for nested schema](#nestedblock--idp--saml2--bindings))
 - `identity_mapping` (String) how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)
+- `identiyt_mapping_name` (String) identity mapping name, only valid when identity_mapping is set to CUSTOM
 - `message_ttl` (Number) SAML message time to live
 - `message_ttl_tolerance` (Number) SAML message time to live tolerance
 - `sign_authentication_requests` (Boolean) sign authentication requests issued to IdPs
@@ -121,8 +123,8 @@ Optional:
 
 
 
-<a id="nestedblock--oauth2"></a>
-### Nested Schema for `oauth2`
+<a id="nestedblock--oauth2_idp"></a>
+### Nested Schema for `oauth2_idp`
 
 Required:
 
@@ -135,8 +137,8 @@ Optional:
 - `token_validity` (Number) token validity (sec, default 300)
 
 
-<a id="nestedblock--oidc"></a>
-### Nested Schema for `oidc`
+<a id="nestedblock--oidc_idp"></a>
+### Nested Schema for `oidc_idp`
 
 Optional:
 
@@ -180,8 +182,10 @@ Optional:
 Optional:
 
 - `account_linkage` (String) account linkage: which attribute to use as UID from the IdP.
+- `account_linkage_name` (String) account linkage name, only valid when account_linkage is set to CUSTOM
 - `bindings` (Block List, Max: 1) enabled SAML bindings (see [below for nested schema](#nestedblock--saml2_sp--bindings))
 - `identity_mapping` (String) how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)
+- `identiyt_mapping_name` (String) identity mapping name, only valid when identity_mapping is set to CUSTOM
 - `message_ttl` (Number) SAML message time to live
 - `message_ttl_tolerance` (Number) SAML message time to live tolerance
 - `sign_authentication_requests` (Boolean) sign authentication requests issued to IdPs
