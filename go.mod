@@ -3,8 +3,8 @@ module github.com/atricore/terraform-provider-iamtf
 go 1.16
 
 require (
-	github.com/atricore/josso-api-go v0.5.1
-	github.com/atricore/josso-sdk-go v0.5.2
+	github.com/atricore/josso-api-go v0.5.2
+	github.com/atricore/josso-sdk-go v0.5.3
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-hclog v1.2.0
 	github.com/hashicorp/terraform-plugin-docs v0.13.0
