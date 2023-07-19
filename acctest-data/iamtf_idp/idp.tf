@@ -25,6 +25,9 @@ resource "iamtf_idp" "test" {
   max_sessions_per_user    = 300  // Optional, default -1
   destroy_previous_session = true // Optional, default false
 
+  subject_id = "ATTRIBUTE"
+  subject_id_attr = "mail"
+
   // Relative to the test running folder!
   keystore {
     resource = filebase64("../../acctest-data/idp.p12")

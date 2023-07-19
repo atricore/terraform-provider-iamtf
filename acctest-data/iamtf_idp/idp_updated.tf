@@ -24,6 +24,8 @@ resource "iamtf_idp" "test" {
   max_sessions_per_user    = 303  // Optional, default -1
   destroy_previous_session = true // Optional, default false
 
+  subject_id = "PRINCIPAL"
+
   keystore {
     resource = filebase64("../../acctest-data/idp.p12")
     password = "changeme"
