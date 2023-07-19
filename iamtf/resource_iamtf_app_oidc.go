@@ -80,7 +80,7 @@ func ResourceOidcRp() *schema.Resource {
 			},
 			"client_authn": {
 				Type:             schema.TypeString,
-				Description:      "client authentication. Note: use 'NONE' will assume 'code challenge' is used",
+				Description:      "client authentication. Valid values are: **NONE** **CLIENT_SECRET_BASIC** **CLIENT_SECRET_JWT** **CLIENT_SECRET_POST** **PRIVATE_KEY_JWT**.  Note: use **NONE** will assume **code challenge (PKE)** is used",
 				ValidateDiagFunc: stringInSlice([]string{"NONE", "CLIENT_SECRET_BASIC", "CLIENT_SECRET_JWT", "CLIENT_SECRET_POST", "PRIVATE_KEY_JWT"}),
 				Optional:         true,
 				Default:          "CLIENT_SECRET_BASIC",
