@@ -551,6 +551,18 @@ func ResourceIdP() *schema.Resource {
 			},
 
 			"attributes": idpAttributeProfileSchema(),
+			"subject_id": {
+				Type:             schema.TypeString,
+				Description:      "subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**",
+				ValidateDiagFunc: stringInSlice([]string{"PRINCIPAL", "EMAIL", "ATTRIBUTE", "CUSTOM"}),
+				Default:          "PRINCIPAL",
+				Optional:         true,
+			},
+			"subject_id_attr": {
+				Type:        schema.TypeString,
+				Description: "subject identifier attribute, only valid for **ATTRIBUTE** and **CUSTOM** subject identifier",
+				Optional:    true,
+			},
 			"subject_authn_policies": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -583,7 +595,7 @@ func idpAttributeProfileSchema() *schema.Schema {
 			Schema: map[string]*schema.Schema{
 				"profile": {
 					Type:             schema.TypeString,
-					Description:      "Attribute profile to use",
+					Description:      "Attribute profile to use: **JOSSO**, **BASIC**, **ONE_TO_ONE**, **CUSTOM**, **EXTENSION**",
 					Optional:         true,
 					ValidateDiagFunc: stringInSlice([]string{"JOSSO", "BASIC", "ONE_TO_ONE", "CUSTOM", "EXTENSION"}),
 					Default:          "JOSSO",
@@ -746,6 +758,10 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 	idp.MaxSessionsPerUser = PtrSchemaInt32(d, "max_sessions_per_user")
 	idp.DestroyPreviousSession = PtrSchemaBool(d, "destroy_previous_session")
 
+	// subject name id
+
+	idp.SetSubjectNameIDPolicy(buildSubjectNameIdPolicy(d))
+
 	// IDP Configuration
 	ks, err := convertKeystoreMapArrToDTO(idp.GetName(), d.Get("keystore"))
 	if err != nil {
@@ -827,6 +843,19 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 	return *idp, errWrap
 }
 
+func buildSubjectNameIdPolicy(d *schema.ResourceData) api.SubjectNameIdentifierPolicyDTO {
+	var p api.SubjectNameIdentifierPolicyDTO
+
+	p.AdditionalProperties = make(map[string]interface{})
+	p.AdditionalProperties["@c"] = ".SubjectNameIdentifierPolicyDTO"
+	p.SetType(d.Get("subject_id").(string))
+	//p.SetName("")
+	p.SetSubjectAttribute(d.Get("subject_id_attr").(string))
+
+	return p
+
+}
+
 func buildIdPResource(idaName string, d *schema.ResourceData, idp api.IdentityProviderDTO) error {
 	d.SetId(sdk.StrDeref(idp.Name))
 	_ = d.Set("ida", idaName)
@@ -841,6 +870,9 @@ func buildIdPResource(idaName string, d *schema.ResourceData, idp api.IdentityPr
 	_ = d.Set("session_timeout", sdk.Int32Deref(idp.SsoSessionTimeout))
 	_ = d.Set("max_sessions_per_user", sdk.Int32Deref(idp.MaxSessionsPerUser))
 	_ = d.Set("destroy_previous_session", sdk.BoolDeref(idp.DestroyPreviousSession))
+
+	_ = d.Set("subject_id", sdk.StrDeref(idp.GetSubjectNameIDPolicy().Type))
+	_ = d.Set("subject_id_attr", sdk.StrDeref(idp.GetSubjectNameIDPolicy().SubjectAttribute))
 
 	cfg, err := idp.GetSamlR2IDPConfig()
 	if err != nil {
