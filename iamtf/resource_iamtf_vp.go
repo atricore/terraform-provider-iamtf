@@ -125,7 +125,7 @@ func ResourceVP() *schema.Resource {
 			"idp": idpConnectionSchema(),
 
 			// OAUTH2
-			"oauth2": {
+			"oauth2_idp": {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
@@ -163,7 +163,7 @@ func ResourceVP() *schema.Resource {
 			},
 
 			// OAuth 2
-			"oidc": {
+			"oidc_idp": {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Computed:    true,
@@ -216,6 +216,18 @@ func ResourceVP() *schema.Resource {
 			},
 
 			"attributes": idpAttributeProfileSchema(),
+			"subject_id": {
+				Type:             schema.TypeString,
+				Description:      "subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**",
+				ValidateDiagFunc: stringInSlice([]string{"PRINCIPAL", "EMAIL", "ATTRIBUTE", "CUSTOM"}),
+				Default:          "PRINCIPAL",
+				Optional:         true,
+			},
+			"subject_id_attr": {
+				Type:        schema.TypeString,
+				Description: "subject identifier attribute, only valid for **ATTRIBUTE** and **CUSTOM** subject identifier",
+				Optional:    true,
+			},
 			"subject_authn_policies": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -345,6 +357,8 @@ func buildVPDTO(d *schema.ResourceData) (api.VirtualSaml2ServiceProviderDTO, err
 	// session properties
 	vp.SsoSessionTimeout = PtrSchemaInt32(d, "session_timeout")
 
+	vp.SetSubjectNameIDPolicy(buildSubjectNameIdPolicy(d))
+
 	// IDP Configuration
 	ks, err := convertKeystoreMapArrToDTO(vp.GetName(), d.Get("keystore"))
 	if err != nil {
@@ -388,14 +402,14 @@ func buildVPDTO(d *schema.ResourceData) (api.VirtualSaml2ServiceProviderDTO, err
 		errWrap = errors.Wrap(err, "idp")
 	}
 
-	err = convertVPOAuth2MapArrToDTO(d.Get("oauth2"), vp)
+	err = convertVPOAuth2MapArrToDTO(d.Get("oauth2_idp"), vp)
 	if err != nil {
-		errWrap = errors.Wrap(err, "oauth2")
+		errWrap = errors.Wrap(err, "oauth2_idp")
 	}
 
-	err = convertVPOidcMapArrToDTO(d.Get("oidc"), vp)
+	err = convertVPOidcMapArrToDTO(d.Get("oidc_idp"), vp)
 	if err != nil {
-		errWrap = errors.Wrap(err, "oidc")
+		errWrap = errors.Wrap(err, "oidc_idp")
 	}
 
 	// Id sources
@@ -422,6 +436,9 @@ func buildVPResource(idaName string, d *schema.ResourceData, vp api.VirtualSaml2
 	_ = d.Set("error_binding", sdk.StrDeref(vp.ErrorBinding))
 
 	_ = d.Set("session_timeout", sdk.Int32Deref(vp.SsoSessionTimeout))
+
+	_ = d.Set("subject_id", sdk.StrDeref(vp.GetSubjectNameIDPolicy().Type))
+	_ = d.Set("subject_id_attr", sdk.StrDeref(vp.GetSubjectNameIDPolicy().SubjectAttribute))
 
 	cfg, err := vp.GetSamlR2IDPConfig()
 	if err != nil {
@@ -459,13 +476,13 @@ func buildVPResource(idaName string, d *schema.ResourceData, vp api.VirtualSaml2
 	if err != nil {
 		return err
 	}
-	_ = d.Set("oauth2", oauth2_m)
+	_ = d.Set("oauth2_idp", oauth2_m)
 
 	oidc_m, err := convertVPOidcDTOToMapArr(&vp)
 	if err != nil {
 		return err
 	}
-	_ = d.Set("oidc", oidc_m)
+	_ = d.Set("oidc_idp", oidc_m)
 
 	attributes, err := convertAttributeProfileDTOToMapArr(vp.AttributeProfile)
 	if err != nil {
