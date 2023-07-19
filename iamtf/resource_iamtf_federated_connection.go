@@ -43,6 +43,11 @@ func spSamlSchema() *schema.Schema {
 					Computed:         true,
 					Optional:         true,
 				},
+				"account_linkage_name": {
+					Type:        schema.TypeString,
+					Description: "account linkage name, only valid when account_linkage is set to CUSTOM",
+					Optional:    true,
+				},
 				"message_ttl": {
 					Type:        schema.TypeInt,
 					Optional:    true,
@@ -61,6 +66,11 @@ func spSamlSchema() *schema.Schema {
 					ValidateDiagFunc: stringInSlice([]string{"LOCAL", "REMOTE", "MERGED", "CUSTOM"}),
 					Computed:         true,
 					Optional:         true,
+				},
+				"identiyt_mapping_name": {
+					Type:        schema.TypeString,
+					Description: "identity mapping name, only valid when identity_mapping is set to CUSTOM",
+					Optional:    true,
 				},
 				"sign_requests": {
 					Type:        schema.TypeBool,

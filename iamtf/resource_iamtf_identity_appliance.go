@@ -185,7 +185,8 @@ func buildIdentityAppliance(d *schema.ResourceData) (api.IdentityApplianceDefini
 
 	// Branding
 	a.UserDashboardBranding = &api.UserDashboardBrandingDTO{
-		Name: PtrSchemaStr(d, "branding"),
+		Id: PtrSchemaStr(d, "branding"),
+		//Name: PtrSchemaStr(d, "branding"),
 	}
 
 	// TODO : support properties/security external configuration
@@ -204,10 +205,9 @@ func buildIdentityApplianceResource(idaName string, d *schema.ResourceData, iam 
 	_ = d.Set("namespace", cli.StrDeref(iam.Namespace))
 	_ = d.Set("description", cli.StrDeref(iam.Description))
 
-	if iam.GetUserDashboardBranding().Name != nil {
-		b := cli.StrDeref(iam.GetUserDashboardBranding().Name)
-		_ = d.Set("branding", b)
-	}
+	b := cli.StrDeref(iam.GetUserDashboardBranding().Id)
+	_ = d.Set("branding", b)
+
 	_ = setNonPrimitives(d, map[string]interface{}{
 		"bundles": convertStringSetToInterface(iam.GetRequiredBundles())})
 
