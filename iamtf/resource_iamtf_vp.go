@@ -640,6 +640,7 @@ func convertVPSPSaml2MapArrToDTO(saml2_arr interface{}, sp *api.VirtualSaml2Serv
 	im.AdditionalProperties["@c"] = ".IdentityMappingPolicyDTO"
 	// TODO : support for custom mappings : im.SetName(api.AsStringDef(m["identity_mapping_name"], "my-identity-mapping", true))
 	im.SetMappingType(api.AsStringDef(m["identity_mapping"], "REMOTE", true))
+	im.SetUseLocalId(api.AsBool(m["identity_mapping_localid"], false))
 	sp.SetIdentityMappingPolicy(*im)
 
 	sp.SetMessageTtl(api.AsInt32(m["message_ttl"], 300))
@@ -664,6 +665,7 @@ func convertVPSPSaml2DTOToMapArr(sp *api.VirtualSaml2ServiceProviderDTO) ([]map[
 		"message_ttl":                  int(sp.GetMessageTtl()),
 		"message_ttl_tolerance":        int(sp.GetMessageTtlTolerance()),
 		"identity_mapping":             im.GetMappingType(),
+		"identity_mapping_localid":     im.GetUseLocalId(),
 		"sign_authentication_requests": sp.GetSignAuthenticationRequests(),
 		"sign_requests":                sp.GetSignRequests(),
 		"signature_hash":               sp.GetSpSignatureHash(),

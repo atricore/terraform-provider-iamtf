@@ -274,7 +274,6 @@ func printProperty(p string, n string, s *schema.Schema, w *bufio.Writer, depth 
 	return errWrap
 }
 
-//
 // This walks an element by exuting the provided function on all its children
 //
 // ns : namespace of the element to process

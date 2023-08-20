@@ -67,6 +67,12 @@ func spSamlSchema() *schema.Schema {
 					Computed:         true,
 					Optional:         true,
 				},
+				"identity_mapping_localid": {
+					Type:        schema.TypeBool,
+					Description: "Use local SP user identifier even when REMOTE is configured",
+					Default:     false,
+					Optional:    true,
+				},
 				"identiyt_mapping_name": {
 					Type:        schema.TypeString,
 					Description: "identity mapping name, only valid when identity_mapping is set to CUSTOM",
@@ -214,6 +220,7 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceDat
 		it := sp.GetIdentityMappingPolicy()
 		if it.MappingType == nil {
 			it.SetMappingType("REMOTE")
+			it.SetUseLocalId(false)
 		}
 
 		im := api.NewIdentityMappingPolicyDTO()
@@ -221,6 +228,7 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceDat
 		im.AdditionalProperties["@c"] = ".IdentityMappingPolicyDTO"
 		im.SetName(fmt.Sprintf("%s-identity-mapping", sp.GetName()))
 		im.SetMappingType(GetAsString(d, fmt.Sprintf("idp.%d.saml2.0.identity_mapping", idpIdx), it.GetMappingType()))
+		im.SetUseLocalId(GetAsBool(d, fmt.Sprintf("idp.%d.saml2.0.identity_mapping_localid", idpIdx), it.GetUseLocalId()))
 		idpChannel.SetIdentityMappingPolicy(*im)
 
 		// build new accountLinkagePolicyDTO
@@ -293,6 +301,7 @@ func convertIdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([
 					"message_ttl":                  int(idpChannel.GetMessageTtl()),
 					"message_ttl_tolerance":        int(idpChannel.GetMessageTtlTolerance()),
 					"identity_mapping":             im.GetMappingType(),
+					"identity_mapping_localid":     im.GetUseLocalId(),
 					"sign_authentication_requests": idpChannel.GetSignAuthenticationRequests(),
 					"signature_hash":               idpChannel.GetSignatureHash(),
 					"want_assertion_signed":        idpChannel.GetWantAssertionSigned(),
