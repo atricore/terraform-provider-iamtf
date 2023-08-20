@@ -3,6 +3,7 @@
 *.dll
 *.so
 *.dylib
+terraform-provider-iamtf
 
 # Test binary, build with `go test -c`
 *.test
@@ -15,6 +16,8 @@
 .glide/
 
 # terraform files
+.terraform.lock.hcl
+.terraform
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
@@ -37,6 +40,3 @@ dist
 
 bin/
 
-.terraform.lock.hcl
-.terraform
-terraform-provider-iamtf
