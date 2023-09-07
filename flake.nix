@@ -36,7 +36,7 @@
               terraform
             ];
             shellHook = ''
-             echo "Terraform provider JOSSO/IAM.tf GO environment"
+             echo "Terraform provider JOSSO/IAM.tf GO environment: ${go.name} ${terraform.name}"
             '';
           };
         }
