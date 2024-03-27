@@ -28,7 +28,7 @@ description: |-
 
 ### Optional
 
-- `client_authn` (String) client authentication. Note: use 'NONE' will assume 'code challenge' is used
+- `client_authn` (String) client authentication. Valid values are: **NONE** **CLIENT_SECRET_BASIC** **CLIENT_SECRET_JWT** **CLIENT_SECRET_POST** **PRIVATE_KEY_JWT**.  Note: use **NONE** will assume **code challenge (PKE)** is used
 - `description` (String) relaying party description
 - `encryption_alg` (String) encryption algorithm. Valid values: NONE, RSA1_5, A128KW, A128GCMKW, A192KW, A192GCMKW, A256KW, A256GCMKW.
 - `encryption_method` (String) encryption method. Valid values: NONE, A128CBC-HS256, A192CBC-HS384, A256CBC-HS512, A128GCM, A192GCM, A256GCM.
@@ -65,6 +65,7 @@ Optional:
 - `account_linkage_name` (String) account linkage name, only valid when account_linkage is set to CUSTOM
 - `bindings` (Block List, Max: 1) enabled SAML bindings (see [below for nested schema](#nestedblock--idp--saml2--bindings))
 - `identity_mapping` (String) how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)
+- `identity_mapping_localid` (Boolean) Use local SP user identifier even when REMOTE is configured
 - `identiyt_mapping_name` (String) identity mapping name, only valid when identity_mapping is set to CUSTOM
 - `message_ttl` (Number) SAML message time to live
 - `message_ttl_tolerance` (Number) SAML message time to live tolerance

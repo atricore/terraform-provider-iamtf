@@ -36,6 +36,8 @@ description: |-
 - `session_timeout` (Number) SSO session timeout (minutes, default 30)
 - `sp` (Block List) IDP to SP SAML 2 settings. Optional, only required is specific SAML IdP settings are required by the SP (see [below for nested schema](#nestedblock--sp))
 - `subject_authn_policies` (Block List) todo add description for subject authens policies (see [below for nested schema](#nestedblock--subject_authn_policies))
+- `subject_id` (String) subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**
+- `subject_id_attr` (String) subject identifier attribute, only valid for **ATTRIBUTE** and **CUSTOM** subject identifier
 
 ### Read-Only
 
@@ -63,7 +65,7 @@ Optional:
 
 - `include_unmapped_claims` (Boolean) when using a custom profile, include unmapped claims
 - `map` (Block Set) Custom attribute mappings (see [below for nested schema](#nestedblock--attributes--map))
-- `profile` (String) Attribute profile to use
+- `profile` (String) Attribute profile to use: **JOSSO**, **BASIC**, **ONE_TO_ONE**, **CUSTOM**, **EXTENSION**
 
 <a id="nestedblock--attributes--map"></a>
 ### Nested Schema for `attributes.map`
@@ -101,6 +103,7 @@ Optional:
 - `account_linkage_name` (String) account linkage name, only valid when account_linkage is set to CUSTOM
 - `bindings` (Block List, Max: 1) enabled SAML bindings (see [below for nested schema](#nestedblock--idp--saml2--bindings))
 - `identity_mapping` (String) how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)
+- `identity_mapping_localid` (Boolean) Use local SP user identifier even when REMOTE is configured
 - `identiyt_mapping_name` (String) identity mapping name, only valid when identity_mapping is set to CUSTOM
 - `message_ttl` (Number) SAML message time to live
 - `message_ttl_tolerance` (Number) SAML message time to live tolerance
@@ -185,6 +188,7 @@ Optional:
 - `account_linkage_name` (String) account linkage name, only valid when account_linkage is set to CUSTOM
 - `bindings` (Block List, Max: 1) enabled SAML bindings (see [below for nested schema](#nestedblock--saml2_sp--bindings))
 - `identity_mapping` (String) how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)
+- `identity_mapping_localid` (Boolean) Use local SP user identifier even when REMOTE is configured
 - `identiyt_mapping_name` (String) identity mapping name, only valid when identity_mapping is set to CUSTOM
 - `message_ttl` (Number) SAML message time to live
 - `message_ttl_tolerance` (Number) SAML message time to live tolerance

@@ -36,6 +36,8 @@ terraform-provider-okta*
 
 .env
 .direnv
+.jj
+.git
 dist
 
 bin/

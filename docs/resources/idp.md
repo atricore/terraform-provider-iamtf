@@ -86,6 +86,8 @@ resource "iamtf_idp" "idp" {
 - `session_timeout` (Number) SSO session timeout (minutes, default 30)
 - `sp` (Block List) IDP to SP SAML 2 settings. Optional, only required is specific SAML IdP settings are required by the SP (see [below for nested schema](#nestedblock--sp))
 - `subject_authn_policies` (Block List) subject authentication policies (see [below for nested schema](#nestedblock--subject_authn_policies))
+- `subject_id` (String) subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**
+- `subject_id_attr` (String) subject identifier attribute, only valid for **ATTRIBUTE** and **CUSTOM** subject identifier
 
 ### Read-Only
 
@@ -113,7 +115,7 @@ Optional:
 
 - `include_unmapped_claims` (Boolean) when using a custom profile, include unmapped claims
 - `map` (Block Set) Custom attribute mappings (see [below for nested schema](#nestedblock--attributes--map))
-- `profile` (String) Attribute profile to use
+- `profile` (String) Attribute profile to use: **JOSSO**, **BASIC**, **ONE_TO_ONE**, **CUSTOM**, **EXTENSION**
 
 <a id="nestedblock--attributes--map"></a>
 ### Nested Schema for `attributes.map`

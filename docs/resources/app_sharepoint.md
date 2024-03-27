@@ -71,6 +71,7 @@ Optional:
 - `account_linkage_name` (String) account linkage name, only valid when account_linkage is set to CUSTOM
 - `bindings` (Block List, Max: 1) enabled SAML bindings (see [below for nested schema](#nestedblock--idp--saml2--bindings))
 - `identity_mapping` (String) how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)
+- `identity_mapping_localid` (Boolean) Use local SP user identifier even when REMOTE is configured
 - `identiyt_mapping_name` (String) identity mapping name, only valid when identity_mapping is set to CUSTOM
 - `message_ttl` (Number) SAML message time to live
 - `message_ttl_tolerance` (Number) SAML message time to live tolerance
@@ -102,6 +103,7 @@ Optional:
 - `account_linkage_name` (String) account linkage name, only valid when account_linkage is set to CUSTOM
 - `bindings` (Block List, Max: 1) enabled SAML bindings (see [below for nested schema](#nestedblock--saml2--bindings))
 - `identity_mapping` (String) how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)
+- `identity_mapping_localid` (Boolean) Use local SP user identifier even when REMOTE is configured
 - `identiyt_mapping_name` (String) identity mapping name, only valid when identity_mapping is set to CUSTOM
 - `message_ttl` (Number) SAML message time to live
 - `message_ttl_tolerance` (Number) SAML message time to live tolerance
