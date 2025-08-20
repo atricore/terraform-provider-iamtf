@@ -45,15 +45,20 @@ Modify type, add identity lookups property:
 
 # Patching the file
 
+Copy latest file to a new file if version differs
+
+```shcp console-api-1.5.1-SNAPSHOT-swagger.json console-api-1.5.3-SNAPSHOT-swagger.json
+```
+
 ## Generate patch file
 
 ```sh
-diff -u console-api-1.5.0-SNAPSHOT-swagger.json console-api-1.5.0-SNAPSHOT-swagger.json.new > console.patch
+diff -u console-api-1.5.3-SNAPSHOT-swagger.json console-api-1.5.3-SNAPSHOT-swagger.json.new > console.patch
 ```
 
 ## Remove all changes to abobe mentioned types
 
-Remove changes to CustomBarandingDefinitionDTO, StoreBrandingReq, GetBrandingRes, ResourceDTO, IdentityProviderDTO
+Remove changes to CustomBarandingDefinitionDTO, StoreBrandingReq, GetBrandingRes, ResourceDTO, IdentityProviderDTO (normally resource type attribute is string ,not byte[] and identityLookups is missing)
 
 ## Apply the patch
 

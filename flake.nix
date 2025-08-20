@@ -1,9 +1,9 @@
 # JOSSO development environment: tools to work with JOSSO/IAM.tf
 
 {
-  description = "Terraform provider IAM.tf/JOSSO dev shell";
+  description = "JOSSO/IAM.tf GO project flake";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
     flake-utils.url = "github:numtide/flake-utils";
     josso-pkgs.url = "github:sgonzalezoyuela/mynix-pkgs";
   };
@@ -14,6 +14,9 @@
 
           pkgs = import nixpkgs {
             inherit  system;
+            config = {
+              allowUnfree = true;
+            };
           };
  
 
@@ -27,7 +30,6 @@
               gotools
               gopls
               go-outline
-              gocode
               gopkgs
               gocode-gomod
               godef
@@ -36,7 +38,10 @@
               terraform
             ];
             shellHook = ''
-             echo "Terraform provider JOSSO/IAM.tf GO environment: ${go.name} ${terraform.name}"
+              echo "JOSSO/IAM.tf GO environment"
+              echo " - ${pkgs.go.name}"
+              echo " - ${terraform.name}"
+              echo " - ${gnumake.name}"
             '';
           };
         }

@@ -1,46 +1,33 @@
---- console-api-1.5.1-SNAPSHOT-swagger.json	2023-07-05 19:56:20.541814416 -0400
-+++ console-api-1.5.1-SNAPSHOT-swagger.json.new	2023-07-05 20:15:54.665653826 -0400
-@@ -5581,9 +5589,6 @@
-           "error" : {
-             "type" : "string"
+--- console-api-1.5.1-SNAPSHOT-swagger.json	2023-08-21 01:29:24.914652091 -0300
++++ console-api-1.5.3-SNAPSHOT-swagger.json	2025-08-20 19:09:48.788989161 -0300
+@@ -13,7 +13,7 @@
+       "name" : "Atricore",
+       "url" : "http://www.atricore.com"
+     },
+-    "version" : "1.5.1-SNAPSHOT"
++    "version" : "1.5.3-SNAPSHOT"
+   },
+   "servers" : [ {
+     "url" : "http://localhost:8081/atricore-res/services",
+@@ -7329,6 +7330,10 @@
+           "oidcIncludeUserClaimsInAccessToken" : {
+             "type" : "boolean"
            },
--          "idP" : {
--            "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
--          },
-           "idp" : {
-             "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
++          "oidcRefreshTokenTimeToLive" : {
++            "type" : "integer",
++            "format" : "int32"
++          },
+           "openIdEnabled" : {
+             "type" : "boolean"
            },
-@@ -5601,13 +5606,6 @@
-           "error" : {
-             "type" : "string"
+@@ -9612,6 +9625,10 @@
+           "oidcIncludeUserClaimsInAccessToken" : {
+             "type" : "boolean"
            },
--          "idPs" : {
--            "type" : "array",
--            "writeOnly" : true,
--            "items" : {
--              "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
--            }
--          },
-           "idps" : {
-             "type" : "array",
-             "items" : {
-@@ -8696,9 +8695,6 @@
-           "idOrName" : {
-             "type" : "string"
-           },
--          "idP" : {
--            "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
--          },
-           "idp" : {
-             "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
-           }
-@@ -8710,9 +8706,6 @@
-           "error" : {
-             "type" : "string"
-           },
--          "idP" : {
--            "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
--          },
-           "idp" : {
-             "$ref" : "#/components/schemas/ExternalSaml2IdentityProviderDTO"
++          "oidcRefreshTokenTimeToLive" : {
++            "type" : "integer",
++            "format" : "int32"
++          },
+           "openIdEnabled" : {
+             "type" : "boolean"
            },

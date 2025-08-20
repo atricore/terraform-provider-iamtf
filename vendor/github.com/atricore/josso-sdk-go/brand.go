@@ -173,11 +173,13 @@ func (c *IdbusApiClient) GetBrandingDefinitionDTO(name string) (api.CustomBrandi
 		return result, nil
 	}
 
-	// TODO : Populate result
-
 	result.Name = res.Name
 	result.Description = res.Description
 	result.Type = res.Type
+	result.Resource = res.Resource
+	result.CustomSsoAppClazz = res.CustomSsoAppClazz
+	result.CustomSsoIdPAppClazz = res.CustomSsoIdPAppClazz
+	result.CustomOpenIdAppClazz = res.CustomOpenIdAppClazz
 
 	return result, nil
 

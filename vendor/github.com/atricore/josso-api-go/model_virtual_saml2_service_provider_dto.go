@@ -3,7 +3,7 @@ Atricore Console :: Remote : API
 
 # Atricore Console API
 
-API version: 1.5.1-SNAPSHOT
+API version: 1.5.3-SNAPSHOT
 Contact: sgonzalez@atricore.com
 */
 
@@ -56,6 +56,7 @@ type VirtualSaml2ServiceProviderDTO struct {
 	OidcAuthzCodeTimeToLive *int32 `json:"oidcAuthzCodeTimeToLive,omitempty"`
 	OidcIdTokenTimeToLive *int32 `json:"oidcIdTokenTimeToLive,omitempty"`
 	OidcIncludeUserClaimsInAccessToken *bool `json:"oidcIncludeUserClaimsInAccessToken,omitempty"`
+	OidcRefreshTokenTimeToLive *int32 `json:"oidcRefreshTokenTimeToLive,omitempty"`
 	OpenIdEnabled *bool `json:"openIdEnabled,omitempty"`
 	Remote *bool `json:"remote,omitempty"`
 	Role *string `json:"role,omitempty"`
@@ -1342,6 +1343,38 @@ func (o *VirtualSaml2ServiceProviderDTO) SetOidcIncludeUserClaimsInAccessToken(v
 	o.OidcIncludeUserClaimsInAccessToken = &v
 }
 
+// GetOidcRefreshTokenTimeToLive returns the OidcRefreshTokenTimeToLive field value if set, zero value otherwise.
+func (o *VirtualSaml2ServiceProviderDTO) GetOidcRefreshTokenTimeToLive() int32 {
+	if o == nil || isNil(o.OidcRefreshTokenTimeToLive) {
+		var ret int32
+		return ret
+	}
+	return *o.OidcRefreshTokenTimeToLive
+}
+
+// GetOidcRefreshTokenTimeToLiveOk returns a tuple with the OidcRefreshTokenTimeToLive field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *VirtualSaml2ServiceProviderDTO) GetOidcRefreshTokenTimeToLiveOk() (*int32, bool) {
+	if o == nil || isNil(o.OidcRefreshTokenTimeToLive) {
+    return nil, false
+	}
+	return o.OidcRefreshTokenTimeToLive, true
+}
+
+// HasOidcRefreshTokenTimeToLive returns a boolean if a field has been set.
+func (o *VirtualSaml2ServiceProviderDTO) HasOidcRefreshTokenTimeToLive() bool {
+	if o != nil && !isNil(o.OidcRefreshTokenTimeToLive) {
+		return true
+	}
+
+	return false
+}
+
+// SetOidcRefreshTokenTimeToLive gets a reference to the given int32 and assigns it to the OidcRefreshTokenTimeToLive field.
+func (o *VirtualSaml2ServiceProviderDTO) SetOidcRefreshTokenTimeToLive(v int32) {
+	o.OidcRefreshTokenTimeToLive = &v
+}
+
 // GetOpenIdEnabled returns the OpenIdEnabled field value if set, zero value otherwise.
 func (o *VirtualSaml2ServiceProviderDTO) GetOpenIdEnabled() bool {
 	if o == nil || isNil(o.OpenIdEnabled) {
@@ -1973,6 +2006,9 @@ func (o VirtualSaml2ServiceProviderDTO) MarshalJSON() ([]byte, error) {
 	if !isNil(o.OidcIncludeUserClaimsInAccessToken) {
 		toSerialize["oidcIncludeUserClaimsInAccessToken"] = o.OidcIncludeUserClaimsInAccessToken
 	}
+	if !isNil(o.OidcRefreshTokenTimeToLive) {
+		toSerialize["oidcRefreshTokenTimeToLive"] = o.OidcRefreshTokenTimeToLive
+	}
 	if !isNil(o.OpenIdEnabled) {
 		toSerialize["openIdEnabled"] = o.OpenIdEnabled
 	}
@@ -2078,6 +2114,7 @@ func (o *VirtualSaml2ServiceProviderDTO) UnmarshalJSON(bytes []byte) (err error)
 		delete(additionalProperties, "oidcAuthzCodeTimeToLive")
 		delete(additionalProperties, "oidcIdTokenTimeToLive")
 		delete(additionalProperties, "oidcIncludeUserClaimsInAccessToken")
+		delete(additionalProperties, "oidcRefreshTokenTimeToLive")
 		delete(additionalProperties, "openIdEnabled")
 		delete(additionalProperties, "remote")
 		delete(additionalProperties, "role")

@@ -181,6 +181,12 @@ func ResourceIdP() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 						},
+						"refresh_token_ttl": {
+							Type:        schema.TypeInt,
+							Description: "refresh token time to live (sec)",
+							Optional:    true,
+							Computed:    true,
+						},
 						"id_token_ttl": {
 							Type:        schema.TypeInt,
 							Description: "id token time to live (sec)",
@@ -1403,6 +1409,7 @@ func convertOidcMapArrToDTO(oidc_arr interface{}, idp *api.IdentityProviderDTO) 
 	idp.SetOidcAccessTokenTimeToLive(int32(oidc_map["access_token_ttl"].(int)))
 	idp.SetOidcAuthzCodeTimeToLive(int32(oidc_map["authz_code_ttl"].(int)))
 	idp.SetOidcIdTokenTimeToLive(int32(oidc_map["id_token_ttl"].(int)))
+	idp.SetOidcRefreshTokenTimeToLive(int32(oidc_map["refresh_token_ttl"].(int)))
 	idp.SetOidcIncludeUserClaimsInAccessToken(bool(oidc_map["user_claims_in_access_token"].(bool)))
 
 	return nil
@@ -1416,6 +1423,7 @@ func convertOidcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interfac
 		"access_token_ttl":            int(idp.GetOidcAccessTokenTimeToLive()),
 		"authz_code_ttl":              int(idp.GetOidcAuthzCodeTimeToLive()),
 		"id_token_ttl":                int(idp.GetOidcIdTokenTimeToLive()),
+		"refresh_token_ttl":           int(idp.GetOidcRefreshTokenTimeToLive()),
 		"user_claims_in_access_token": bool(idp.GetOidcIncludeUserClaimsInAccessToken()),
 	}
 	result = append(result, oidc_map)
