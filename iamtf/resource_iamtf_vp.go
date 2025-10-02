@@ -19,18 +19,23 @@ type VPIdPRole struct {
 func (r VPIdPRole) GetName() string {
 	return r.vp.GetName()
 }
+
 func (r VPIdPRole) GetWantAuthnRequestsSigned() bool {
 	return r.vp.GetWantAuthnRequestsSigned()
 }
+
 func (r VPIdPRole) GetSignatureHash() string {
 	return r.vp.GetIdpSignatureHash()
 }
+
 func (r VPIdPRole) GetEncryptAssertionAlgorithm() string {
 	return r.vp.GetEncryptAssertionAlgorithm()
 }
+
 func (r VPIdPRole) GetMessageTtl() int32 {
 	return r.vp.GetMessageTtl()
 }
+
 func (r VPIdPRole) GetMessageTtlTolerance() int32 {
 	return r.vp.GetMessageTtlTolerance()
 }
@@ -42,24 +47,31 @@ type VPSPRole struct {
 func (r VPSPRole) GetName() string {
 	return r.vp.GetName()
 }
+
 func (r VPSPRole) GetSignAuthenticationRequests() bool {
 	return r.vp.GetSignAuthenticationRequests()
 }
+
 func (r VPSPRole) GetIdentityMappingPolicy() api.IdentityMappingPolicyDTO {
 	return r.vp.GetIdentityMappingPolicy()
 }
+
 func (r VPSPRole) GetAccountLinkagePolicy() api.AccountLinkagePolicyDTO {
 	return r.vp.GetAccountLinkagePolicy()
 }
+
 func (r VPSPRole) GetWantAssertionSigned() bool {
 	return r.vp.GetWantAssertionSigned()
 }
+
 func (r VPSPRole) GetSignatureHash() string {
 	return r.vp.GetSpSignatureHash()
 }
+
 func (r VPSPRole) GetMessageTtl() int32 {
 	return r.vp.GetMessageTtl()
 }
+
 func (r VPSPRole) GetMessageTtlTolerance() int32 {
 	return r.vp.GetMessageTtlTolerance()
 }
@@ -190,6 +202,12 @@ func ResourceVP() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 						},
+						"refresh_token_ttl": {
+							Type:        schema.TypeInt,
+							Description: "refresh token time to live (sec)",
+							Optional:    true,
+							Computed:    true,
+						},
 						"id_token_ttl": {
 							Type:        schema.TypeInt,
 							Description: "id token time to live (sec)",
@@ -217,11 +235,13 @@ func ResourceVP() *schema.Resource {
 
 			"attributes": idpAttributeProfileSchema(),
 			"subject_id": {
-				Type:             schema.TypeString,
-				Description:      "subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**",
-				ValidateDiagFunc: stringInSlice([]string{"PRINCIPAL", "EMAIL", "ATTRIBUTE", "CUSTOM"}),
-				Default:          "PRINCIPAL",
-				Optional:         true,
+				Type:        schema.TypeString,
+				Description: "subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**",
+				ValidateDiagFunc: stringInSlice(
+					[]string{"PRINCIPAL", "EMAIL", "ATTRIBUTE", "CUSTOM"},
+				),
+				Default:  "PRINCIPAL",
+				Optional: true,
 			},
 			"subject_id_attr": {
 				Type:        schema.TypeString,
@@ -238,7 +258,7 @@ func ResourceVP() *schema.Resource {
 							Type:        schema.TypeString,
 							Required:    true,
 							Description: "Todo",
-							//ValidateDiagFunc: stringInSlice([]string{"ODO"}),
+							// ValidateDiagFunc: stringInSlice([]string{"ODO"}),
 						},
 					},
 				},
@@ -272,6 +292,7 @@ func resourceVPCreate(ctx context.Context, d *schema.ResourceData, m interface{}
 
 	return nil
 }
+
 func resourceVPRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
 
@@ -392,12 +413,20 @@ func buildVPDTO(d *schema.ResourceData) (api.VirtualSaml2ServiceProviderDTO, err
 	vp.SetAttributeProfile(*ap)
 
 	// IDP side of federated connection is for the SP
-	vp.FederatedConnectionsA, err = convertSPFederatedConnectionsMapArrToDTOs(VPIdPRole{vp: vp}, d, d.Get("sp"))
+	vp.FederatedConnectionsA, err = convertSPFederatedConnectionsMapArrToDTOs(
+		VPIdPRole{vp: vp},
+		d,
+		d.Get("sp"),
+	)
 	if err != nil {
 		errWrap = errors.Wrap(err, "sp")
 	}
 
-	vp.FederatedConnectionsB, err = convertIdPFederatedConnectionsMapArrToDTOs(VPSPRole{vp: vp}, d, d.Get("idp"))
+	vp.FederatedConnectionsB, err = convertIdPFederatedConnectionsMapArrToDTOs(
+		VPSPRole{vp: vp},
+		d,
+		d.Get("idp"),
+	)
 	if err != nil {
 		errWrap = errors.Wrap(err, "idp")
 	}
@@ -425,7 +454,11 @@ func buildVPDTO(d *schema.ResourceData) (api.VirtualSaml2ServiceProviderDTO, err
 	return *vp, errWrap
 }
 
-func buildVPResource(idaName string, d *schema.ResourceData, vp api.VirtualSaml2ServiceProviderDTO) error {
+func buildVPResource(
+	idaName string,
+	d *schema.ResourceData,
+	vp api.VirtualSaml2ServiceProviderDTO,
+) error {
 	d.SetId(sdk.StrDeref(vp.Name))
 	_ = d.Set("ida", idaName)
 	_ = d.Set("name", sdk.StrDeref(vp.Name))
@@ -506,7 +539,9 @@ func buildVPResource(idaName string, d *schema.ResourceData, vp api.VirtualSaml2
 	return err
 }
 
-func convertVPOAuth2DTOToMapArr(idp *api.VirtualSaml2ServiceProviderDTO) ([]map[string]interface{}, error) {
+func convertVPOAuth2DTOToMapArr(
+	idp *api.VirtualSaml2ServiceProviderDTO,
+) ([]map[string]interface{}, error) {
 	result := make([]map[string]interface{}, 0)
 
 	oauth2_map := map[string]interface{}{
@@ -520,7 +555,10 @@ func convertVPOAuth2DTOToMapArr(idp *api.VirtualSaml2ServiceProviderDTO) ([]map[
 	return result, nil
 }
 
-func convertVPOAuth2MapArrToDTO(oauth2_arr interface{}, idp *api.VirtualSaml2ServiceProviderDTO) error {
+func convertVPOAuth2MapArrToDTO(
+	oauth2_arr interface{},
+	idp *api.VirtualSaml2ServiceProviderDTO,
+) error {
 	// Check that we have an array of any type (interface{})
 	oauth2_map, err := asTFMapSingle(oauth2_arr)
 	if err != nil {
@@ -552,6 +590,7 @@ func convertVPOidcMapArrToDTO(oidc_arr interface{}, idp *api.VirtualSaml2Service
 
 	idp.SetOpenIdEnabled(api.AsBool(oidc_map["enabled"], false))
 	idp.SetOidcAccessTokenTimeToLive(int32(oidc_map["access_token_ttl"].(int)))
+	idp.SetOidcRefreshTokenTimeToLive(int32(oidc_map["refresh_token_ttl"].(int)))
 	idp.SetOidcAuthzCodeTimeToLive(int32(oidc_map["authz_code_ttl"].(int)))
 	idp.SetOidcIdTokenTimeToLive(int32(oidc_map["id_token_ttl"].(int)))
 	idp.SetOidcIncludeUserClaimsInAccessToken(bool(oidc_map["user_claims_in_access_token"].(bool)))
@@ -559,12 +598,15 @@ func convertVPOidcMapArrToDTO(oidc_arr interface{}, idp *api.VirtualSaml2Service
 	return nil
 }
 
-func convertVPOidcDTOToMapArr(idp *api.VirtualSaml2ServiceProviderDTO) ([]map[string]interface{}, error) {
+func convertVPOidcDTOToMapArr(
+	idp *api.VirtualSaml2ServiceProviderDTO,
+) ([]map[string]interface{}, error) {
 	result := make([]map[string]interface{}, 0)
 
 	oidc_map := map[string]interface{}{
 		"enabled":                     idp.GetOpenIdEnabled(),
 		"access_token_ttl":            int(idp.GetOidcAccessTokenTimeToLive()),
+		"refresh_token_ttl":           int(idp.GetOidcRefreshTokenTimeToLive()),
 		"authz_code_ttl":              int(idp.GetOidcAuthzCodeTimeToLive()),
 		"id_token_ttl":                int(idp.GetOidcIdTokenTimeToLive()),
 		"user_claims_in_access_token": bool(idp.GetOidcIncludeUserClaimsInAccessToken()),
@@ -574,7 +616,10 @@ func convertVPOidcDTOToMapArr(idp *api.VirtualSaml2ServiceProviderDTO) ([]map[st
 	return result, nil
 }
 
-func convertVPIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.VirtualSaml2ServiceProviderDTO) error {
+func convertVPIdPSaml2MapArrToDTO(
+	saml2_arr interface{},
+	idp *api.VirtualSaml2ServiceProviderDTO,
+) error {
 	saml2_map, err := asTFMapSingle(saml2_arr)
 	if err != nil {
 		return err
@@ -589,7 +634,7 @@ func convertVPIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.VirtualSaml2Se
 	idp.SetSignRequests(saml2_map["sign_reqs"].(bool))
 	idp.SetIdpSignatureHash(saml2_map["signature_hash"].(string))
 	idp.SetEncryptAssertionAlgorithm(saml2_map["encrypt_algorithm"].(string))
-	//idp.SetEnableMetadataEndpoint(saml2_map["metadata_endpoint"].(bool))
+	// idp.SetEnableMetadataEndpoint(saml2_map["metadata_endpoint"].(bool))
 	idp.SetEnableMetadataEndpoint(true)
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
@@ -597,8 +642,9 @@ func convertVPIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.VirtualSaml2Se
 	return nil
 }
 
-func convertVPIdPSaml2DTOToMapArr(idp *api.VirtualSaml2ServiceProviderDTO) ([]map[string]interface{}, error) {
-
+func convertVPIdPSaml2DTOToMapArr(
+	idp *api.VirtualSaml2ServiceProviderDTO,
+) ([]map[string]interface{}, error) {
 	result := make([]map[string]interface{}, 0)
 
 	saml2_map := map[string]interface{}{
@@ -616,7 +662,10 @@ func convertVPIdPSaml2DTOToMapArr(idp *api.VirtualSaml2ServiceProviderDTO) ([]ma
 	return result, nil
 }
 
-func convertVPSPSaml2MapArrToDTO(saml2_arr interface{}, sp *api.VirtualSaml2ServiceProviderDTO) error {
+func convertVPSPSaml2MapArrToDTO(
+	saml2_arr interface{},
+	sp *api.VirtualSaml2ServiceProviderDTO,
+) error {
 	m, err := asTFMapSingle(saml2_arr) //
 	if err != nil {
 		return err
@@ -654,8 +703,9 @@ func convertVPSPSaml2MapArrToDTO(saml2_arr interface{}, sp *api.VirtualSaml2Serv
 	return nil
 }
 
-func convertVPSPSaml2DTOToMapArr(sp *api.VirtualSaml2ServiceProviderDTO) ([]map[string]interface{}, error) {
-
+func convertVPSPSaml2DTOToMapArr(
+	sp *api.VirtualSaml2ServiceProviderDTO,
+) ([]map[string]interface{}, error) {
 	result := make([]map[string]interface{}, 0)
 
 	al := sp.GetAccountLinkagePolicy()
