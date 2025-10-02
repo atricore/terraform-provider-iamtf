@@ -216,11 +216,21 @@ func ResourceIdP() *schema.Resource {
 							Computed:    true,
 						},
 						"pwd_hash": {
-							Type:             schema.TypeString,
-							Description:      "password hashing algorithm, valid values are:\n* NONE (NOT recommended!)\n* CRYPT (LDAP only)\n* BCRYPT\n* SHA-512\n* SHA-256\n* SHA-1\n* MD5 (NOT recommended!)",
-							Optional:         true,
-							ValidateDiagFunc: stringInSlice([]string{"NONE", "CRYPT", "BCRYPT", "SHA-512", "SHA-256", "SHA-1", "MD5"}),
-							Default:          "SHA-256",
+							Type:        schema.TypeString,
+							Description: "password hashing algorithm, valid values are:\n* NONE (NOT recommended!)\n* CRYPT (LDAP only)\n* BCRYPT\n* SHA-512\n* SHA-256\n* SHA-1\n* MD5 (NOT recommended!)",
+							Optional:    true,
+							ValidateDiagFunc: stringInSlice(
+								[]string{
+									"NONE",
+									"CRYPT",
+									"BCRYPT",
+									"SHA-512",
+									"SHA-256",
+									"SHA-1",
+									"MD5",
+								},
+							),
+							Default: "SHA-256",
 						},
 						"pwd_encoding": {
 							Type:             schema.TypeString,
@@ -252,7 +262,8 @@ func ResourceIdP() *schema.Resource {
 							Optional:    true,
 							ValidateDiagFunc: stringInSlice([]string{
 								"urn:oasis:names:tc:SAML:2.0:ac:classes:Password",
-								"urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"}),
+								"urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+							}),
 							Default: "urn:oasis:names:tc:SAML:2.0:ac:classes:Password",
 						},
 						"extension": customClassSchema(),
@@ -329,15 +340,18 @@ func ResourceIdP() *schema.Resource {
 							Optional:    true,
 							ValidateDiagFunc: stringInSlice([]string{
 								"urn:oasis:names:tc:SAML:2.0:ac:classes:Password",
-								"urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"}),
+								"urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+							}),
 							Default: "urn:oasis:names:tc:SAML:2.0:ac:classes:Password",
 						},
 						"search_scope": {
-							Type:             schema.TypeString,
-							Optional:         true,
-							ValidateDiagFunc: stringInSlice([]string{"base", "one", "subtree", "children"}),
-							Default:          "subtree",
-							Description:      "LDAP search scope. Values : base, one, subtree, children",
+							Type:     schema.TypeString,
+							Optional: true,
+							ValidateDiagFunc: stringInSlice(
+								[]string{"base", "one", "subtree", "children"},
+							),
+							Default:     "subtree",
+							Description: "LDAP search scope. Values : base, one, subtree, children",
 						},
 						"referrals": {
 							Type:             schema.TypeString,
@@ -479,13 +493,13 @@ func ResourceIdP() *schema.Resource {
 					Schema: map[string]*schema.Schema{
 						"authn_service": {
 							Type:        schema.TypeString,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
+							Description: "authentication service URL used to redirect the user to login",
 							Optional:    true,
 							Computed:    true,
 						},
 						"external_auth": {
 							Type:        schema.TypeBool,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
+							Description: "external authentication",
 							Optional:    true,
 							Computed:    true,
 						},
@@ -497,9 +511,21 @@ func ResourceIdP() *schema.Resource {
 						},
 						"remember_me": {
 							Type:        schema.TypeBool,
-							Description: "authentiacation priority compared to other mechanisms (ascening order)",
+							Description: "enable remember me functionalities",
 							Optional:    true,
 							Computed:    true,
+						},
+						"client_id": {
+							Type:        schema.TypeString,
+							Description: "client identifier to be used by the external authentication application",
+							Optional:    true,
+							Computed:    true,
+						},
+						"client_secret": {
+							Type:        schema.TypeString,
+							Description: "client secret (must match oauth2 config)",
+							Sensitive:   true,
+							Required:    true,
 						},
 						"extension": customClassSchema(),
 					},
@@ -558,11 +584,13 @@ func ResourceIdP() *schema.Resource {
 
 			"attributes": idpAttributeProfileSchema(),
 			"subject_id": {
-				Type:             schema.TypeString,
-				Description:      "subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**",
-				ValidateDiagFunc: stringInSlice([]string{"PRINCIPAL", "EMAIL", "ATTRIBUTE", "CUSTOM"}),
-				Default:          "PRINCIPAL",
-				Optional:         true,
+				Type:        schema.TypeString,
+				Description: "subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**",
+				ValidateDiagFunc: stringInSlice(
+					[]string{"PRINCIPAL", "EMAIL", "ATTRIBUTE", "CUSTOM"},
+				),
+				Default:  "PRINCIPAL",
+				Optional: true,
 			},
 			"subject_id_attr": {
 				Type:        schema.TypeString,
@@ -579,7 +607,7 @@ func ResourceIdP() *schema.Resource {
 							Type:        schema.TypeString,
 							Required:    true,
 							Description: "Name of the authentication policy",
-							//ValidateDiagFunc: stringInSlice([]string{"ODO"}),
+							// ValidateDiagFunc: stringInSlice([]string{"ODO"}),
 						},
 					},
 				},
@@ -600,11 +628,13 @@ func idpAttributeProfileSchema() *schema.Schema {
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"profile": {
-					Type:             schema.TypeString,
-					Description:      "Attribute profile to use: **JOSSO**, **BASIC**, **ONE_TO_ONE**, **CUSTOM**, **EXTENSION**",
-					Optional:         true,
-					ValidateDiagFunc: stringInSlice([]string{"JOSSO", "BASIC", "ONE_TO_ONE", "CUSTOM", "EXTENSION"}),
-					Default:          "JOSSO",
+					Type:        schema.TypeString,
+					Description: "Attribute profile to use: **JOSSO**, **BASIC**, **ONE_TO_ONE**, **CUSTOM**, **EXTENSION**",
+					Optional:    true,
+					ValidateDiagFunc: stringInSlice(
+						[]string{"JOSSO", "BASIC", "ONE_TO_ONE", "CUSTOM", "EXTENSION"},
+					),
+					Default: "JOSSO",
 				},
 				"include_unmapped_claims": {
 					Type:        schema.TypeBool,
@@ -651,7 +681,11 @@ func idpAttributeProfileSchema() *schema.Schema {
 	}
 }
 
-func resourceIdPCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdPCreate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	l.Debug("resourceIdPCreate", "ida", d.Get("ida").(string))
 
@@ -676,6 +710,7 @@ func resourceIdPCreate(ctx context.Context, d *schema.ResourceData, m interface{
 
 	return nil
 }
+
 func resourceIdPRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	l := getLogger(m)
 
@@ -704,7 +739,11 @@ func resourceIdPRead(ctx context.Context, d *schema.ResourceData, m interface{})
 	return nil
 }
 
-func resourceIdPUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdPUpdate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	l.Trace("resourceIdPUpdate", "ida", d.Get("ida").(string), "name", d.Id())
 
@@ -730,7 +769,11 @@ func resourceIdPUpdate(ctx context.Context, d *schema.ResourceData, m interface{
 	return nil
 }
 
-func resourceIdPDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdPDelete(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 
 	l.Trace("resourceIdPDelete", "ida", d.Get("ida").(string), "name", d.Id())
@@ -826,6 +869,26 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 		errWrap = errors.Wrap(err, "authn_wia")
 	}
 
+	// Handle client_id change for authn_oauth2_pre - remove old client if it starts with "pre-authn"
+	if d.HasChange("authn_oauth2_pre.0.client_id") {
+		old, _ := d.GetChange("authn_oauth2_pre.0.client_id")
+		if oldClientId, ok := old.(string); ok && oldClientId != "" {
+			// Only remove if it starts with "pre-authn" prefix to avoid removing unrelated clients
+			if len(oldClientId) >= 9 && oldClientId[:9] == "pre-authn" {
+				oauth2Clients := idp.GetOauth2Clients()
+				if oauth2Clients != nil {
+					newClients := make([]api.OAuth2ClientDTO, 0)
+					for _, client := range oauth2Clients {
+						if client.GetId() != oldClientId {
+							newClients = append(newClients, client)
+						}
+					}
+					idp.SetOauth2Clients(newClients)
+				}
+			}
+		}
+	}
+
 	err = convertAuthnOAuth2PreMapArrToDTO(d.Get("authn_oauth2_pre"), idp)
 	if err != nil {
 		errWrap = errors.Wrap(err, "authn_oauth2_pre")
@@ -855,11 +918,10 @@ func buildSubjectNameIdPolicy(d *schema.ResourceData) api.SubjectNameIdentifierP
 	p.AdditionalProperties = make(map[string]interface{})
 	p.AdditionalProperties["@c"] = ".SubjectNameIdentifierPolicyDTO"
 	p.SetType(d.Get("subject_id").(string))
-	//p.SetName("")
+	// p.SetName("")
 	p.SetSubjectAttribute(d.Get("subject_id_attr").(string))
 
 	return p
-
 }
 
 func buildIdPResource(idaName string, d *schema.ResourceData, idp api.IdentityProviderDTO) error {
@@ -994,7 +1056,12 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 		ba.SetSaltLength(api.AsInt32(tfMap["crypt_salt_length"], 0))
 		ba.SetSaltPrefix(api.AsString(tfMap["salt_prefix"], ""))
 		ba.SetSaltSuffix(api.AsString(tfMap["salt_suffix"], ""))
-		ba.SetSimpleAuthnSaml2AuthnCtxClass(api.AsString(tfMap["saml_authn_ctx"], "urn:oasis:names:tc:SAML:2.0:ac:classes:Password"))
+		ba.SetSimpleAuthnSaml2AuthnCtxClass(
+			api.AsString(
+				tfMap["saml_authn_ctx"],
+				"urn:oasis:names:tc:SAML:2.0:ac:classes:Password",
+			),
+		)
 		ba.SetEnabled(true)
 
 		// cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
@@ -1009,11 +1076,9 @@ func convertAuthnBasicMapArrToDTO(authn_basic_arr interface{}, idp *api.Identity
 	}
 
 	return nil
-
 }
 
 func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-
 	bas, err := idp.GetBasicAuthns()
 	if err != nil {
 		return nil, err
@@ -1025,7 +1090,7 @@ func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]in
 	result := make([]map[string]interface{}, 0)
 	for _, ba := range bas {
 
-		//customClass, err := convertCustomClassDTOToMapArr(bas.CustomClass)
+		// customClass, err := convertCustomClassDTOToMapArr(bas.CustomClass)
 		// if err != nil {
 		// 	return nil, err
 		// }
@@ -1043,11 +1108,13 @@ func convertAuthnBasicDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]in
 	}
 
 	return result, nil
-
 }
 
 // --------------------------------------------------------------------
-func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.IdentityProviderDTO) error {
+func convertAuthnBindLdapMapArrToDTO(
+	authn_bind_arr interface{},
+	idp *api.IdentityProviderDTO,
+) error {
 	tfMapLs, err := asTFMapAll(authn_bind_arr)
 	if err != nil {
 		return err
@@ -1062,7 +1129,9 @@ func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.Identi
 	for _, e := range tfMapLs {
 		tfMap := e.(map[string]interface{})
 		das := api.NewDirectoryAuthenticationServiceDTO()
-		das.SetInitialContextFactory(api.AsString(tfMap["initial_ctx_factory"], "com.sun.jndi.ldap.LdapCtxFactory"))
+		das.SetInitialContextFactory(
+			api.AsString(tfMap["initial_ctx_factory"], "com.sun.jndi.ldap.LdapCtxFactory"),
+		)
 		das.SetProviderUrl(api.AsString(tfMap["provider_url"], "ldap://localhost:10389"))
 		das.SetPerformDnSearch(api.AsBool(tfMap["perform_dn_search"], false))
 		das.SetPasswordPolicy(api.AsString(tfMap["password_policy"], ""))
@@ -1088,11 +1157,11 @@ func convertAuthnBindLdapMapArrToDTO(authn_bind_arr interface{}, idp *api.Identi
 	}
 
 	return nil
-
 }
 
-func convertAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-
+func convertAuthnBindLdapDTOToMapArr(
+	idp *api.IdentityProviderDTO,
+) ([]map[string]interface{}, error) {
 	authnMechanisms := idp.GetAuthenticationMechanisms()
 	authnTfMapLs := make([]map[string]interface{}, 0)
 	// For each authn mech
@@ -1135,14 +1204,16 @@ func convertAuthnBindLdapDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string
 	}
 
 	return authnTfMapLs, nil
-
 }
 
 // --------------------------------------------------------------------
 
 // This takes a TF map and creates the corresponding DTOs
 // AuthenticationMechanismDTO -> DelegatedAuthenticationDTO -> AuthenticationServiceDTO
-func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.IdentityProviderDTO) error {
+func convertClientCertAuthnSvcMapArrToDTO(
+	client_cert interface{},
+	idp *api.IdentityProviderDTO,
+) error {
 	tfMapLs, err := asTFMapAll(client_cert)
 	if err != nil {
 		return err
@@ -1180,7 +1251,9 @@ func convertClientCertAuthnSvcMapArrToDTO(client_cert interface{}, idp *api.Iden
 	return nil
 }
 
-func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
+func convertClientCertAuthnSvcDTOToMapArr(
+	idp *api.IdentityProviderDTO,
+) ([]map[string]interface{}, error) {
 	authnMechanisms := idp.GetAuthenticationMechanisms()
 	authnTfMapLs := make([]map[string]interface{}, 0)
 	// For each authn mech
@@ -1216,15 +1289,16 @@ func convertClientCertAuthnSvcDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[s
 	}
 
 	return authnTfMapLs, nil
-
 }
 
 // --------------------------------------------------------------------
 
 // This takes a TF map and creates the corresponding DTOs
 // AuthenticationMechanismDTO -> DelegatedAuthenticationDTO -> AuthenticationServiceDTO
-func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, idp *api.IdentityProviderDTO) error {
-
+func convertWindowsIntegratedAuthnMapArrToDTO(
+	windows_integrated interface{},
+	idp *api.IdentityProviderDTO,
+) error {
 	tfMapLs, err := asTFMapAll(windows_integrated)
 	if err != nil {
 		return err
@@ -1267,7 +1341,9 @@ func convertWindowsIntegratedAuthnMapArrToDTO(windows_integrated interface{}, id
 	return nil
 }
 
-func convertWindowsIntegratedAuthnDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
+func convertWindowsIntegratedAuthnDTOToMapArr(
+	idp *api.IdentityProviderDTO,
+) ([]map[string]interface{}, error) {
 	authnMechanisms := idp.GetAuthenticationMechanisms()
 	authnTfMapLs := make([]map[string]interface{}, 0)
 	// For each authn mech
@@ -1307,15 +1383,16 @@ func convertWindowsIntegratedAuthnDTOToMapArr(idp *api.IdentityProviderDTO) ([]m
 	}
 
 	return authnTfMapLs, nil
-
 }
 
 // --------------------------------------------------------------------
 
 // This takes a TF map and creates the corresponding DTOs, injecting them into the IDP
 // AuthenticationMechanismDTO -> DelegatedAuthenticationDTO -> AuthenticationServiceDTO
-func convertAuthnOAuth2PreMapArrToDTO(authn_oauth2_pre interface{}, idp *api.IdentityProviderDTO) error {
-
+func convertAuthnOAuth2PreMapArrToDTO(
+	authn_oauth2_pre interface{},
+	idp *api.IdentityProviderDTO,
+) error {
 	tfMapLs, err := asTFMapAll(authn_oauth2_pre)
 	if err != nil {
 		return err
@@ -1331,10 +1408,12 @@ func convertAuthnOAuth2PreMapArrToDTO(authn_oauth2_pre interface{}, idp *api.Ide
 	for _, e := range tfMapLs {
 		tfMap := e.(map[string]interface{})
 		oauth2 := api.NewOAuth2PreAuthenticationServiceDTO()
-		oauth2.SetAuthnService(api.AsString(tfMap["authn_service"], ""))
+		authnService := api.AsString(tfMap["authn_service"], "")
+		oauth2.SetAuthnService(authnService)
 		oauth2.SetExternalAuth(api.AsBool(tfMap["external_auth"], false))
 		oauth2.SetRememberMe(api.AsBool(tfMap["remember_me"], false))
 
+		// TODO : support custom class?
 		// cc_dto, err := convertCustomClassMapArrToDTO(("extension"))
 		// if err != nil {
 		// 	err = errors.Wrap(err, "extension")
@@ -1343,13 +1422,47 @@ func convertAuthnOAuth2PreMapArrToDTO(authn_oauth2_pre interface{}, idp *api.Ide
 		// oauth2.SetCustomClass(*cc_dto)
 		// }
 
+		// Add or update OAuth2 client named "pre-authn" with trusted URL from authn_service
+		if authnService != "" {
+			oauth2Clients := idp.GetOauth2Clients()
+			if oauth2Clients == nil {
+				oauth2Clients = make([]api.OAuth2ClientDTO, 0)
+			}
+
+			// Find existing "pre-authn" client or create new one
+			found := false
+			clientId := api.AsString(tfMap["client_id"], "pre-authn")
+			clientSecret := api.AsString(tfMap["client_secret"], "")
+			for i := range oauth2Clients {
+				if oauth2Clients[i].GetId() == clientId {
+					// Update existing client
+					oauth2Clients[i].SetBaseURL(authnService)
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				// Create new OAuth2 client
+				client := api.NewOAuth2ClientDTO()
+				client.SetId(clientId)
+				client.SetSecret(clientSecret)
+				client.SetBaseURL(authnService)
+				oauth2Clients = append(oauth2Clients, *client)
+			}
+
+			idp.SetOauth2Clients(oauth2Clients)
+		}
+
 		idp.AddOauth2PreAuthnSvs(oauth2, api.AsInt32(tfMap["priority"], 0))
 	}
 
 	return nil
 }
 
-func convertAuthnOAuth2PreDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
+func convertAuthnOAuth2PreDTOToMapArr(
+	idp *api.IdentityProviderDTO,
+) ([]map[string]interface{}, error) {
 	bas, err := idp.GetOauth2PreAuthnSvs()
 	if err != nil {
 		return nil, err
@@ -1373,15 +1486,32 @@ func convertAuthnOAuth2PreDTOToMapArr(idp *api.IdentityProviderDTO) ([]map[strin
 			if err != nil {
 				return nil, err
 			}
+
+			// Find the corresponding OAuth2 client to retrieve client_id
+			authnService := oauth2svc.GetAuthnService()
+			clientId := "pre-authn" // default value
+			oauth2Clients := idp.GetOauth2Clients()
+			for _, client := range oauth2Clients {
+				// Match client by BaseURL to authn_service
+				if client.GetBaseURL() == authnService {
+					// Only use this client_id if it starts with "pre-authn" prefix
+					if cid := client.GetId(); len(cid) >= 9 && cid[:9] == "pre-authn" {
+						clientId = cid
+						break
+					}
+				}
+			}
+
 			// customClass, err := convertCustomClassDTOToMapArr(oauth2svc.CustomClass)
 			// if err != nil {
 			// 	return nil, err
 			// }
 			authnTfMap := map[string]interface{}{
 				"priority":      am.GetPriority(),
-				"authn_service": oauth2svc.GetAuthnService(),
+				"authn_service": authnService,
 				"external_auth": oauth2svc.GetExternalAuth(),
 				"remember_me":   oauth2svc.GetRememberMe(),
+				"client_id":     clientId,
 				// "extension":     customClass,
 			}
 			authnTfMapLs = append(authnTfMapLs, authnTfMap)
@@ -1477,8 +1607,10 @@ func convertOAuth2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interf
 	return result, nil
 }
 
-func convertAttributeProfileMapArrToDTOs(provider_name string, attrs interface{}) (*api.AttributeProfileDTO, error) {
-
+func convertAttributeProfileMapArrToDTOs(
+	provider_name string,
+	attrs interface{},
+) (*api.AttributeProfileDTO, error) {
 	attrMap, err := asTFMapSingle(attrs)
 	if err != nil {
 		return nil, err
@@ -1512,7 +1644,9 @@ func convertAttributeProfileMapArrToDTOs(provider_name string, attrs interface{}
 
 			m := api.NewAttributeMappingDTO()
 			m.SetAttrName(mappingMap["name"].(string))
-			m.SetReportedAttrName(api.ToAttributeMapping(mappingMap["type"].(string), mappingMap["mapping"].(string)))
+			m.SetReportedAttrName(
+				api.ToAttributeMapping(mappingMap["type"].(string), mappingMap["mapping"].(string)),
+			)
 			m.SetReportedAttrNameFormat(api.AsString(mappingMap["format"], "BASIC"))
 
 			mappings = append(mappings, *m)
@@ -1525,7 +1659,9 @@ func convertAttributeProfileMapArrToDTOs(provider_name string, attrs interface{}
 	return nil, fmt.Errorf("invalid profile type %s\n", profile)
 }
 
-func convertAttributeProfileDTOToMapArr(ap *api.AttributeProfileDTO) ([]map[string]interface{}, error) {
+func convertAttributeProfileDTOToMapArr(
+	ap *api.AttributeProfileDTO,
+) ([]map[string]interface{}, error) {
 	var r []map[string]interface{}
 
 	apMap := make(map[string]interface{})
@@ -1555,7 +1691,6 @@ func convertAttributeProfileDTOToMapArr(ap *api.AttributeProfileDTO) ([]map[stri
 }
 
 func mapSaml2EncryptionToTF(encryption string) (string, error) {
-
 	// "NONE", "AES-128", "AES-256", "AES-3DES"
 
 	// disabled
@@ -1578,7 +1713,6 @@ func mapSaml2EncryptionToTF(encryption string) (string, error) {
 }
 
 func mapTFEncryptionToSaml2(encryption string) (string, error) {
-
 	// "NONE", "AES-128", "AES-256", "AES-3DES"
 
 	// disabled
