@@ -46,25 +46,25 @@
         }
       }
     },
-    "/iam-authn/version" : {
-      "get" : {
-        "operationId" : "version",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ServerVersionRequest"
+    "/iam-authn/version": {
+      "get": {
+        "operationId": "version",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServerVersionRequest"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ServerVersionResponse"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerVersionResponse"
                 }
               }
             }
@@ -72,631 +72,247 @@
         }
       }
     },
-    "/iam-branding/branding" : {
-      "get" : {
-        "operationId" : "getBranding",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetBrandingReq"
+    "/iam-branding/branding": {
+      "get": {
+        "operationId": "getBranding",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetBrandingReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetBrandingRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateBranding",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreBrandingReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreBrandingRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBrandingRes"
                 }
               }
             }
           }
         }
       },
-      "post" : {
-        "operationId" : "createBranding",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreBrandingReq"
+      "put": {
+        "operationId": "updateBranding",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreBrandingReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreBrandingRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreBrandingRes"
                 }
               }
             }
           }
         }
       },
-      "delete" : {
-        "operationId" : "deleteBranding",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteBrandingReq"
+      "post": {
+        "operationId": "createBranding",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreBrandingReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteBrandingRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-branding/brandings" : {
-      "get" : {
-        "operationId" : "getAllBrandings",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetAllBrandingsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetAllBrandingsRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-branding/brandings/refresh" : {
-      "get" : {
-        "operationId" : "refreshBrandings",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/RefreshBrandingsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/RefreshBrandingsRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance" : {
-      "get" : {
-        "operationId" : "getAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreBrandingRes"
                 }
               }
             }
           }
         }
       },
-      "put" : {
-        "operationId" : "updateAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreApplianceReq"
+      "delete": {
+        "operationId": "deleteBranding",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteBrandingReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreApplianceRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteBrandingRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-branding/brandings": {
+      "get": {
+        "operationId": "getAllBrandings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAllBrandingsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllBrandingsRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-branding/brandings/refresh": {
+      "get": {
+        "operationId": "refreshBrandings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshBrandingsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshBrandingsRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/appliance": {
+      "get": {
+        "operationId": "getAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceRes"
                 }
               }
             }
           }
         }
       },
-      "post" : {
-        "operationId" : "createAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreApplianceReq"
+      "put": {
+        "operationId": "updateAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreApplianceRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreApplianceRes"
                 }
               }
             }
           }
         }
       },
-      "delete" : {
-        "operationId" : "deleteAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
+      "post": {
+        "operationId": "createAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance-container" : {
-      "get" : {
-        "operationId" : "getApplianceContainer",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceContainerRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance-containers" : {
-      "get" : {
-        "operationId" : "getApplianceContainers",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceContainersRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/build" : {
-      "get" : {
-        "operationId" : "buildAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/SetApplianceStateReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceStateRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/export" : {
-      "get" : {
-        "operationId" : "exportAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ExportApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ExportApplianceRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/import" : {
-      "post" : {
-        "operationId" : "importAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ImportApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ImportApplianceRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/layout" : {
-      "get" : {
-        "operationId" : "layoutAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/CalcLayoutReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CalcLayoutRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/start" : {
-      "get" : {
-        "operationId" : "startAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/SetApplianceStateReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceStateRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/state" : {
-      "get" : {
-        "operationId" : "getApplianceState",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceStateRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/stop" : {
-      "get" : {
-        "operationId" : "stopAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/SetApplianceStateReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceStateRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliance/validate" : {
-      "get" : {
-        "operationId" : "validateAppliance",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetApplianceStateRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/appliances" : {
-      "get" : {
-        "operationId" : "getAppliances",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetAppliancesRes"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/iam-deploy/dbidvault" : {
-      "get" : {
-        "operationId" : "getDbIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetDbIdVaultReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetDbIdVaultRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreApplianceRes"
                 }
               }
             }
           }
         }
       },
-      "put" : {
-        "operationId" : "updateDbIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreDbIdVaultReq"
+      "delete": {
+        "operationId": "deleteAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreDbIdVaultRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createDbIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreDbIdVaultReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreDbIdVaultRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteDbIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -704,25 +320,25 @@
         }
       }
     },
-    "/iam-deploy/dbidvaults" : {
-      "get" : {
-        "operationId" : "getDbIdVaults",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetDbIdVaultReq"
+    "/iam-deploy/appliance-container": {
+      "get": {
+        "operationId": "getApplianceContainer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetDbIdVaultsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceContainerRes"
                 }
               }
             }
@@ -730,25 +346,25 @@
         }
       }
     },
-    "/iam-deploy/execenv" : {
-      "get" : {
-        "operationId" : "getExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetExecEnvReq"
+    "/iam-deploy/appliance-containers": {
+      "get": {
+        "operationId": "getApplianceContainers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceContainersRes"
                 }
               }
             }
@@ -756,25 +372,25 @@
         }
       }
     },
-    "/iam-deploy/execenv/activate" : {
-      "get" : {
-        "operationId" : "activateExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ActivateExecEnvReq"
+    "/iam-deploy/appliance/build": {
+      "get": {
+        "operationId": "buildAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetApplianceStateReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ActivateExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceStateRes"
                 }
               }
             }
@@ -782,25 +398,25 @@
         }
       }
     },
-    "/iam-deploy/execenv/cfg" : {
-      "get" : {
-        "operationId" : "exportExecEnvCfg",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ExportExecEnvCfgReq"
+    "/iam-deploy/appliance/export": {
+      "get": {
+        "operationId": "exportAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ExportExecEnvCfgRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportApplianceRes"
                 }
               }
             }
@@ -808,25 +424,25 @@
         }
       }
     },
-    "/iam-deploy/execenvs" : {
-      "get" : {
-        "operationId" : "getExecEnvs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
+    "/iam-deploy/appliance/import": {
+      "post": {
+        "operationId": "importAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetExecEnvsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportApplianceRes"
                 }
               }
             }
@@ -834,97 +450,25 @@
         }
       }
     },
-    "/iam-deploy/extsaml2sp" : {
-      "get" : {
-        "operationId" : "getExtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetExtSaml2SpReq"
+    "/iam-deploy/appliance/layout": {
+      "get": {
+        "operationId": "layoutAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalcLayoutReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetExtSaml2SpRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateExtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreExtSaml2SpReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreExtSaml2SpRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createExtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreExtSaml2SpReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreExtSaml2SpRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteExtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalcLayoutRes"
                 }
               }
             }
@@ -932,25 +476,25 @@
         }
       }
     },
-    "/iam-deploy/extsaml2sps" : {
-      "get" : {
-        "operationId" : "getExtSaml2Sps",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetExtSaml2SpReq"
+    "/iam-deploy/appliance/start": {
+      "get": {
+        "operationId": "startAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetApplianceStateReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetExtSaml2SpsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceStateRes"
                 }
               }
             }
@@ -958,97 +502,25 @@
         }
       }
     },
-    "/iam-deploy/idp" : {
-      "get" : {
-        "operationId" : "getIdP",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdPReq"
+    "/iam-deploy/appliance/state": {
+      "get": {
+        "operationId": "getApplianceState",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdPRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIdP",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdPReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdPRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIdP",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdPReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdPRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIdP",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceStateRes"
                 }
               }
             }
@@ -1056,97 +528,25 @@
         }
       }
     },
-    "/iam-deploy/idp_azure" : {
-      "get" : {
-        "operationId" : "getIdpAzure",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdpAzureReq"
+    "/iam-deploy/appliance/stop": {
+      "get": {
+        "operationId": "stopAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetApplianceStateReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdpAzureRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIdpAzure",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdpAzureReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdpAzureRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIdpAzure",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdpAzureReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdpAzureRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIdpAzure",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceStateRes"
                 }
               }
             }
@@ -1154,25 +554,25 @@
         }
       }
     },
-    "/iam-deploy/idp_azures" : {
-      "get" : {
-        "operationId" : "getIdpAzures",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdpAzureReq"
+    "/iam-deploy/appliance/validate": {
+      "get": {
+        "operationId": "validateAppliance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdpAzuresRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApplianceStateRes"
                 }
               }
             }
@@ -1180,97 +580,25 @@
         }
       }
     },
-    "/iam-deploy/idp_fb" : {
-      "get" : {
-        "operationId" : "getIdpFacebook",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdpFacebookReq"
+    "/iam-deploy/appliances": {
+      "get": {
+        "operationId": "getAppliances",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdpFacebookRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIdpFacebook",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdpFacebookReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdpFacebookRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIdpFacebook",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdpFacebookReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdpFacebookRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIdpFacebook",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAppliancesRes"
                 }
               }
             }
@@ -1278,25 +606,97 @@
         }
       }
     },
-    "/iam-deploy/idp_fbs" : {
-      "get" : {
-        "operationId" : "getIdpFacebooks",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdpFacebookReq"
+    "/iam-deploy/dbidvault": {
+      "get": {
+        "operationId": "getDbIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDbIdVaultReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdpFacebooksRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDbIdVaultRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateDbIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreDbIdVaultReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreDbIdVaultRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createDbIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreDbIdVaultReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreDbIdVaultRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteDbIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -1304,97 +704,25 @@
         }
       }
     },
-    "/iam-deploy/idp_google" : {
-      "get" : {
-        "operationId" : "getIdpGoogle",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdpGoogleReq"
+    "/iam-deploy/dbidvaults": {
+      "get": {
+        "operationId": "getDbIdVaults",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetDbIdVaultReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdpGoogleRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIdpGoogle",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdpGoogleReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdpGoogleRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIdpGoogle",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdpGoogleReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdpGoogleRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIdpGoogle",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDbIdVaultsRes"
                 }
               }
             }
@@ -1402,25 +730,25 @@
         }
       }
     },
-    "/iam-deploy/idp_googles" : {
-      "get" : {
-        "operationId" : "getIdpGoogles",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdpGoogleReq"
+    "/iam-deploy/execenv": {
+      "get": {
+        "operationId": "getExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdpGooglesRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExecEnvRes"
                 }
               }
             }
@@ -1428,25 +756,25 @@
         }
       }
     },
-    "/iam-deploy/idps" : {
-      "get" : {
-        "operationId" : "getIdPs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdPReq"
+    "/iam-deploy/execenv/activate": {
+      "get": {
+        "operationId": "activateExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdPsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivateExecEnvRes"
                 }
               }
             }
@@ -1454,25 +782,25 @@
         }
       }
     },
-    "/iam-deploy/idsource" : {
-      "get" : {
-        "operationId" : "getIdSource",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdSourceReq"
+    "/iam-deploy/execenv/cfg": {
+      "get": {
+        "operationId": "exportExecEnvCfg",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportExecEnvCfgReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdSourceRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportExecEnvCfgRes"
                 }
               }
             }
@@ -1480,97 +808,25 @@
         }
       }
     },
-    "/iam-deploy/idsourcedb" : {
-      "get" : {
-        "operationId" : "getIdSourceDb",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdSourceDbReq"
+    "/iam-deploy/execenvs": {
+      "get": {
+        "operationId": "getExecEnvs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdSourceDbRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIdSourceDb",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdSourceDbReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdSourceDbRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIdSourceDb",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdSourceDbReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdSourceDbRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIdSourceDb",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExecEnvsRes"
                 }
               }
             }
@@ -1578,25 +834,97 @@
         }
       }
     },
-    "/iam-deploy/idsourcedbs" : {
-      "get" : {
-        "operationId" : "getIdSourceDbs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdSourceDbReq"
+    "/iam-deploy/extsaml2sp": {
+      "get": {
+        "operationId": "getExtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetExtSaml2SpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdSourceDbsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExtSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateExtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreExtSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreExtSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createExtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreExtSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreExtSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteExtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -1604,97 +932,25 @@
         }
       }
     },
-    "/iam-deploy/idsourceldap" : {
-      "get" : {
-        "operationId" : "getIdSourceLdap",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdSourceLdapReq"
+    "/iam-deploy/extsaml2sps": {
+      "get": {
+        "operationId": "getExtSaml2Sps",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetExtSaml2SpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdSourceLdapRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIdSourceLdap",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdSourceLdapReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdSourceLdapRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIdSourceLdap",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdSourceLdapReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdSourceLdapRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIdSourceLdap",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExtSaml2SpsRes"
                 }
               }
             }
@@ -1702,25 +958,97 @@
         }
       }
     },
-    "/iam-deploy/idsourceldaps" : {
-      "get" : {
-        "operationId" : "getIdSourceLdaps",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdSourceLdapReq"
+    "/iam-deploy/idp": {
+      "get": {
+        "operationId": "getIdP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdPReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdSourceLdapsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdPRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIdP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdPReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdPRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIdP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdPReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdPRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIdP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -1728,25 +1056,97 @@
         }
       }
     },
-    "/iam-deploy/idsources" : {
-      "get" : {
-        "operationId" : "getIdSources",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdSourcesReq"
+    "/iam-deploy/idp_azure": {
+      "get": {
+        "operationId": "getIdpAzure",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdpAzureReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdSourcesRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdpAzureRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIdpAzure",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdpAzureReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdpAzureRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIdpAzure",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdpAzureReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdpAzureRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIdpAzure",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -1754,97 +1154,25 @@
         }
       }
     },
-    "/iam-deploy/idvault" : {
-      "get" : {
-        "operationId" : "getIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdVaultReq"
+    "/iam-deploy/idp_azures": {
+      "get": {
+        "operationId": "getIdpAzures",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdpAzureReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdVaultRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdVaultReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdVaultRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIdVaultReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIdVaultRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIdVault",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdpAzuresRes"
                 }
               }
             }
@@ -1852,25 +1180,97 @@
         }
       }
     },
-    "/iam-deploy/idvaults" : {
-      "get" : {
-        "operationId" : "getIdVaults",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIdVaultReq"
+    "/iam-deploy/idp_fb": {
+      "get": {
+        "operationId": "getIdpFacebook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdpFacebookReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIdVaultsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdpFacebookRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIdpFacebook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdpFacebookReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdpFacebookRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIdpFacebook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdpFacebookReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdpFacebookRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIdpFacebook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -1878,97 +1278,25 @@
         }
       }
     },
-    "/iam-deploy/iisexecenv" : {
-      "get" : {
-        "operationId" : "getIisExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIisExecEnvReq"
+    "/iam-deploy/idp_fbs": {
+      "get": {
+        "operationId": "getIdpFacebooks",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdpFacebookReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIisExecEnvRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIisExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIisExecEnvReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIisExecEnvRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIisExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIisExecEnvReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIisExecEnvRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIisExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdpFacebooksRes"
                 }
               }
             }
@@ -1976,25 +1304,97 @@
         }
       }
     },
-    "/iam-deploy/iisexecenvs" : {
-      "get" : {
-        "operationId" : "getIisExecEnvs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIisExecEnvReq"
+    "/iam-deploy/idp_google": {
+      "get": {
+        "operationId": "getIdpGoogle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdpGoogleReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIisExecEnvsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdpGoogleRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIdpGoogle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdpGoogleReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdpGoogleRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIdpGoogle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdpGoogleReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdpGoogleRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIdpGoogle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2002,97 +1402,25 @@
         }
       }
     },
-    "/iam-deploy/intsaml2sp" : {
-      "get" : {
-        "operationId" : "getIntSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIntSaml2SpReq"
+    "/iam-deploy/idp_googles": {
+      "get": {
+        "operationId": "getIdpGoogles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdpGoogleReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIntSaml2SpRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateIntSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIntSaml2SpReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIntSaml2SpRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createIntSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreIntSaml2SpReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreIntSaml2SpRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteIntSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdpGooglesRes"
                 }
               }
             }
@@ -2100,25 +1428,97 @@
         }
       }
     },
-    "/iam-deploy/intsaml2sps" : {
-      "get" : {
-        "operationId" : "getIntSaml2Sps",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetIntSaml2SpReq"
+    "/iam-deploy/idp_saml2": {
+      "get": {
+        "operationId": "getIdpSaml2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdPSaml2Req"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetIntSaml2SpsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdPSaml2Res"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIdpSaml2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdPSaml2Req"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdPSaml2Res"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIdpSaml2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdPSaml2Req"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdPSaml2Res"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIdpSaml2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2126,97 +1526,25 @@
         }
       }
     },
-    "/iam-deploy/jossors" : {
-      "get" : {
-        "operationId" : "getJossoRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetJossoRsReq"
+    "/iam-deploy/idp_saml2s": {
+      "get": {
+        "operationId": "getIdpSaml2s",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdPSaml2Req"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetJossoRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateJossoRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreJossoRsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreJossoRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createJossoRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreJossoRsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreJossoRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteJossoRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdPSaml2sRes"
                 }
               }
             }
@@ -2224,25 +1552,25 @@
         }
       }
     },
-    "/iam-deploy/jossorss" : {
-      "get" : {
-        "operationId" : "getJossoRss",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetJossoRsReq"
+    "/iam-deploy/idps": {
+      "get": {
+        "operationId": "getIdPs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdPReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetJossoRssRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdPsRes"
                 }
               }
             }
@@ -2250,16 +1578,25 @@
         }
       }
     },
-    "/iam-deploy/noop/types" : {
-      "get" : {
-        "operationId" : "getTypes",
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetTypesRes"
+    "/iam-deploy/idsource": {
+      "get": {
+        "operationId": "getIdSource",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdSourceReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdSourceRes"
                 }
               }
             }
@@ -2267,97 +1604,97 @@
         }
       }
     },
-    "/iam-deploy/oidcrp" : {
-      "get" : {
-        "operationId" : "getOidcRp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetOidcRpReq"
+    "/iam-deploy/idsourcedb": {
+      "get": {
+        "operationId": "getIdSourceDb",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdSourceDbReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetOidcRpRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdSourceDbRes"
                 }
               }
             }
           }
         }
       },
-      "put" : {
-        "operationId" : "updateOidcRp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreOidcRpReq"
+      "put": {
+        "operationId": "updateIdSourceDb",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdSourceDbReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreOidcRpRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdSourceDbRes"
                 }
               }
             }
           }
         }
       },
-      "post" : {
-        "operationId" : "createOidcRp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreOidcRpReq"
+      "post": {
+        "operationId": "createIdSourceDb",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdSourceDbReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreOidcRpRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdSourceDbRes"
                 }
               }
             }
           }
         }
       },
-      "delete" : {
-        "operationId" : "deleteOidcRp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
+      "delete": {
+        "operationId": "deleteIdSourceDb",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2365,25 +1702,25 @@
         }
       }
     },
-    "/iam-deploy/oidcrps" : {
-      "get" : {
-        "operationId" : "getOidcRps",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetOidcRpReq"
+    "/iam-deploy/idsourcedbs": {
+      "get": {
+        "operationId": "getIdSourceDbs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdSourceDbReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetOidcRpsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdSourceDbsRes"
                 }
               }
             }
@@ -2391,97 +1728,97 @@
         }
       }
     },
-    "/iam-deploy/phpexecenv" : {
-      "get" : {
-        "operationId" : "getPhpExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetPhpExecEnvReq"
+    "/iam-deploy/idsourceldap": {
+      "get": {
+        "operationId": "getIdSourceLdap",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdSourceLdapReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetPhpExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdSourceLdapRes"
                 }
               }
             }
           }
         }
       },
-      "put" : {
-        "operationId" : "updatePhpExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StorePhpExecEnvReq"
+      "put": {
+        "operationId": "updateIdSourceLdap",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdSourceLdapReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StorePhpExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdSourceLdapRes"
                 }
               }
             }
           }
         }
       },
-      "post" : {
-        "operationId" : "createPhpExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StorePhpExecEnvReq"
+      "post": {
+        "operationId": "createIdSourceLdap",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdSourceLdapReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StorePhpExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdSourceLdapRes"
                 }
               }
             }
           }
         }
       },
-      "delete" : {
-        "operationId" : "deletePhpExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
+      "delete": {
+        "operationId": "deleteIdSourceLdap",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2489,25 +1826,25 @@
         }
       }
     },
-    "/iam-deploy/phpexecenvs" : {
-      "get" : {
-        "operationId" : "getPhpExecEnvs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetPhpExecEnvReq"
+    "/iam-deploy/idsourceldaps": {
+      "get": {
+        "operationId": "getIdSourceLdaps",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdSourceLdapReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetPhpExecEnvsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdSourceLdapsRes"
                 }
               }
             }
@@ -2515,25 +1852,25 @@
         }
       }
     },
-    "/iam-deploy/provider" : {
-      "get" : {
-        "operationId" : "getProvider",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetProviderReq"
+    "/iam-deploy/idsources": {
+      "get": {
+        "operationId": "getIdSources",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdSourcesReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetProviderRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdSourcesRes"
                 }
               }
             }
@@ -2541,25 +1878,97 @@
         }
       }
     },
-    "/iam-deploy/providers" : {
-      "get" : {
-        "operationId" : "getProviders",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetApplianceReq"
+    "/iam-deploy/idvault": {
+      "get": {
+        "operationId": "getIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdVaultReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetProvidersRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdVaultRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdVaultReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdVaultRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIdVaultReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIdVaultRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIdVault",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2567,97 +1976,25 @@
         }
       }
     },
-    "/iam-deploy/selfsvc" : {
-      "get" : {
-        "operationId" : "getSelfSvcs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetSelfSvcRsReq"
+    "/iam-deploy/idvaults": {
+      "get": {
+        "operationId": "getIdVaults",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIdVaultReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetSelfSvcRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateSelfSvcs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreSelfSvcRsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreSelfSvcRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createSelfSvcs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreSelfSvcRsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreSelfSvcRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteSelfSvcs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIdVaultsRes"
                 }
               }
             }
@@ -2665,25 +2002,97 @@
         }
       }
     },
-    "/iam-deploy/selfsvcs" : {
-      "get" : {
-        "operationId" : "getSelfSvcss",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetSelfSvcRsReq"
+    "/iam-deploy/iisexecenv": {
+      "get": {
+        "operationId": "getIisExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIisExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetSelfSvcRssRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIisExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIisExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIisExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIisExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIisExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIisExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIisExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIisExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2691,25 +2100,25 @@
         }
       }
     },
-    "/iam-deploy/server/bundles" : {
-      "get" : {
-        "operationId" : "getBundles",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetBundlesReq"
+    "/iam-deploy/iisexecenvs": {
+      "get": {
+        "operationId": "getIisExecEnvs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIisExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetBundlesRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIisExecEnvsRes"
                 }
               }
             }
@@ -2717,25 +2126,97 @@
         }
       }
     },
-    "/iam-deploy/server/info" : {
-      "get" : {
-        "operationId" : "getInfo",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetServerInfoReq"
+    "/iam-deploy/intsaml2sp": {
+      "get": {
+        "operationId": "getIntSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIntSaml2SpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetServerInfoRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIntSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateIntSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIntSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIntSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createIntSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreIntSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreIntSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteIntSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2743,97 +2224,25 @@
         }
       }
     },
-    "/iam-deploy/sharepointrs" : {
-      "get" : {
-        "operationId" : "getSharepointRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetSharepointRsReq"
+    "/iam-deploy/intsaml2sps": {
+      "get": {
+        "operationId": "getIntSaml2Sps",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetIntSaml2SpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetSharepointRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateSharepointRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreSharepointRsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreSharepointRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createSharepointRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreSharepointRsReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreSharepointRsRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteSharepointRs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIntSaml2SpsRes"
                 }
               }
             }
@@ -2841,25 +2250,97 @@
         }
       }
     },
-    "/iam-deploy/sharepointrss" : {
-      "get" : {
-        "operationId" : "getSharepointRss",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetSharepointRsReq"
+    "/iam-deploy/jossors": {
+      "get": {
+        "operationId": "getJossoRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetJossoRsReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetSharepointRssRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetJossoRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateJossoRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreJossoRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreJossoRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createJossoRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreJossoRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreJossoRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteJossoRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -2867,97 +2348,25 @@
         }
       }
     },
-    "/iam-deploy/tomcatexecenv" : {
-      "get" : {
-        "operationId" : "getTomcatExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetTomcatExecEnvReq"
+    "/iam-deploy/jossorss": {
+      "get": {
+        "operationId": "getJossoRss",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetJossoRsReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetTomcatExecEnvRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "operationId" : "updateTomcatExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreTomcatExecEnvReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreTomcatExecEnvRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "operationId" : "createTomcatExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreTomcatExecEnvReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreTomcatExecEnvRes"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete" : {
-        "operationId" : "deleteTomcatExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetJossoRssRes"
                 }
               }
             }
@@ -2965,25 +2374,16 @@
         }
       }
     },
-    "/iam-deploy/tomcatexecenvs" : {
-      "get" : {
-        "operationId" : "getTomcatExecEnvs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetTomcatExecEnvReq"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetTomcatExecEnvsRes"
+    "/iam-deploy/noop/types": {
+      "get": {
+        "operationId": "getTypes",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTypesRes"
                 }
               }
             }
@@ -2991,97 +2391,97 @@
         }
       }
     },
-    "/iam-deploy/virtsaml2sp" : {
-      "get" : {
-        "operationId" : "getVirtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetVirtSaml2SpReq"
+    "/iam-deploy/oidcrp": {
+      "get": {
+        "operationId": "getOidcRp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOidcRpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetVirtSaml2SpRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOidcRpRes"
                 }
               }
             }
           }
         }
       },
-      "put" : {
-        "operationId" : "updateVirtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreVirtSaml2SpReq"
+      "put": {
+        "operationId": "updateOidcRp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreOidcRpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreVirtSaml2SpRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreOidcRpRes"
                 }
               }
             }
           }
         }
       },
-      "post" : {
-        "operationId" : "createVirtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreVirtSaml2SpReq"
+      "post": {
+        "operationId": "createOidcRp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreOidcRpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreVirtSaml2SpRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreOidcRpRes"
                 }
               }
             }
           }
         }
       },
-      "delete" : {
-        "operationId" : "deleteVirtSaml2Sp",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
+      "delete": {
+        "operationId": "deleteOidcRp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -3089,25 +2489,25 @@
         }
       }
     },
-    "/iam-deploy/virtsaml2sps" : {
-      "get" : {
-        "operationId" : "getVirtSaml2Sps",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetVirtSaml2SpReq"
+    "/iam-deploy/oidcrps": {
+      "get": {
+        "operationId": "getOidcRps",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOidcRpReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetVirtSaml2SpsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOidcRpsRes"
                 }
               }
             }
@@ -3115,97 +2515,97 @@
         }
       }
     },
-    "/iam-deploy/weblogicexecenv" : {
-      "get" : {
-        "operationId" : "getWeblogicExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetWeblogicExecEnvReq"
+    "/iam-deploy/phpexecenv": {
+      "get": {
+        "operationId": "getPhpExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPhpExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetWeblogicExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPhpExecEnvRes"
                 }
               }
             }
           }
         }
       },
-      "put" : {
-        "operationId" : "updateWeblogicExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreWeblogicExecEnvReq"
+      "put": {
+        "operationId": "updatePhpExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StorePhpExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreWeblogicExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorePhpExecEnvRes"
                 }
               }
             }
           }
         }
       },
-      "post" : {
-        "operationId" : "createWeblogicExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StoreWeblogicExecEnvReq"
+      "post": {
+        "operationId": "createPhpExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StorePhpExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StoreWeblogicExecEnvRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorePhpExecEnvRes"
                 }
               }
             }
           }
         }
       },
-      "delete" : {
-        "operationId" : "deleteWeblogicExecEnv",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeleteReq"
+      "delete": {
+        "operationId": "deletePhpExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeleteRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
                 }
               }
             }
@@ -3213,25 +2613,749 @@
         }
       }
     },
-    "/iam-deploy/weblogicexecenvs" : {
-      "get" : {
-        "operationId" : "getWeblogicExecEnvs",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/GetWeblogicExecEnvReq"
+    "/iam-deploy/phpexecenvs": {
+      "get": {
+        "operationId": "getPhpExecEnvs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPhpExecEnvReq"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "default response",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GetWeblogicExecEnvsRes"
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPhpExecEnvsRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/provider": {
+      "get": {
+        "operationId": "getProvider",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetProviderReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProviderRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/providers": {
+      "get": {
+        "operationId": "getProviders",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApplianceReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProvidersRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/selfsvc": {
+      "get": {
+        "operationId": "getSelfSvcs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSelfSvcRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateSelfSvcs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreSelfSvcRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSelfSvcs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreSelfSvcRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSelfSvcs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/selfsvcs": {
+      "get": {
+        "operationId": "getSelfSvcss",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSelfSvcRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSelfSvcRssRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/server/bundles": {
+      "get": {
+        "operationId": "getBundles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetBundlesReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBundlesRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/server/info": {
+      "get": {
+        "operationId": "getInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetServerInfoReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetServerInfoRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/sharepointrs": {
+      "get": {
+        "operationId": "getSharepointRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSharepointRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSharepointRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateSharepointRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreSharepointRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreSharepointRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSharepointRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreSharepointRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreSharepointRsRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSharepointRs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/sharepointrss": {
+      "get": {
+        "operationId": "getSharepointRss",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSharepointRsReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSharepointRssRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/tomcatexecenv": {
+      "get": {
+        "operationId": "getTomcatExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTomcatExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTomcatExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateTomcatExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreTomcatExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreTomcatExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTomcatExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreTomcatExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreTomcatExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTomcatExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/tomcatexecenvs": {
+      "get": {
+        "operationId": "getTomcatExecEnvs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTomcatExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTomcatExecEnvsRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/virtsaml2sp": {
+      "get": {
+        "operationId": "getVirtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetVirtSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetVirtSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateVirtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreVirtSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreVirtSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createVirtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreVirtSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreVirtSaml2SpRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteVirtSaml2Sp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/virtsaml2sps": {
+      "get": {
+        "operationId": "getVirtSaml2Sps",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetVirtSaml2SpReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetVirtSaml2SpsRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/weblogicexecenv": {
+      "get": {
+        "operationId": "getWeblogicExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetWeblogicExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWeblogicExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateWeblogicExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreWeblogicExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreWeblogicExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createWeblogicExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreWeblogicExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreWeblogicExecEnvRes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteWeblogicExecEnv",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iam-deploy/weblogicexecenvs": {
+      "get": {
+        "operationId": "getWeblogicExecEnvs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetWeblogicExecEnvReq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWeblogicExecEnvsRes"
                 }
               }
             }

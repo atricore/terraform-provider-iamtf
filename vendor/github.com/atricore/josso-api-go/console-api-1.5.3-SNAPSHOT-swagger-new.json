@@ -1,6 +1,5 @@
 {
   "openapi": "3.0.1",
-  "info": {
     "title": "Atricore Console :: Remote : API",
     "description": "# Atricore Console API",
     "termsOfService": "Terms",
@@ -5710,10 +5709,10 @@
               "$ref": "#/components/schemas/IdentityLookupDTO"
             }
           },
-          "loadMetadata": {
+          "isRemote": {
             "type": "boolean"
           },
-          "isRemote": {
+          "loadMetadata": {
             "type": "boolean"
           },
           "location": {
@@ -8152,6 +8151,13 @@
           "wantSignedRequests": {
             "type": "boolean"
           },
+          "identityLookups" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IdentityLookupDTO"
+            }
+          },
           "x": {
             "type": "number",
             "format": "double"
@@ -8159,13 +8165,6 @@
           "y": {
             "type": "number",
             "format": "double"
-          },
-          "identityLookups": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IdentityLookupDTO"
-            }
           }
         }
       },
@@ -10788,3 +10787,4 @@
     }
   }
 }
+

@@ -96,6 +96,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**CreateIisExecEnv**](docs/DefaultApi.md#createiisexecenv) | **Post** /iam-deploy/iisexecenv | 
 *DefaultApi* | [**CreateIntSaml2Sp**](docs/DefaultApi.md#createintsaml2sp) | **Post** /iam-deploy/intsaml2sp | 
 *DefaultApi* | [**CreateJossoRs**](docs/DefaultApi.md#createjossors) | **Post** /iam-deploy/jossors | 
+*DefaultApi* | [**CreateOidcIdp**](docs/DefaultApi.md#createoidcidp) | **Post** /iam-deploy/idp_oidc | 
 *DefaultApi* | [**CreateOidcRp**](docs/DefaultApi.md#createoidcrp) | **Post** /iam-deploy/oidcrp | 
 *DefaultApi* | [**CreatePhpExecEnv**](docs/DefaultApi.md#createphpexecenv) | **Post** /iam-deploy/phpexecenv | 
 *DefaultApi* | [**CreateSelfSvcs**](docs/DefaultApi.md#createselfsvcs) | **Post** /iam-deploy/selfsvc | 
@@ -118,6 +119,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**DeleteIisExecEnv**](docs/DefaultApi.md#deleteiisexecenv) | **Delete** /iam-deploy/iisexecenv | 
 *DefaultApi* | [**DeleteIntSaml2Sp**](docs/DefaultApi.md#deleteintsaml2sp) | **Delete** /iam-deploy/intsaml2sp | 
 *DefaultApi* | [**DeleteJossoRs**](docs/DefaultApi.md#deletejossors) | **Delete** /iam-deploy/jossors | 
+*DefaultApi* | [**DeleteOidcIdp**](docs/DefaultApi.md#deleteoidcidp) | **Delete** /iam-deploy/idp_oidc | 
 *DefaultApi* | [**DeleteOidcRp**](docs/DefaultApi.md#deleteoidcrp) | **Delete** /iam-deploy/oidcrp | 
 *DefaultApi* | [**DeletePhpExecEnv**](docs/DefaultApi.md#deletephpexecenv) | **Delete** /iam-deploy/phpexecenv | 
 *DefaultApi* | [**DeleteSelfSvcs**](docs/DefaultApi.md#deleteselfsvcs) | **Delete** /iam-deploy/selfsvc | 
@@ -166,6 +168,8 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**GetIntSaml2Sps**](docs/DefaultApi.md#getintsaml2sps) | **Get** /iam-deploy/intsaml2sps | 
 *DefaultApi* | [**GetJossoRs**](docs/DefaultApi.md#getjossors) | **Get** /iam-deploy/jossors | 
 *DefaultApi* | [**GetJossoRss**](docs/DefaultApi.md#getjossorss) | **Get** /iam-deploy/jossorss | 
+*DefaultApi* | [**GetOidcIdp**](docs/DefaultApi.md#getoidcidp) | **Get** /iam-deploy/idp_oidc | 
+*DefaultApi* | [**GetOidcIdps**](docs/DefaultApi.md#getoidcidps) | **Get** /iam-deploy/idp_oidcs | 
 *DefaultApi* | [**GetOidcRp**](docs/DefaultApi.md#getoidcrp) | **Get** /iam-deploy/oidcrp | 
 *DefaultApi* | [**GetOidcRps**](docs/DefaultApi.md#getoidcrps) | **Get** /iam-deploy/oidcrps | 
 *DefaultApi* | [**GetPhpExecEnv**](docs/DefaultApi.md#getphpexecenv) | **Get** /iam-deploy/phpexecenv | 
@@ -204,6 +208,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**UpdateIisExecEnv**](docs/DefaultApi.md#updateiisexecenv) | **Put** /iam-deploy/iisexecenv | 
 *DefaultApi* | [**UpdateIntSaml2Sp**](docs/DefaultApi.md#updateintsaml2sp) | **Put** /iam-deploy/intsaml2sp | 
 *DefaultApi* | [**UpdateJossoRs**](docs/DefaultApi.md#updatejossors) | **Put** /iam-deploy/jossors | 
+*DefaultApi* | [**UpdateOidcIdp**](docs/DefaultApi.md#updateoidcidp) | **Put** /iam-deploy/idp_oidc | 
 *DefaultApi* | [**UpdateOidcRp**](docs/DefaultApi.md#updateoidcrp) | **Put** /iam-deploy/oidcrp | 
 *DefaultApi* | [**UpdatePhpExecEnv**](docs/DefaultApi.md#updatephpexecenv) | **Put** /iam-deploy/phpexecenv | 
 *DefaultApi* | [**UpdateSelfSvcs**](docs/DefaultApi.md#updateselfsvcs) | **Put** /iam-deploy/selfsvc | 
@@ -264,6 +269,7 @@ Class | Method | HTTP request | Description
  - [FederatedChannelDTO](docs/FederatedChannelDTO.md)
  - [FederatedConnectionDTO](docs/FederatedConnectionDTO.md)
  - [FederatedProviderDTO](docs/FederatedProviderDTO.md)
+ - [GenericOpenIDConnectIdentityProviderDTO](docs/GenericOpenIDConnectIdentityProviderDTO.md)
  - [GetAllBrandingsReq](docs/GetAllBrandingsReq.md)
  - [GetAllBrandingsRes](docs/GetAllBrandingsRes.md)
  - [GetApplianceContainerRes](docs/GetApplianceContainerRes.md)
@@ -322,6 +328,9 @@ Class | Method | HTTP request | Description
  - [GetJossoRsReq](docs/GetJossoRsReq.md)
  - [GetJossoRsRes](docs/GetJossoRsRes.md)
  - [GetJossoRssRes](docs/GetJossoRssRes.md)
+ - [GetOidcIdpReq](docs/GetOidcIdpReq.md)
+ - [GetOidcIdpRes](docs/GetOidcIdpRes.md)
+ - [GetOidcIdpsRes](docs/GetOidcIdpsRes.md)
  - [GetOidcRpReq](docs/GetOidcRpReq.md)
  - [GetOidcRpRes](docs/GetOidcRpRes.md)
  - [GetOidcRpsRes](docs/GetOidcRpsRes.md)
@@ -423,6 +432,8 @@ Class | Method | HTTP request | Description
  - [StoreIntSaml2SpRes](docs/StoreIntSaml2SpRes.md)
  - [StoreJossoRsReq](docs/StoreJossoRsReq.md)
  - [StoreJossoRsRes](docs/StoreJossoRsRes.md)
+ - [StoreOidcIdpReq](docs/StoreOidcIdpReq.md)
+ - [StoreOidcIdpRes](docs/StoreOidcIdpRes.md)
  - [StoreOidcRpReq](docs/StoreOidcRpReq.md)
  - [StoreOidcRpRes](docs/StoreOidcRpRes.md)
  - [StorePhpExecEnvReq](docs/StorePhpExecEnvReq.md)
