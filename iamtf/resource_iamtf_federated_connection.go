@@ -37,11 +37,13 @@ func spSamlSchema() *schema.Schema {
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"account_linkage": {
-					Type:             schema.TypeString,
-					Description:      "account linkage: which attribute to use as UID from the IdP.",
-					ValidateDiagFunc: stringInSlice([]string{"ONE_TO_ONE", "EMAIL", "UID", "CUSTOM"}),
-					Computed:         true,
-					Optional:         true,
+					Type:        schema.TypeString,
+					Description: "account linkage: which attribute to use as UID from the IdP.",
+					ValidateDiagFunc: stringInSlice(
+						[]string{"ONE_TO_ONE", "EMAIL", "UID", "CUSTOM"},
+					),
+					Computed: true,
+					Optional: true,
 				},
 				"account_linkage_name": {
 					Type:        schema.TypeString,
@@ -61,11 +63,13 @@ func spSamlSchema() *schema.Schema {
 					Description: "SAML message time to live tolerance",
 				},
 				"identity_mapping": {
-					Type:             schema.TypeString,
-					Description:      "how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)",
-					ValidateDiagFunc: stringInSlice([]string{"LOCAL", "REMOTE", "MERGED", "CUSTOM"}),
-					Computed:         true,
-					Optional:         true,
+					Type:        schema.TypeString,
+					Description: "how the user identity should be mapped for this SP. LOCAL means that the user claims will be retrieved from an identity source connected to the SP.  REMOTE means that claims from the IdP will be used. MERGE is a mix of both claim sets (LOCAL and REMOTE)",
+					ValidateDiagFunc: stringInSlice(
+						[]string{"LOCAL", "REMOTE", "MERGED", "CUSTOM"},
+					),
+					Computed: true,
+					Optional: true,
 				},
 				"identity_mapping_localid": {
 					Type:        schema.TypeBool,
@@ -147,12 +151,10 @@ func spSamlSchema() *schema.Schema {
 			},
 		},
 	}
-
 }
 
 // This adds federated connection specific attributes to SP saml information
 func idpConnectionSchema() *schema.Schema {
-
 	idpConn := &schema.Schema{
 		Type:        schema.TypeList,
 		Optional:    true,
@@ -168,7 +170,7 @@ func idpConnectionSchema() *schema.Schema {
 				"is_preferred": {
 					Type:        schema.TypeBool,
 					Optional:    true,
-					Default:     true,
+					Default:     false,
 					Description: "identifies this IdP as the preferred one (only one IdP must be set to preferred)",
 				},
 				"saml2": spSamlSchema(),
@@ -180,7 +182,11 @@ func idpConnectionSchema() *schema.Schema {
 }
 
 // Name of the parent provider
-func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceData, idp interface{}) ([]api.FederatedConnectionDTO, error) {
+func convertIdPFederatedConnectionsMapArrToDTOs(
+	sp SPRole,
+	d *schema.ResourceData,
+	idp interface{},
+) ([]api.FederatedConnectionDTO, error) {
 	result := make([]api.FederatedConnectionDTO, 0)
 	ls, ok := idp.([]interface{})
 	if !ok {
@@ -227,8 +233,20 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceDat
 		im.AdditionalProperties = make(map[string]interface{})
 		im.AdditionalProperties["@c"] = ".IdentityMappingPolicyDTO"
 		im.SetName(fmt.Sprintf("%s-identity-mapping", sp.GetName()))
-		im.SetMappingType(GetAsString(d, fmt.Sprintf("idp.%d.saml2.0.identity_mapping", idpIdx), it.GetMappingType()))
-		im.SetUseLocalId(GetAsBool(d, fmt.Sprintf("idp.%d.saml2.0.identity_mapping_localid", idpIdx), it.GetUseLocalId()))
+		im.SetMappingType(
+			GetAsString(
+				d,
+				fmt.Sprintf("idp.%d.saml2.0.identity_mapping", idpIdx),
+				it.GetMappingType(),
+			),
+		)
+		im.SetUseLocalId(
+			GetAsBool(
+				d,
+				fmt.Sprintf("idp.%d.saml2.0.identity_mapping_localid", idpIdx),
+				it.GetUseLocalId(),
+			),
+		)
 		idpChannel.SetIdentityMappingPolicy(*im)
 
 		// build new accountLinkagePolicyDTO
@@ -240,24 +258,58 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceDat
 		al.AdditionalProperties = make(map[string]interface{})
 		al.AdditionalProperties["@c"] = ".AccountLinkagePolicyDTO"
 		al.SetName(fmt.Sprintf("%s-account-linkage", sp.GetName()))
-		al.SetLinkEmitterType(GetAsString(d, fmt.Sprintf("idp.%d.saml2.0.account_linkage", idpIdx), at.GetLinkEmitterType()))
+		al.SetLinkEmitterType(
+			GetAsString(
+				d,
+				fmt.Sprintf("idp.%d.saml2.0.account_linkage", idpIdx),
+				at.GetLinkEmitterType(),
+			),
+		)
 		idpChannel.SetAccountLinkagePolicy(*al)
 
 		if len(saml2_m) > 0 {
 
 			idpChannel.SetOverrideProviderSetup(true)
 
-			//idpChannel.SetActiveBindings()
+			// idpChannel.SetActiveBindings()
 
-			idpChannel.SetMessageTtl(GetAsInt32(d, fmt.Sprintf("idp.%d.saml2.0.message_ttl", idpIdx), sp.GetMessageTtl()))
-			idpChannel.SetMessageTtlTolerance(GetAsInt32(d, fmt.Sprintf("idp.%d.saml2.0.message_ttl_tolerance", idpIdx), sp.GetMessageTtlTolerance()))
+			idpChannel.SetMessageTtl(
+				GetAsInt32(
+					d,
+					fmt.Sprintf("idp.%d.saml2.0.message_ttl", idpIdx),
+					sp.GetMessageTtl(),
+				),
+			)
+			idpChannel.SetMessageTtlTolerance(
+				GetAsInt32(
+					d,
+					fmt.Sprintf("idp.%d.saml2.0.message_ttl_tolerance", idpIdx),
+					sp.GetMessageTtlTolerance(),
+				),
+			)
 			// NOT SUPPORTED BY SERVER :idpChannel.SetSignRequests(api.AsBool(saml2_m["sign_requests"], true))
 			idpChannel.SetSignAuthenticationRequests(
-				GetAsBool(d, fmt.Sprintf("idp.%d.saml2.0.sign_authentication_requests", idpIdx), sp.GetSignAuthenticationRequests()))
+				GetAsBool(
+					d,
+					fmt.Sprintf("idp.%d.saml2.0.sign_authentication_requests", idpIdx),
+					sp.GetSignAuthenticationRequests(),
+				),
+			)
 			idpChannel.SetWantAssertionSigned(
-				GetAsBool(d, fmt.Sprintf("idp.%d.saml2.0.want_assertion_signed", idpIdx), sp.GetWantAssertionSigned()))
+				GetAsBool(
+					d,
+					fmt.Sprintf("idp.%d.saml2.0.want_assertion_signed", idpIdx),
+					sp.GetWantAssertionSigned(),
+				),
+			)
 
-			idpChannel.SetSignatureHash(GetAsString(d, fmt.Sprintf("idp.%d.saml2.0.signature_hash", idpIdx), sp.GetSignatureHash()))
+			idpChannel.SetSignatureHash(
+				GetAsString(
+					d,
+					fmt.Sprintf("idp.%d.saml2.0.signature_hash", idpIdx),
+					sp.GetSignatureHash(),
+				),
+			)
 
 		} else {
 			idpChannel.SetOverrideProviderSetup(false)
@@ -272,8 +324,9 @@ func convertIdPFederatedConnectionsMapArrToDTOs(sp SPRole, d *schema.ResourceDat
 	return result, nil
 }
 
-func convertIdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
-
+func convertIdPFederatedConnectionsToMapArr(
+	fcs []api.FederatedConnectionDTO,
+) ([]map[string]interface{}, error) {
 	result := make([]map[string]interface{}, 0)
 
 	for _, fc := range fcs {
@@ -295,20 +348,19 @@ func convertIdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([
 				return ab, err
 			}
 			// Array of maps
-			saml2_map :=
-				[]map[string]interface{}{{
-					"account_linkage":              al.GetLinkEmitterType(),
-					"message_ttl":                  int(idpChannel.GetMessageTtl()),
-					"message_ttl_tolerance":        int(idpChannel.GetMessageTtlTolerance()),
-					"identity_mapping":             im.GetMappingType(),
-					"identity_mapping_localid":     im.GetUseLocalId(),
-					"sign_authentication_requests": idpChannel.GetSignAuthenticationRequests(),
-					"signature_hash":               idpChannel.GetSignatureHash(),
-					"want_assertion_signed":        idpChannel.GetWantAssertionSigned(),
-					"bindings":                     ab,
-					//NOT SUPPORTED BY SERVER "sign_requests":                idpChannel.GetSignRequests(),
+			saml2_map := []map[string]interface{}{{
+				"account_linkage":              al.GetLinkEmitterType(),
+				"message_ttl":                  int(idpChannel.GetMessageTtl()),
+				"message_ttl_tolerance":        int(idpChannel.GetMessageTtlTolerance()),
+				"identity_mapping":             im.GetMappingType(),
+				"identity_mapping_localid":     im.GetUseLocalId(),
+				"sign_authentication_requests": idpChannel.GetSignAuthenticationRequests(),
+				"signature_hash":               idpChannel.GetSignatureHash(),
+				"want_assertion_signed":        idpChannel.GetWantAssertionSigned(),
+				"bindings":                     ab,
+				// NOT SUPPORTED BY SERVER "sign_requests":                idpChannel.GetSignRequests(),
 
-				}}
+			}}
 			idp_map["saml2"] = saml2_map
 		}
 		result = append(result, idp_map)
@@ -355,11 +407,13 @@ func idpSamlSchema() *schema.Schema {
 					Default:          "SHA256",
 				},
 				"encrypt_algorithm": {
-					Type:             schema.TypeString,
-					Description:      "encrypt assertion algorithm",
-					Optional:         true,
-					ValidateDiagFunc: stringInSlice([]string{"NONE", "AES128", "AES256", "AES3DES"}),
-					Default:          "NONE",
+					Type:        schema.TypeString,
+					Description: "encrypt assertion algorithm",
+					Optional:    true,
+					ValidateDiagFunc: stringInSlice(
+						[]string{"NONE", "AES128", "AES256", "AES3DES"},
+					),
+					Default: "NONE",
 				},
 				"bindings": {
 					Type:        schema.TypeList,
@@ -443,7 +497,6 @@ func spConnectionSchema() *schema.Schema {
 }
 
 func convertIdPSaml2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interface{}, error) {
-
 	result := make([]map[string]interface{}, 0)
 
 	encAlg := idp.GetEncryptAssertionAlgorithm()
@@ -497,11 +550,11 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 	idp.SetSignRequests(saml2_map["sign_reqs"].(bool))
 	idp.SetSignatureHash(saml2_map["signature_hash"].(string))
 	idp.SetEncryptAssertionAlgorithm(enc)
-	//idp.SetEnableMetadataEndpoint(saml2_map["metadata_endpoint"].(bool))
+	// idp.SetEnableMetadataEndpoint(saml2_map["metadata_endpoint"].(bool))
 	idp.SetEnableMetadataEndpoint(true)
 	idp.SetMessageTtl(int32(saml2_map["message_ttl"].(int)))
 	idp.SetMessageTtlTolerance(int32(saml2_map["message_ttl_tolerance"].(int)))
-	//idp.SetActiveBindings(convertInterfaceToStringSet(""))
+	// idp.SetActiveBindings(convertInterfaceToStringSet(""))
 
 	b, err := convertMapArrToActiveBinding(saml2_map["bindings"])
 	if err != nil {
@@ -512,7 +565,11 @@ func convertIdPSaml2MapArrToDTO(saml2_arr interface{}, idp *api.IdentityProvider
 	return nil
 }
 
-func convertSPFederatedConnectionsMapArrToDTOs(idp IdPRole, d *schema.ResourceData, sp interface{}) ([]api.FederatedConnectionDTO, error) {
+func convertSPFederatedConnectionsMapArrToDTOs(
+	idp IdPRole,
+	d *schema.ResourceData,
+	sp interface{},
+) ([]api.FederatedConnectionDTO, error) {
 	result := make([]api.FederatedConnectionDTO, 0)
 	ls, ok := sp.([]interface{})
 	if !ok {
@@ -544,18 +601,40 @@ func convertSPFederatedConnectionsMapArrToDTOs(idp IdPRole, d *schema.ResourceDa
 
 			spChannel.SetOverrideProviderSetup(true)
 
-			spChannel.SetWantAuthnRequestsSigned(GetAsBool(d, fmt.Sprintf("%d", spIdx), idp.GetWantAuthnRequestsSigned()))
+			spChannel.SetWantAuthnRequestsSigned(
+				GetAsBool(d, fmt.Sprintf("%d", spIdx), idp.GetWantAuthnRequestsSigned()),
+			)
 			// NOT SUPPORETD BY SERVER :spChannel.SetWantSignedRequests(api.AsBool(saml2_m["want_req_signed"], true))
 			// NOT SUPPORETD BY SERVER :spChannel.SetSignRequests(api.AsBool(saml2_m["sign_reqs"], true))
 
-			enc, err := mapTFEncryptionToSaml2(GetAsString(d, fmt.Sprintf("sp.%d.saml2.0.encrypt_algorithm", spIdx), idp.GetEncryptAssertionAlgorithm()))
+			enc, err := mapTFEncryptionToSaml2(
+				GetAsString(
+					d,
+					fmt.Sprintf("sp.%d.saml2.0.encrypt_algorithm", spIdx),
+					idp.GetEncryptAssertionAlgorithm(),
+				),
+			)
 			if err != nil {
 				return result, err
 			}
-			spChannel.SetSignatureHash(GetAsString(d, fmt.Sprintf("sp.%d.saml2.0.signature_hash", spIdx), idp.GetSignatureHash()))
+			spChannel.SetSignatureHash(
+				GetAsString(
+					d,
+					fmt.Sprintf("sp.%d.saml2.0.signature_hash", spIdx),
+					idp.GetSignatureHash(),
+				),
+			)
 			spChannel.SetEncryptAssertionAlgorithm(enc)
-			spChannel.SetMessageTtl(GetAsInt32(d, fmt.Sprintf("sp.%d.saml2.0.message_ttl", spIdx), idp.GetMessageTtl()))
-			spChannel.SetMessageTtlTolerance(GetAsInt32(d, fmt.Sprintf("sp.%d.saml2.0.message_ttl_tolerance", spIdx), idp.GetMessageTtlTolerance()))
+			spChannel.SetMessageTtl(
+				GetAsInt32(d, fmt.Sprintf("sp.%d.saml2.0.message_ttl", spIdx), idp.GetMessageTtl()),
+			)
+			spChannel.SetMessageTtlTolerance(
+				GetAsInt32(
+					d,
+					fmt.Sprintf("sp.%d.saml2.0.message_ttl_tolerance", spIdx),
+					idp.GetMessageTtlTolerance(),
+				),
+			)
 
 			// TODO : support attribute profile specific for SPChannel
 
@@ -589,8 +668,9 @@ func convertSPFederatedConnectionsMapArrToDTOs(idp IdPRole, d *schema.ResourceDa
 	return result, nil
 }
 
-func convertSPFederatedConnectionDTOsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
-
+func convertSPFederatedConnectionDTOsToMapArr(
+	fcs []api.FederatedConnectionDTO,
+) ([]map[string]interface{}, error) {
 	result := make([]map[string]interface{}, 0)
 
 	for _, fc := range fcs {
