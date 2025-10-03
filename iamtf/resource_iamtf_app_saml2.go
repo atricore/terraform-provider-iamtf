@@ -60,7 +60,7 @@ func ResourceExtSaml2Sp() *schema.Resource {
 						"is_preferred": {
 							Type:        schema.TypeBool,
 							Optional:    true,
-							Default:     true,
+							Default:     false,
 							Description: "identifies this IdP as the preferred one (only one IdP must be set to preferred)",
 						},
 					},
@@ -70,7 +70,11 @@ func ResourceExtSaml2Sp() *schema.Resource {
 	}
 }
 
-func resourceExtSaml2SpCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceExtSaml2SpCreate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	l.Debug("resourceExtSaml2SpCreate", "ida", d.Get("ida").(string))
 
@@ -94,10 +98,13 @@ func resourceExtSaml2SpCreate(ctx context.Context, d *schema.ResourceData, m int
 	l.Debug("resourceExtSaml2SpCreate OK", "ida", d.Get("ida").(string), "name", *extsaml2sp.Name)
 
 	return nil
-
 }
 
-func resourceExtSaml2SpRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceExtSaml2SpRead(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 
 	idaName := d.Get("ida").(string)
@@ -125,7 +132,11 @@ func resourceExtSaml2SpRead(ctx context.Context, d *schema.ResourceData, m inter
 	return nil
 }
 
-func resourceExtSaml2SpUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceExtSaml2SpUpdate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	l.Trace("resourceExtSaml2SpUpdate", "ida", d.Get("ida").(string), "name", d.Id())
 
@@ -151,7 +162,11 @@ func resourceExtSaml2SpUpdate(ctx context.Context, d *schema.ResourceData, m int
 	return nil
 }
 
-func resourceExtSaml2SpDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceExtSaml2SpDelete(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 
 	l.Trace("resourceExtSaml2SpDelete", "ida", d.Get("ida").(string), "name", d.Id())
@@ -181,7 +196,11 @@ func buildExtSaml2SpDTO(d *schema.ResourceData) (api.ExternalSaml2ServiceProvide
 
 	// Federated connections / idps
 	// SP side of federated connection is for the SP
-	dto.FederatedConnectionsB, err = convertExtSsamlSp_IdPFederatedConnectionsMapArrToDTOs(dto, d, d.Get("idp"))
+	dto.FederatedConnectionsB, err = convertExtSsamlSp_IdPFederatedConnectionsMapArrToDTOs(
+		dto,
+		d,
+		d.Get("idp"),
+	)
 	if err != nil {
 		return *dto, err
 	}
@@ -189,7 +208,11 @@ func buildExtSaml2SpDTO(d *schema.ResourceData) (api.ExternalSaml2ServiceProvide
 	return *dto, err
 }
 
-func buildExtSaml2SpResource(idaName string, d *schema.ResourceData, dto api.ExternalSaml2ServiceProviderDTO) error {
+func buildExtSaml2SpResource(
+	idaName string,
+	d *schema.ResourceData,
+	dto api.ExternalSaml2ServiceProviderDTO,
+) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("ida", idaName)
 	_ = d.Set("element_id", cli.StrDeref(dto.ElementId))
@@ -209,8 +232,9 @@ func buildExtSaml2SpResource(idaName string, d *schema.ResourceData, dto api.Ext
 	return nil
 }
 
-func convertExtSaml2SP_IdPFederatedConnectionsToMapArr(fcs []api.FederatedConnectionDTO) ([]map[string]interface{}, error) {
-
+func convertExtSaml2SP_IdPFederatedConnectionsToMapArr(
+	fcs []api.FederatedConnectionDTO,
+) ([]map[string]interface{}, error) {
 	result := make([]map[string]interface{}, 0)
 
 	for _, fc := range fcs {
@@ -230,7 +254,11 @@ func convertExtSaml2SP_IdPFederatedConnectionsToMapArr(fcs []api.FederatedConnec
 	return result, nil
 }
 
-func convertExtSsamlSp_IdPFederatedConnectionsMapArrToDTOs(sp *api.ExternalSaml2ServiceProviderDTO, d *schema.ResourceData, idp interface{}) ([]api.FederatedConnectionDTO, error) {
+func convertExtSsamlSp_IdPFederatedConnectionsMapArrToDTOs(
+	sp *api.ExternalSaml2ServiceProviderDTO,
+	d *schema.ResourceData,
+	idp interface{},
+) ([]api.FederatedConnectionDTO, error) {
 	result := make([]api.FederatedConnectionDTO, 0)
 	ls, ok := idp.([]interface{})
 	if !ok {
