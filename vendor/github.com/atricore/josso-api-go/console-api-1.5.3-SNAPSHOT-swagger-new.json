@@ -1,5 +1,6 @@
 {
   "openapi": "3.0.1",
+  "info": {
     "title": "Atricore Console :: Remote : API",
     "description": "# Atricore Console API",
     "termsOfService": "Terms",
@@ -4194,7 +4195,11 @@
             "type": "string"
           },
           "resource": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
           },
           "type": {
             "type": "string",
@@ -5712,6 +5717,9 @@
           "isRemote": {
             "type": "boolean"
           },
+          "issuer": {
+            "type": "string"
+          },
           "loadMetadata": {
             "type": "boolean"
           },
@@ -5929,7 +5937,11 @@
             "type": "string"
           },
           "resource": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
           },
           "type": {
             "type": "string"
@@ -8151,13 +8163,6 @@
           "wantSignedRequests": {
             "type": "boolean"
           },
-          "identityLookups" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/IdentityLookupDTO"
-            }
-          },
           "x": {
             "type": "number",
             "format": "double"
@@ -9117,7 +9122,11 @@
             "type": "string"
           },
           "value": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
           }
         }
       },
@@ -9475,7 +9484,11 @@
             "type": "string"
           },
           "resource": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
+            }
           }
         }
       },

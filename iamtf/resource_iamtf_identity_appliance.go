@@ -63,11 +63,20 @@ func ResourceIdentityAppliance() *schema.Resource {
 				Default:     "josso25-branding",
 				Optional:    true,
 			},
+			"idp_selector": {
+				Type:        schema.TypeString,
+				Description: "the stragegy used to select IdPs during authentication",
+				Optional:    true,
+			},
 		},
 	}
 }
 
-func resourceIdentityApplianceCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdentityApplianceCreate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	c := getJossoClient(m)
 
@@ -95,7 +104,11 @@ func resourceIdentityApplianceCreate(ctx context.Context, d *schema.ResourceData
 	return nil
 }
 
-func resourceIdentityApplianceRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdentityApplianceRead(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	idaName := d.Get("name").(string)
 	if idaName == "" {
 		idaName = m.(*Config).appliance
@@ -117,7 +130,11 @@ func resourceIdentityApplianceRead(ctx context.Context, d *schema.ResourceData, 
 	return nil
 }
 
-func resourceIdentityApplianceUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdentityApplianceUpdate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	cli := getJossoClient(m)
 
@@ -141,7 +158,11 @@ func resourceIdentityApplianceUpdate(ctx context.Context, d *schema.ResourceData
 	return resourceIdentityApplianceRead(ctx, d, m)
 }
 
-func resourceIdentityApplianceDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdentityApplianceDelete(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	var deleted bool
 	var err error
 
@@ -181,12 +202,15 @@ func buildIdentityAppliance(d *schema.ResourceData) (api.IdentityApplianceDefini
 	a.Description = PtrSchemaStr(d, "description")
 
 	// IDP Selector
-	// TODO : support idp selector
+	a.IdPSelector = &api.EntitySelectionStrategyDTO{
+		Name:        PtrSchemaStr(d, "idp_selector"),
+		Description: PtrSchemaStr(d, "idp_selector"),
+	}
 
 	// Branding
 	a.UserDashboardBranding = &api.UserDashboardBrandingDTO{
 		Id: PtrSchemaStr(d, "branding"),
-		//Name: PtrSchemaStr(d, "branding"),
+		// Name: PtrSchemaStr(d, "branding"),
 	}
 
 	// TODO : support properties/security external configuration
@@ -195,8 +219,11 @@ func buildIdentityAppliance(d *schema.ResourceData) (api.IdentityApplianceDefini
 }
 
 // Builds a resource data from IdentiyApplianceDefinitionDTO
-func buildIdentityApplianceResource(idaName string, d *schema.ResourceData, iam *api.IdentityApplianceDefinitionDTO) error {
-
+func buildIdentityApplianceResource(
+	idaName string,
+	d *schema.ResourceData,
+	iam *api.IdentityApplianceDefinitionDTO,
+) error {
 	id := strconv.FormatInt(cli.Int64Deref(iam.Id), 10)
 	d.SetId(id)
 	_ = d.Set("name", idaName)
@@ -209,7 +236,10 @@ func buildIdentityApplianceResource(idaName string, d *schema.ResourceData, iam 
 	_ = d.Set("branding", b)
 
 	_ = setNonPrimitives(d, map[string]interface{}{
-		"bundles": convertStringSetToInterface(iam.GetRequiredBundles())})
+		"bundles": convertStringSetToInterface(iam.GetRequiredBundles()),
+	})
+
+	_ = d.Set("idp_selector", cli.StrDeref(iam.IdpSelector.Name))
 
 	// Clear
 	iam.Location.SetContext("")

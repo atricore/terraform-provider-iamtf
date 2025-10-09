@@ -5710,6 +5710,9 @@
               "$ref": "#/components/schemas/IdentityLookupDTO"
             }
           },
+          "issuer": {
+            "type": "string"
+          },
           "loadMetadata": {
             "type": "boolean"
           },

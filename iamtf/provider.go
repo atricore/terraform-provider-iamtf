@@ -18,6 +18,7 @@ const (
 	idpFacebook       = "iamtf_idp_facebook"
 	idpAzure          = "iamtf_idp_azure"
 	idpGoogle         = "iamtf_idp_google"
+	idpOidc           = "iamtf_idp_oidc"
 	idVault           = "iamtf_idvault"
 	idSourceLdap      = "iamtf_idsource_ldap"
 	dbidsource        = "iamtf_idsource_db"
@@ -98,6 +99,7 @@ func Provider() *schema.Provider {
 			idpFacebook:       ResourceIdFacebook(),
 			idpAzure:          ResourceidAzure(),
 			idpGoogle:         ResourceidGoogle(),
+			idpOidc:           ResourceIdpOidc(),
 			selfService:       ResourceSelfService(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
