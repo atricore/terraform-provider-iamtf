@@ -202,7 +202,7 @@ func buildIdentityAppliance(d *schema.ResourceData) (api.IdentityApplianceDefini
 	a.Description = PtrSchemaStr(d, "description")
 
 	// IDP Selector
-	a.IdPSelector = &api.EntitySelectionStrategyDTO{
+	a.IdpSelector = &api.EntitySelectionStrategyDTO{
 		Name:        PtrSchemaStr(d, "idp_selector"),
 		Description: PtrSchemaStr(d, "idp_selector"),
 	}
