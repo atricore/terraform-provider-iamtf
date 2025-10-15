@@ -234,6 +234,12 @@ func ResourceVP() *schema.Resource {
 			},
 
 			"attributes": idpAttributeProfileSchema(),
+			"subject_id_ignore_requested": {
+				Type:        schema.TypeBool,
+				Description: "Ignore SP requested subject identifier",
+				Optional:    true,
+				Default:     true,
+			},
 			"subject_id": {
 				Type:        schema.TypeString,
 				Description: "subject identifier. valid values: **PRINCIPAL**, **EMAIL**, **ATTRIBUTE**, **CUSTOM**",
@@ -379,6 +385,7 @@ func buildVPDTO(d *schema.ResourceData) (api.VirtualSaml2ServiceProviderDTO, err
 	vp.SsoSessionTimeout = PtrSchemaInt32(d, "session_timeout")
 
 	vp.SetSubjectNameIDPolicy(buildSubjectNameIdPolicy(d))
+	vp.IgnoreRequestedNameIDPolicy = PtrSchemaBool(d, "subject_id_ignore_requested")
 
 	// IDP Configuration
 	ks, err := convertKeystoreMapArrToDTO(vp.GetName(), d.Get("keystore"))
@@ -471,6 +478,7 @@ func buildVPResource(
 	_ = d.Set("session_timeout", sdk.Int32Deref(vp.SsoSessionTimeout))
 
 	_ = d.Set("subject_id", sdk.StrDeref(vp.GetSubjectNameIDPolicy().Type))
+	_ = d.Set("subject_id_ignore_requested", sdk.BoolDeref(vp.IgnoreRequestedNameIDPolicy))
 	_ = d.Set("subject_id_attr", sdk.StrDeref(vp.GetSubjectNameIDPolicy().SubjectAttribute))
 
 	cfg, err := vp.GetSamlR2IDPConfig()

@@ -65,7 +65,7 @@ func ResourceIdentityAppliance() *schema.Resource {
 			},
 			"idp_selector": {
 				Type:        schema.TypeString,
-				Description: "the stragegy used to select IdPs during authentication",
+				Description: "the stragegy used to select IdPs during authentication.  This are built-in options: requested-preferred-idp-selection, requested-previous-preferred-idp-selection, usr-selected-idp-selection, preferred-only-idp-selection",
 				Optional:    true,
 			},
 		},

@@ -592,6 +592,12 @@ func ResourceIdP() *schema.Resource {
 				Default:  "PRINCIPAL",
 				Optional: true,
 			},
+			"subject_id_ignore_requested": {
+				Type:        schema.TypeBool,
+				Description: "ignore requested subject id type",
+				Optional:    true,
+				Default:     false,
+			},
 			"subject_id_attr": {
 				Type:        schema.TypeString,
 				Description: "subject identifier attribute, only valid for **ATTRIBUTE** and **CUSTOM** subject identifier",
@@ -809,6 +815,7 @@ func buildIdpDTO(d *schema.ResourceData) (api.IdentityProviderDTO, error) {
 
 	// subject name id
 
+	idp.IgnoreRequestedNameIDPolicy = PtrSchemaBool(d, "subject_id_ignore_requested")
 	idp.SetSubjectNameIDPolicy(buildSubjectNameIdPolicy(d))
 
 	// IDP Configuration
@@ -940,6 +947,10 @@ func buildIdPResource(idaName string, d *schema.ResourceData, idp api.IdentityPr
 	_ = d.Set("destroy_previous_session", sdk.BoolDeref(idp.DestroyPreviousSession))
 
 	_ = d.Set("subject_id", sdk.StrDeref(idp.GetSubjectNameIDPolicy().Type))
+	_ = d.Set(
+		"subject_id_ignore_requested",
+		sdk.BoolDeref(idp.IgnoreRequestedNameIDPolicy),
+	)
 	_ = d.Set("subject_id_attr", sdk.StrDeref(idp.GetSubjectNameIDPolicy().SubjectAttribute))
 
 	cfg, err := idp.GetSamlR2IDPConfig()
