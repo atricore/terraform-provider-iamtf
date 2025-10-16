@@ -5,8 +5,8 @@ go 1.22
 toolchain go1.22.3
 
 require (
-	github.com/atricore/josso-api-go v0.5.5
-	github.com/atricore/josso-sdk-go v0.5.6
+	github.com/atricore/josso-api-go v0.5.6
+	github.com/atricore/josso-sdk-go v0.5.9
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-hclog v1.2.0
 	github.com/hashicorp/terraform-plugin-docs v0.13.0
@@ -75,6 +75,6 @@ require (
 	google.golang.org/protobuf v1.28.0 // indirect
 )
 
-replace github.com/atricore/josso-sdk-go => ../josso-sdk-go
+//replace github.com/atricore/josso-sdk-go => ../josso-sdk-go
 
-replace github.com/atricore/josso-api-go => ../josso-api-go
+//replace github.com/atricore/josso-api-go => ../josso-api-go
