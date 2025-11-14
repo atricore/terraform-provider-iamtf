@@ -170,6 +170,12 @@ func ResourceVP() *schema.Resource {
 							Optional:    true,
 							Default:     43200,
 						},
+						"user_claims_in_token": {
+							Type:        schema.TypeBool,
+							Description: "include user claims in token",
+							Optional:    true,
+							Default:     false,
+						},
 					},
 				},
 			},
@@ -554,6 +560,7 @@ func convertVPOAuth2DTOToMapArr(
 
 	oauth2_map := map[string]interface{}{
 		"enabled":                   idp.GetOauth2Enabled(),
+		"user_claims_in_token":      idp.GetOauth2IncludeClaims(),
 		"shared_key":                idp.GetOauth2Key(),
 		"token_validity":            int64(idp.GetOauth2TokenValidity()),
 		"rememberme_token_validity": idp.GetOauth2RememberMeTokenValidity(),
@@ -578,6 +585,7 @@ func convertVPOAuth2MapArrToDTO(
 	}
 
 	idp.SetOauth2Enabled(oauth2_map["enabled"].(bool))
+	idp.SetOauth2IncludeClaims(oauth2_map["user_claims_in_token"].(bool))
 	idp.SetOauth2Key(oauth2_map["shared_key"].(string))
 	idp.SetOauth2TokenValidity(int64(oauth2_map["token_validity"].(int)))
 	idp.SetOauth2RememberMeTokenValidity(int64(oauth2_map["rememberme_token_validity"].(int)))

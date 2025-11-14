@@ -3888,6 +3888,9 @@
           "isRemote": {
             "type": "boolean"
           },
+          "issuer": {
+            "type": "string"
+          },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
           },
@@ -5352,6 +5355,9 @@
           "isRemote": {
             "type": "boolean"
           },
+          "issuer": {
+            "type": "string"
+          },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
           },
@@ -5719,9 +5725,6 @@
           },
           "issuer": {
             "type": "string"
-          },
-          "loadMetadata": {
-            "type": "boolean"
           },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
@@ -7319,6 +7322,9 @@
           "isRemote": {
             "type": "boolean"
           },
+          "issuer": {
+            "type": "string"
+          },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
           },
@@ -8066,6 +8072,9 @@
             "type": "string"
           },
           "oauth2Enabled": {
+            "type": "boolean"
+          },
+          "oauth2IncludeClaims": {
             "type": "boolean"
           },
           "oauth2Key": {
@@ -10559,6 +10568,9 @@
             "type": "string"
           },
           "oauth2Enabled": {
+            "type": "boolean"
+          },
+          "oauth2IncludeClaims": {
             "type": "boolean"
           },
           "oauth2Key": {

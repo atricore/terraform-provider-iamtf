@@ -54,6 +54,7 @@ type IdentityProviderDTO struct {
 	Oauth2Clients []OAuth2ClientDTO `json:"oauth2Clients,omitempty"`
 	Oauth2ClientsConfig *string `json:"oauth2ClientsConfig,omitempty"`
 	Oauth2Enabled *bool `json:"oauth2Enabled,omitempty"`
+	Oauth2IncludeClaims *bool `json:"oauth2IncludeClaims,omitempty"`
 	Oauth2Key *string `json:"oauth2Key,omitempty"`
 	Oauth2RememberMeTokenValidity *int64 `json:"oauth2RememberMeTokenValidity,omitempty"`
 	Oauth2TokenValidity *int64 `json:"oauth2TokenValidity,omitempty"`
@@ -1288,6 +1289,38 @@ func (o *IdentityProviderDTO) SetOauth2Enabled(v bool) {
 	o.Oauth2Enabled = &v
 }
 
+// GetOauth2IncludeClaims returns the Oauth2IncludeClaims field value if set, zero value otherwise.
+func (o *IdentityProviderDTO) GetOauth2IncludeClaims() bool {
+	if o == nil || isNil(o.Oauth2IncludeClaims) {
+		var ret bool
+		return ret
+	}
+	return *o.Oauth2IncludeClaims
+}
+
+// GetOauth2IncludeClaimsOk returns a tuple with the Oauth2IncludeClaims field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityProviderDTO) GetOauth2IncludeClaimsOk() (*bool, bool) {
+	if o == nil || isNil(o.Oauth2IncludeClaims) {
+    return nil, false
+	}
+	return o.Oauth2IncludeClaims, true
+}
+
+// HasOauth2IncludeClaims returns a boolean if a field has been set.
+func (o *IdentityProviderDTO) HasOauth2IncludeClaims() bool {
+	if o != nil && !isNil(o.Oauth2IncludeClaims) {
+		return true
+	}
+
+	return false
+}
+
+// SetOauth2IncludeClaims gets a reference to the given bool and assigns it to the Oauth2IncludeClaims field.
+func (o *IdentityProviderDTO) SetOauth2IncludeClaims(v bool) {
+	o.Oauth2IncludeClaims = &v
+}
+
 // GetOauth2Key returns the Oauth2Key field value if set, zero value otherwise.
 func (o *IdentityProviderDTO) GetOauth2Key() string {
 	if o == nil || isNil(o.Oauth2Key) {
@@ -2297,6 +2330,9 @@ func (o IdentityProviderDTO) MarshalJSON() ([]byte, error) {
 	if !isNil(o.Oauth2Enabled) {
 		toSerialize["oauth2Enabled"] = o.Oauth2Enabled
 	}
+	if !isNil(o.Oauth2IncludeClaims) {
+		toSerialize["oauth2IncludeClaims"] = o.Oauth2IncludeClaims
+	}
 	if !isNil(o.Oauth2Key) {
 		toSerialize["oauth2Key"] = o.Oauth2Key
 	}
@@ -2436,6 +2472,7 @@ func (o *IdentityProviderDTO) UnmarshalJSON(bytes []byte) (err error) {
 		delete(additionalProperties, "oauth2Clients")
 		delete(additionalProperties, "oauth2ClientsConfig")
 		delete(additionalProperties, "oauth2Enabled")
+		delete(additionalProperties, "oauth2IncludeClaims")
 		delete(additionalProperties, "oauth2Key")
 		delete(additionalProperties, "oauth2RememberMeTokenValidity")
 		delete(additionalProperties, "oauth2TokenValidity")

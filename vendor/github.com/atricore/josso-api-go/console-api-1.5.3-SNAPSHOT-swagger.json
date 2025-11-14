@@ -3888,6 +3888,9 @@
           "isRemote": {
             "type": "boolean"
           },
+          "issuer": {
+            "type": "string"
+          },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
           },
@@ -5348,6 +5351,9 @@
           "isRemote": {
             "type": "boolean"
           },
+          "issuer": {
+            "type": "string"
+          },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
           },
@@ -5710,14 +5716,11 @@
               "$ref": "#/components/schemas/IdentityLookupDTO"
             }
           },
-          "issuer": {
-            "type": "string"
-          },
-          "loadMetadata": {
-            "type": "boolean"
-          },
           "isRemote": {
             "type": "boolean"
+          },
+          "issuer": {
+            "type": "string"
           },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
@@ -7311,6 +7314,9 @@
           "isRemote": {
             "type": "boolean"
           },
+          "issuer": {
+            "type": "string"
+          },
           "location": {
             "$ref": "#/components/schemas/LocationDTO"
           },
@@ -8058,6 +8064,9 @@
             "type": "string"
           },
           "oauth2Enabled": {
+            "type": "boolean"
+          },
+          "oauth2IncludeClaims": {
             "type": "boolean"
           },
           "oauth2Key": {
@@ -10552,6 +10561,9 @@
           "oauth2Enabled": {
             "type": "boolean"
           },
+          "oauth2IncludeClaims": {
+            "type": "boolean"
+          },
           "oauth2Key": {
             "type": "string"
           },
@@ -10791,3 +10803,4 @@
     }
   }
 }
+

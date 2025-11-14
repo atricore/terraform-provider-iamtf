@@ -1,37 +1,32 @@
---- console-api-1.5.3-SNAPSHOT-swagger.json	2025-10-03 15:28:41.769579477 -0300
-+++ console-api-1.5.3-SNAPSHOT-swagger-new.json	2025-10-03 15:16:06.440791820 -0300
-@@ -1,6 +1,5 @@
- {
-   "openapi": "3.0.1",
--  "info": {
-     "title": "Atricore Console :: Remote : API",
-     "description": "# Atricore Console API",
-     "termsOfService": "Terms",
-@@ -5713,6 +5712,9 @@
-           "isRemote": {
-             "type": "boolean"
+--- console-api-1.5.3-SNAPSHOT-swagger.json	2025-11-12 18:40:11.974469924 -0300
++++ console-api-1.5.3-SNAPSHOT-swagger-new.json	2025-11-13 19:22:56.813768333 -0300
+@@ -4198,7 +4198,11 @@
+             "type": "string"
            },
-+          "loadMetadata": {
-+            "type": "boolean"
-+          },
-           "location": {
-             "$ref": "#/components/schemas/LocationDTO"
-           },
-@@ -8149,6 +8151,13 @@
-           "wantSignedRequests": {
-             "type": "boolean"
-           },
-+          "identityLookups" : {
-+            "uniqueItems" : true,
-+            "type" : "array",
-+            "items" : {
-+              "$ref" : "#/components/schemas/IdentityLookupDTO"
+           "resource": {
+-            "type": "string"
++            "type": "array",
++            "items": {
++              "type": "string",
++              "format": "byte"
 +            }
-+          },
-           "x": {
-             "type": "number",
-             "format": "double"
-@@ -8156,13 +8165,6 @@
+           },
+           "type": {
+             "type": "string",
+@@ -5936,7 +5940,11 @@
+             "type": "string"
+           },
+           "resource": {
+-            "type": "string"
++            "type": "array",
++            "items": {
++              "type": "string",
++              "format": "byte"
++            }
+           },
+           "type": {
+             "type": "string"
+@@ -8171,13 +8179,6 @@
            "y": {
              "type": "number",
              "format": "double"
@@ -42,6 +37,32 @@
 -            "items": {
 -              "$ref": "#/components/schemas/IdentityLookupDTO"
 -            }
+           }
+         }
+       },
+@@ -9130,7 +9131,11 @@
+             "type": "string"
+           },
+           "value": {
+-            "type": "string"
++            "type": "array",
++            "items": {
++              "type": "string",
++              "format": "byte"
++            }
+           }
+         }
+       },
+@@ -9488,7 +9493,11 @@
+             "type": "string"
+           },
+           "resource": {
+-            "type": "string"
++            "type": "array",
++            "items": {
++              "type": "string",
++              "format": "byte"
++            }
            }
          }
        },

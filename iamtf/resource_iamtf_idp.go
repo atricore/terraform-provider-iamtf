@@ -149,6 +149,12 @@ func ResourceIdP() *schema.Resource {
 							Description: "passwordless authn subject FROM",
 							Optional:    true,
 						},
+						"user_claims_in_token": {
+							Type:        schema.TypeBool,
+							Description: "include claims in oauth2 token",
+							Optional:    true,
+							Default:     false,
+						},
 					},
 				},
 			},
@@ -1587,6 +1593,7 @@ func convertOAuth2MapArrToDTO(oauth2_arr interface{}, idp *api.IdentityProviderD
 
 	idp.SetOauth2Enabled(oauth2_map["enabled"].(bool))
 	idp.SetOauth2Key(oauth2_map["shared_key"].(string))
+	idp.SetOauth2IncludeClaims(oauth2_map["user_claims_in_token"].(bool))
 	idp.SetOauth2TokenValidity(int64(oauth2_map["token_validity"].(int)))
 	idp.SetOauth2RememberMeTokenValidity(int64(oauth2_map["rememberme_token_validity"].(int)))
 
@@ -1612,6 +1619,7 @@ func convertOAuth2DTOToMapArr(idp *api.IdentityProviderDTO) ([]map[string]interf
 		"pwdless_authn_template":    idp.GetPwdlessAuthnTemplate(),
 		"pwdless_authn_to":          idp.GetPwdlessAuthnTo(),
 		"pwdless_authn_from":        idp.GetPwdlessAuthnFrom(),
+		"user_claims_in_token":      idp.GetOauth2IncludeClaims(),
 	}
 	result = append(result, oauth2_map)
 

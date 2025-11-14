@@ -32,9 +32,8 @@ type GenericOpenIDConnectIdentityProviderDTO struct {
 	Id *int64 `json:"id,omitempty"`
 	IdentityAppliance *IdentityApplianceDefinitionDTO `json:"identityAppliance,omitempty"`
 	IdentityLookups []IdentityLookupDTO `json:"identityLookups,omitempty"`
-	Issuer *string `json:"issuer,omitempty"`
-	LoadMetadata *bool `json:"loadMetadata,omitempty"`
 	IsRemote *bool `json:"isRemote,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
 	Location *LocationDTO `json:"location,omitempty"`
 	Metadata *ResourceDTO `json:"metadata,omitempty"`
 	MobileAuthzTokenService *LocationDTO `json:"mobileAuthzTokenService,omitempty"`
@@ -548,70 +547,6 @@ func (o *GenericOpenIDConnectIdentityProviderDTO) SetIdentityLookups(v []Identit
 	o.IdentityLookups = v
 }
 
-// GetIssuer returns the Issuer field value if set, zero value otherwise.
-func (o *GenericOpenIDConnectIdentityProviderDTO) GetIssuer() string {
-	if o == nil || isNil(o.Issuer) {
-		var ret string
-		return ret
-	}
-	return *o.Issuer
-}
-
-// GetIssuerOk returns a tuple with the Issuer field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *GenericOpenIDConnectIdentityProviderDTO) GetIssuerOk() (*string, bool) {
-	if o == nil || isNil(o.Issuer) {
-    return nil, false
-	}
-	return o.Issuer, true
-}
-
-// HasIssuer returns a boolean if a field has been set.
-func (o *GenericOpenIDConnectIdentityProviderDTO) HasIssuer() bool {
-	if o != nil && !isNil(o.Issuer) {
-		return true
-	}
-
-	return false
-}
-
-// SetIssuer gets a reference to the given string and assigns it to the Issuer field.
-func (o *GenericOpenIDConnectIdentityProviderDTO) SetIssuer(v string) {
-	o.Issuer = &v
-}
-
-// GetLoadMetadata returns the LoadMetadata field value if set, zero value otherwise.
-func (o *GenericOpenIDConnectIdentityProviderDTO) GetLoadMetadata() bool {
-	if o == nil || isNil(o.LoadMetadata) {
-		var ret bool
-		return ret
-	}
-	return *o.LoadMetadata
-}
-
-// GetLoadMetadataOk returns a tuple with the LoadMetadata field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *GenericOpenIDConnectIdentityProviderDTO) GetLoadMetadataOk() (*bool, bool) {
-	if o == nil || isNil(o.LoadMetadata) {
-    return nil, false
-	}
-	return o.LoadMetadata, true
-}
-
-// HasLoadMetadata returns a boolean if a field has been set.
-func (o *GenericOpenIDConnectIdentityProviderDTO) HasLoadMetadata() bool {
-	if o != nil && !isNil(o.LoadMetadata) {
-		return true
-	}
-
-	return false
-}
-
-// SetLoadMetadata gets a reference to the given bool and assigns it to the LoadMetadata field.
-func (o *GenericOpenIDConnectIdentityProviderDTO) SetLoadMetadata(v bool) {
-	o.LoadMetadata = &v
-}
-
 // GetIsRemote returns the IsRemote field value if set, zero value otherwise.
 func (o *GenericOpenIDConnectIdentityProviderDTO) GetIsRemote() bool {
 	if o == nil || isNil(o.IsRemote) {
@@ -642,6 +577,38 @@ func (o *GenericOpenIDConnectIdentityProviderDTO) HasIsRemote() bool {
 // SetIsRemote gets a reference to the given bool and assigns it to the IsRemote field.
 func (o *GenericOpenIDConnectIdentityProviderDTO) SetIsRemote(v bool) {
 	o.IsRemote = &v
+}
+
+// GetIssuer returns the Issuer field value if set, zero value otherwise.
+func (o *GenericOpenIDConnectIdentityProviderDTO) GetIssuer() string {
+	if o == nil || isNil(o.Issuer) {
+		var ret string
+		return ret
+	}
+	return *o.Issuer
+}
+
+// GetIssuerOk returns a tuple with the Issuer field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GenericOpenIDConnectIdentityProviderDTO) GetIssuerOk() (*string, bool) {
+	if o == nil || isNil(o.Issuer) {
+    return nil, false
+	}
+	return o.Issuer, true
+}
+
+// HasIssuer returns a boolean if a field has been set.
+func (o *GenericOpenIDConnectIdentityProviderDTO) HasIssuer() bool {
+	if o != nil && !isNil(o.Issuer) {
+		return true
+	}
+
+	return false
+}
+
+// SetIssuer gets a reference to the given string and assigns it to the Issuer field.
+func (o *GenericOpenIDConnectIdentityProviderDTO) SetIssuer(v string) {
+	o.Issuer = &v
 }
 
 // GetLocation returns the Location field value if set, zero value otherwise.
@@ -1043,14 +1010,11 @@ func (o GenericOpenIDConnectIdentityProviderDTO) MarshalJSON() ([]byte, error) {
 	if !isNil(o.IdentityLookups) {
 		toSerialize["identityLookups"] = o.IdentityLookups
 	}
-	if !isNil(o.Issuer) {
-		toSerialize["issuer"] = o.Issuer
-	}
-	if !isNil(o.LoadMetadata) {
-		toSerialize["loadMetadata"] = o.LoadMetadata
-	}
 	if !isNil(o.IsRemote) {
 		toSerialize["isRemote"] = o.IsRemote
+	}
+	if !isNil(o.Issuer) {
+		toSerialize["issuer"] = o.Issuer
 	}
 	if !isNil(o.Location) {
 		toSerialize["location"] = o.Location
@@ -1118,9 +1082,8 @@ func (o *GenericOpenIDConnectIdentityProviderDTO) UnmarshalJSON(bytes []byte) (e
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "identityAppliance")
 		delete(additionalProperties, "identityLookups")
-		delete(additionalProperties, "issuer")
-		delete(additionalProperties, "loadMetadata")
 		delete(additionalProperties, "isRemote")
+		delete(additionalProperties, "issuer")
 		delete(additionalProperties, "location")
 		delete(additionalProperties, "metadata")
 		delete(additionalProperties, "mobileAuthzTokenService")

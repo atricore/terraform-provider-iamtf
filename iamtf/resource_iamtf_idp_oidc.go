@@ -95,7 +95,11 @@ func ResourceIdpOidc() *schema.Resource {
 	}
 }
 
-func resourceIdpOidcCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdpOidcCreate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	l.Debug("resourceIdpOidcCreate", "ida", d.Get("ida").(string))
 
@@ -121,7 +125,11 @@ func resourceIdpOidcCreate(ctx context.Context, d *schema.ResourceData, m interf
 	return nil
 }
 
-func resourceIdpOidcRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdpOidcRead(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 
 	idaName := d.Get("ida").(string)
@@ -149,7 +157,11 @@ func resourceIdpOidcRead(ctx context.Context, d *schema.ResourceData, m interfac
 	return nil
 }
 
-func resourceIdpOidcUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdpOidcUpdate(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 	l.Trace("resourceIdpOidcUpdate", "ida", d.Get("ida").(string), "name", d.Id())
 
@@ -175,7 +187,11 @@ func resourceIdpOidcUpdate(ctx context.Context, d *schema.ResourceData, m interf
 	return nil
 }
 
-func resourceIdpOidcDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceIdpOidcDelete(
+	ctx context.Context,
+	d *schema.ResourceData,
+	m interface{},
+) diag.Diagnostics {
 	l := getLogger(m)
 
 	l.Trace("resourceIdpOidcDelete", "ida", d.Get("ida").(string), "name", d.Id())
@@ -200,10 +216,6 @@ func buildIdpOidcDTO(d *schema.ResourceData) (api.GenericOpenIDConnectIdentityPr
 	dto.ClientSecret = PtrSchemaStr(d, "client_secret")
 	dto.ServerKey = PtrSchemaStr(d, "server_key")
 	dto.Issuer = PtrSchemaStr(d, "issuer")
-
-	// Set LoadMetadata (defaults to true)
-	loadMetadata := d.Get("load_metadata").(bool)
-	dto.LoadMetadata = &loadMetadata
 
 	// These are optional when load_metadata is true
 	if _, ok := d.GetOk("access_token_service"); ok {
@@ -230,7 +242,11 @@ func buildIdpOidcDTO(d *schema.ResourceData) (api.GenericOpenIDConnectIdentityPr
 	return *dto, err
 }
 
-func buildIdpOidcResource(idaName string, d *schema.ResourceData, dto api.GenericOpenIDConnectIdentityProviderDTO) error {
+func buildIdpOidcResource(
+	idaName string,
+	d *schema.ResourceData,
+	dto api.GenericOpenIDConnectIdentityProviderDTO,
+) error {
 	d.SetId(cli.StrDeref(dto.Name))
 	_ = d.Set("ida", idaName)
 	_ = d.Set("name", cli.StrDeref(dto.Name))
@@ -239,7 +255,6 @@ func buildIdpOidcResource(idaName string, d *schema.ResourceData, dto api.Generi
 	_ = d.Set("client_secret", cli.StrDeref(dto.ClientSecret))
 	_ = d.Set("server_key", cli.StrDeref(dto.ServerKey))
 	_ = d.Set("issuer", cli.StrDeref(dto.Issuer))
-	_ = d.Set("load_metadata", cli.BoolDeref(dto.LoadMetadata))
 	_ = d.Set("authz_token_service", cli.LocationToStr(dto.AuthzTokenService))
 	_ = d.Set("access_token_service", cli.LocationToStr(dto.AccessTokenService))
 

@@ -34,6 +34,7 @@ type AzureOpenIDConnectIdentityProviderDTO struct {
 	IdentityAppliance *IdentityApplianceDefinitionDTO `json:"identityAppliance,omitempty"`
 	IdentityLookups []IdentityLookupDTO `json:"identityLookups,omitempty"`
 	IsRemote *bool `json:"isRemote,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
 	Location *LocationDTO `json:"location,omitempty"`
 	Metadata *ResourceDTO `json:"metadata,omitempty"`
 	MobileAuthzTokenService *LocationDTO `json:"mobileAuthzTokenService,omitempty"`
@@ -611,6 +612,38 @@ func (o *AzureOpenIDConnectIdentityProviderDTO) SetIsRemote(v bool) {
 	o.IsRemote = &v
 }
 
+// GetIssuer returns the Issuer field value if set, zero value otherwise.
+func (o *AzureOpenIDConnectIdentityProviderDTO) GetIssuer() string {
+	if o == nil || isNil(o.Issuer) {
+		var ret string
+		return ret
+	}
+	return *o.Issuer
+}
+
+// GetIssuerOk returns a tuple with the Issuer field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *AzureOpenIDConnectIdentityProviderDTO) GetIssuerOk() (*string, bool) {
+	if o == nil || isNil(o.Issuer) {
+    return nil, false
+	}
+	return o.Issuer, true
+}
+
+// HasIssuer returns a boolean if a field has been set.
+func (o *AzureOpenIDConnectIdentityProviderDTO) HasIssuer() bool {
+	if o != nil && !isNil(o.Issuer) {
+		return true
+	}
+
+	return false
+}
+
+// SetIssuer gets a reference to the given string and assigns it to the Issuer field.
+func (o *AzureOpenIDConnectIdentityProviderDTO) SetIssuer(v string) {
+	o.Issuer = &v
+}
+
 // GetLocation returns the Location field value if set, zero value otherwise.
 func (o *AzureOpenIDConnectIdentityProviderDTO) GetLocation() LocationDTO {
 	if o == nil || isNil(o.Location) {
@@ -1016,6 +1049,9 @@ func (o AzureOpenIDConnectIdentityProviderDTO) MarshalJSON() ([]byte, error) {
 	if !isNil(o.IsRemote) {
 		toSerialize["isRemote"] = o.IsRemote
 	}
+	if !isNil(o.Issuer) {
+		toSerialize["issuer"] = o.Issuer
+	}
 	if !isNil(o.Location) {
 		toSerialize["location"] = o.Location
 	}
@@ -1084,6 +1120,7 @@ func (o *AzureOpenIDConnectIdentityProviderDTO) UnmarshalJSON(bytes []byte) (err
 		delete(additionalProperties, "identityAppliance")
 		delete(additionalProperties, "identityLookups")
 		delete(additionalProperties, "isRemote")
+		delete(additionalProperties, "issuer")
 		delete(additionalProperties, "location")
 		delete(additionalProperties, "metadata")
 		delete(additionalProperties, "mobileAuthzTokenService")

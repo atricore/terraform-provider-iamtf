@@ -33,6 +33,7 @@ type FacebookOpenIDConnectIdentityProviderDTO struct {
 	IdentityAppliance *IdentityApplianceDefinitionDTO `json:"identityAppliance,omitempty"`
 	IdentityLookups []IdentityLookupDTO `json:"identityLookups,omitempty"`
 	IsRemote *bool `json:"isRemote,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
 	Location *LocationDTO `json:"location,omitempty"`
 	Metadata *ResourceDTO `json:"metadata,omitempty"`
 	MobileAuthzTokenService *LocationDTO `json:"mobileAuthzTokenService,omitempty"`
@@ -578,6 +579,38 @@ func (o *FacebookOpenIDConnectIdentityProviderDTO) SetIsRemote(v bool) {
 	o.IsRemote = &v
 }
 
+// GetIssuer returns the Issuer field value if set, zero value otherwise.
+func (o *FacebookOpenIDConnectIdentityProviderDTO) GetIssuer() string {
+	if o == nil || isNil(o.Issuer) {
+		var ret string
+		return ret
+	}
+	return *o.Issuer
+}
+
+// GetIssuerOk returns a tuple with the Issuer field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *FacebookOpenIDConnectIdentityProviderDTO) GetIssuerOk() (*string, bool) {
+	if o == nil || isNil(o.Issuer) {
+    return nil, false
+	}
+	return o.Issuer, true
+}
+
+// HasIssuer returns a boolean if a field has been set.
+func (o *FacebookOpenIDConnectIdentityProviderDTO) HasIssuer() bool {
+	if o != nil && !isNil(o.Issuer) {
+		return true
+	}
+
+	return false
+}
+
+// SetIssuer gets a reference to the given string and assigns it to the Issuer field.
+func (o *FacebookOpenIDConnectIdentityProviderDTO) SetIssuer(v string) {
+	o.Issuer = &v
+}
+
 // GetLocation returns the Location field value if set, zero value otherwise.
 func (o *FacebookOpenIDConnectIdentityProviderDTO) GetLocation() LocationDTO {
 	if o == nil || isNil(o.Location) {
@@ -980,6 +1013,9 @@ func (o FacebookOpenIDConnectIdentityProviderDTO) MarshalJSON() ([]byte, error) 
 	if !isNil(o.IsRemote) {
 		toSerialize["isRemote"] = o.IsRemote
 	}
+	if !isNil(o.Issuer) {
+		toSerialize["issuer"] = o.Issuer
+	}
 	if !isNil(o.Location) {
 		toSerialize["location"] = o.Location
 	}
@@ -1047,6 +1083,7 @@ func (o *FacebookOpenIDConnectIdentityProviderDTO) UnmarshalJSON(bytes []byte) (
 		delete(additionalProperties, "identityAppliance")
 		delete(additionalProperties, "identityLookups")
 		delete(additionalProperties, "isRemote")
+		delete(additionalProperties, "issuer")
 		delete(additionalProperties, "location")
 		delete(additionalProperties, "metadata")
 		delete(additionalProperties, "mobileAuthzTokenService")
